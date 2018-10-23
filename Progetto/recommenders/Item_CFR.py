@@ -21,10 +21,9 @@ class Item_CFR(object):
         final_result = pd.DataFrame(index=range(self.target_playlists.shape[0]), columns=('playlist_id', 'track_ids'))
 
         for i, target_playlist in tqdm(enumerate(np.array(self.target_playlists))):
+            row = self.URM[target_playlist].dot(self.S)
 
-            URM_row = self.URM[target_playlist,:] * self.S
-
-            result_tracks = self.u.get_top10_tracks(self.URM, target_playlist[0], URM_row)
+            result_tracks = self.u.get_top10_tracks(self.URM, target_playlist[0], row)
             string_rec = ' '.join(map(str, result_tracks.reshape(1, 10)[0]))
             final_result['playlist_id'][i] = int(target_playlist)
             if is_test:

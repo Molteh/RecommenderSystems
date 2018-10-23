@@ -8,6 +8,7 @@ from Progetto.recommenders.Ensemble_cfcb import Ensemble_cfcb
 from Progetto.recommenders.Ensemble_item import Ensemble_item
 from Progetto.recommenders.Hybrid import Hybrid
 from Progetto.recommenders.SlimBPR import SlimBPR as SlimBPRRec
+from Progetto.recommenders.Ensemble_cf import Ensemble_cf
 import pandas as pd
 
 
@@ -77,6 +78,19 @@ class Recommender(object):
             result = rec.recommend(False, alfa)
             result.to_csv("predictions/item_avg.csv", index=False)
 
+    def recommend_ensemble_cf(self, is_test, alfa=0.6, knn1=400, knn2=400, shrink=300, mode='cosine'):
+        rec = Ensemble_cf(self.u)
+        if is_test:
+            target_playlists = self.e.get_target_playlists()
+            rec.fit(self.URM_train, target_playlists, knn1, knn2, shrink, mode)
+            result = rec.recommend(True, alfa)
+            self.e.MAP(result, self.e.get_target_tracks())
+        else:
+            target = self.u.get_target_playlists()
+            rec.fit(self.URM_full, target, knn1, knn2, shrink, mode)
+            result = rec.recommend(False, alfa)
+            result.to_csv("predictions/ensemble_cf.csv", index=False)
+
     def recommend_ensemble_cfcb(self, is_test, weights=[0.6, 0.4, 0.5], knn1=400, knn2=400, knn3=300, shrink=300, mode='cosine'):
         rec = Ensemble_cfcb(self.u)
         if is_test:
@@ -88,7 +102,7 @@ class Recommender(object):
             target = self.u.get_target_playlists()
             rec.fit(self.URM_full, target, knn1, knn2, knn3, shrink, mode)
             result = rec.recommend(False, weights)
-            result.to_csv("predictions/ensemble1.csv", index=False)
+            result.to_csv("predictions/ensemble_cfcb.csv", index=False)
 
     def recommend_hybrid(self, is_test, weights=[0.7, 0.65], knn1=400, knn2=400, knn3=300, shrink=300, mode='cosine'):
         rec = Hybrid(self.u)
@@ -103,11 +117,11 @@ class Recommender(object):
             result = rec.recommend(False, weights)
             result.to_csv("predictions/hybrid.csv", index=False)
 
-    def recommend_slimBPR(self, is_test, knn=100, shrink=300, mode='cosine'):
+    def recommend_slimBPR(self, is_test, knn=100):
         rec = SlimBPRRec()
         if is_test:
             BPR_gen = SlimBPR(self.URM_train)
-            S_bpr = BPR_gen.get_S_SLIM_BPR(knn, shrink, mode)
+            S_bpr = BPR_gen.get_S_SLIM_BPR(knn)
             target_playlists = self.e.get_target_playlists()
             rec.fit(self.URM_train, S_bpr, target_playlists, 10000,
                     learning_rate=0.1, epochs=1, positive_item_regularization=1.0,
@@ -116,7 +130,7 @@ class Recommender(object):
             self.e.MAP(result, self.e.get_target_tracks())
         else:
             BPR_gen = SlimBPR(self.URM_full)
-            S_bpr = BPR_gen.get_S_SLIM_BPR(knn, shrink, mode)
+            S_bpr = BPR_gen.get_S_SLIM_BPR(knn)
             target = self.u.get_target_playlists()
             rec.fit(self.URM_full, S_bpr, target, 10000,
                     learning_rate=0.1, epochs=1, positive_item_regularization=1.0,

@@ -20,13 +20,14 @@ class Ensemble_item(object):
 
     def recommend(self, is_test, alfa):
         print("Recommending", flush=True)
-        R_CB = self.URM * self.S_CB
-        R_CF = self.URM * self.S_CF
-        R = (alfa * R_CF) + ((1 - alfa) * R_CB)
         final_result = pd.DataFrame(index=range(self.target_playlists.shape[0]), columns=('playlist_id', 'track_ids'))
 
         for i, target_playlist in tqdm(enumerate(np.array(self.target_playlists))):
-            result_tracks = self.u.get_top10_tracks(self.URM, target_playlist[0], R[target_playlist[0]])
+            row_cb = self.URM[target_playlist].dot(self.S_CB)
+            row_cf = self.URM[target_playlist].dot(self.S_CF)
+            row = (alfa*row_cb) + ((1-alfa)*row_cf)
+
+            result_tracks = self.u.get_top10_tracks(self.URM, target_playlist[0], row)
             string_rec = ' '.join(map(str, result_tracks.reshape(1, 10)[0]))
             final_result['playlist_id'][i] = int(target_playlist)
             if is_test:

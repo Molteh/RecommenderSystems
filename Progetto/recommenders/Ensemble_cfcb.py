@@ -22,14 +22,15 @@ class Ensemble_cfcb(object):
 
     def recommend(self, is_test, weights):
         print("Recommending", flush=True)
-        R_CB = self.URM * self.S_CB
-        R_CF_I = self.URM * self.S_CF_I
-        R_CF_U = self.S_CF_U * self.URM
-        R = (weights[0] * R_CF_I) + (weights[1] * R_CF_U) + (weights[2] * R_CB)
         final_result = pd.DataFrame(index=range(self.target_playlists.shape[0]), columns=('playlist_id', 'track_ids'))
 
         for i, target_playlist in tqdm(enumerate(np.array(self.target_playlists))):
-            result_tracks = self.u.get_top10_tracks(self.URM, target_playlist[0], R[target_playlist[0]])
+            row_cb = self.URM[target_playlist].dot(self.S_CB)
+            row_cf_i = self.URM[target_playlist].dot(self.S_CF_I)
+            row_cf_u = self.S_CF_U[target_playlist].dot(self.URM)
+            row = (weights[0] * row_cf_i) + (weights[1] * row_cf_u) + (weights[2] * row_cb)
+
+            result_tracks = self.u.get_top10_tracks(self.URM, target_playlist[0], row)
             string_rec = ' '.join(map(str, result_tracks.reshape(1, 10)[0]))
             final_result['playlist_id'][i] = int(target_playlist)
             if is_test:

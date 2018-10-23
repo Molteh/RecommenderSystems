@@ -17,9 +17,8 @@ class Utils(object):
     @staticmethod
     def get_top10_tracks(URM, my_id, row):
         my_indices = URM.indices[URM.indptr[my_id]:URM.indptr[my_id + 1]]
-        target_indices = list(np.intersect1d(row.indices, my_indices))
-        row[0, target_indices] = 0
-        row.eliminate_zeros()
+        indices = np.intersect1d(my_indices, row.indices)
+        row[0, indices] = -np.inf
         top10_tracks = row.toarray().flatten().argsort()[-10:][::-1]
         return top10_tracks
 
@@ -30,7 +29,7 @@ class Utils(object):
 
     def get_UCM(self, URM):
         UCM = TfidfTransformer().fit_transform(URM.T).T
-        return normalize(UCM, 'l2', 0).tocsr()
+        return UCM
 
     def get_ICM(self):  # returns Item Content Matrix
         grouped = self.tracks.groupby('track_id', as_index=True).apply((lambda track: list(track['artist_id'])))
@@ -46,31 +45,28 @@ class Utils(object):
         ICM_albums = TfidfTransformer().fit_transform(ICM_albums.T).T
 
         ICM = sp.hstack((ICM_artists, ICM_albums))
-        return normalize(ICM, 'l2', 0).tocsr()
+        return ICM
 
     def get_itemsim_CB(self, knn, shrink, mode):
         ICM = self.get_ICM()
 
-        similarity = Cosine_Similarity(dataMatrix=ICM.T, normalize=True, shrink=shrink, similarity=mode,
-                                                         topK = knn)
+        similarity = Cosine_Similarity(dataMatrix=ICM.T, normalize=True, shrink=shrink, similarity=mode, topK=knn)
         S = similarity.compute_similarity()
 
-        return S.tocsr()
+        return S
 
     def get_itemsim_CF(self, URM, knn, shrink, mode):
         UCM = self.get_UCM(URM)
 
-        similarity = Cosine_Similarity(dataMatrix=UCM, normalize=True, shrink=shrink, similarity=mode,
-                                                         topK = knn)
+        similarity = Cosine_Similarity(dataMatrix=UCM, normalize=True, shrink=shrink, similarity=mode, topK=knn)
         S = similarity.compute_similarity()
 
-        return S.tocsr()
+        return S
 
     def get_usersim_CF(self, URM, knn, shrink, mode):
         UCM = self.get_UCM(URM)
 
-        similarity = Cosine_Similarity(dataMatrix=UCM.T, normalize=True, shrink=shrink, similarity=mode,
-                                                         topK = knn)
+        similarity = Cosine_Similarity(dataMatrix=UCM.T, normalize=True, shrink=shrink, similarity=mode, topK=knn)
         S = similarity.compute_similarity()
 
-        return S.tocsr()
+        return S

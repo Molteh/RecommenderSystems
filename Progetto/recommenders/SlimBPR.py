@@ -28,11 +28,10 @@ class SlimBPR(object):
 
         print('Predicting...', flush=True)
         for j, i in tqdm(enumerate(np.array(self.target_playlists))):
-
-            URM_row = self.URM[i, :] * self.Slim
+            row = self.URM[i].dot(self.Slim)
 
             # Make prediction
-            result_tracks = self.u.get_top10_tracks(self.URM, i[0], URM_row)
+            result_tracks = self.u.get_top10_tracks(self.URM, i[0], row)
             string_rec = ' '.join(map(str, result_tracks.reshape(1, 10)[0]))
             final_result['playlist_id'][j] = int(i)
             if is_test:

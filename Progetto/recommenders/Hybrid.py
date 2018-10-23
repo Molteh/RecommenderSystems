@@ -28,14 +28,12 @@ class Hybrid(object):
         S_item = (alfa * self.S_CF_item) + ((1 - alfa) * self.S_CB)
         final_result = pd.DataFrame(index=range(self.target_playlists.shape[0]), columns=('playlist_id', 'track_ids'))
 
-
         for i, target_playlist in tqdm(enumerate(np.array(self.target_playlists))):
+            row_user = self.S_user[target_playlist].dot(self.URM)
+            row_item = self.URM[target_playlist].dot(S_item)
+            row = (beta * row_item) + ((1 - beta) * row_user)
 
-            URM_row_user = self.S_user[target_playlist,:] * self.URM
-            URM_row_item = self.URM[target_playlist,:] * S_item
-            URM_row = (beta * URM_row_item) + ((1 - beta) * URM_row_user)
-
-            result_tracks = self.u.get_top10_tracks(self.URM, target_playlist[0], URM_row)
+            result_tracks = self.u.get_top10_tracks(self.URM, target_playlist[0], row)
             string_rec = ' '.join(map(str, result_tracks.reshape(1, 10)[0]))
             final_result['playlist_id'][i] = int(target_playlist)
             if is_test:
