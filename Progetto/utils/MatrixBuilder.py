@@ -48,28 +48,28 @@ class Utils(object):
         ICM = sp.hstack((ICM_artists, ICM_albums))
         return normalize(ICM, 'l2', 0).tocsr()
 
-    def get_itemsim_CB(self, knn):
+    def get_itemsim_CB(self, knn, shrink, mode):
         ICM = self.get_ICM()
 
-        similarity = Cosine_Similarity(dataMatrix=ICM.T, normalize=True, shrink=100, mode='cosine',
+        similarity = Cosine_Similarity(dataMatrix=ICM.T, normalize=True, shrink=shrink, mode=mode,
                                                          topK = knn)
         S = similarity.compute_similarity()
 
         return S.tocsr()
 
-    def get_itemsim_CF(self, URM, knn):
+    def get_itemsim_CF(self, URM, knn, shrink, mode):
         UCM = self.get_UCM(URM)
 
-        similarity = Cosine_Similarity(dataMatrix=UCM, normalize=True, shrink=200, mode='cosine',
+        similarity = Cosine_Similarity(dataMatrix=UCM, normalize=True, shrink=shrink, mode=mode,
                                                          topK = knn)
         S = similarity.compute_similarity()
 
         return S.tocsr()
 
-    def get_usersim_CF(self, URM, knn):
+    def get_usersim_CF(self, URM, knn, shrink, mode):
         UCM = self.get_UCM(URM)
 
-        similarity = Cosine_Similarity(dataMatrix=UCM.T, normalize=True, shrink=100, mode='cosine',
+        similarity = Cosine_Similarity(dataMatrix=UCM.T, normalize=True, shrink=shrink, mode=mode,
                                                          topK = knn)
         S = similarity.compute_similarity()
 

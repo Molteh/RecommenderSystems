@@ -11,10 +11,10 @@ class Item_CBR(object):
         self.target_playlists = None
         self.S = None
 
-    def fit(self, URM, target_playlists, knn):
+    def fit(self, URM, target_playlists, knn, shrink, mode ):
         self.URM = URM
         self.target_playlists = target_playlists
-        self.S = self.u.get_itemsim_CB(knn)
+        self.S = self.u.get_itemsim_CB(knn, shrink, mode)
 
     def recommend(self, is_test):
         print("Recommending", flush = True)
