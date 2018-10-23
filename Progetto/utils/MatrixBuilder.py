@@ -2,7 +2,7 @@ import numpy as np
 import scipy.sparse as sp
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.preprocessing import MultiLabelBinarizer, normalize
-from Progetto.utils.cosine_similarity import Cosine_Similarity
+from Progetto.utils.cosine_similarity import Compute_Similarity_Python as Cosine_Similarity
 
 class Utils(object):
 
@@ -51,7 +51,7 @@ class Utils(object):
     def get_itemsim_CB(self, knn, shrink, mode):
         ICM = self.get_ICM()
 
-        similarity = Cosine_Similarity(dataMatrix=ICM.T, normalize=True, shrink=shrink, mode=mode,
+        similarity = Cosine_Similarity(dataMatrix=ICM.T, normalize=True, shrink=shrink, similarity=mode,
                                                          topK = knn)
         S = similarity.compute_similarity()
 
@@ -60,7 +60,7 @@ class Utils(object):
     def get_itemsim_CF(self, URM, knn, shrink, mode):
         UCM = self.get_UCM(URM)
 
-        similarity = Cosine_Similarity(dataMatrix=UCM, normalize=True, shrink=shrink, mode=mode,
+        similarity = Cosine_Similarity(dataMatrix=UCM, normalize=True, shrink=shrink, similarity=mode,
                                                          topK = knn)
         S = similarity.compute_similarity()
 
@@ -69,7 +69,7 @@ class Utils(object):
     def get_usersim_CF(self, URM, knn, shrink, mode):
         UCM = self.get_UCM(URM)
 
-        similarity = Cosine_Similarity(dataMatrix=UCM.T, normalize=True, shrink=shrink, mode=mode,
+        similarity = Cosine_Similarity(dataMatrix=UCM.T, normalize=True, shrink=shrink, similarity=mode,
                                                          topK = knn)
         S = similarity.compute_similarity()
 

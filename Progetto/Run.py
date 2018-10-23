@@ -128,4 +128,5 @@ class Recommender(object):
 
 if __name__ == '__main__':
     run = Recommender()
-    run.recommend_hybrid(False)
+    run.recommend_itemCFR(True)
+
