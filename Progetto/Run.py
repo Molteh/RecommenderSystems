@@ -128,4 +128,6 @@ class Recommender(object):
 
 if __name__ == '__main__':
     run = Recommender()
-    run.recommend_itemCBR(True)
+    run.recommend_itemCFR(True)
+
+    #0.09450137

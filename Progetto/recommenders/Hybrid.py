@@ -26,13 +26,16 @@ class Hybrid(object):
         alfa = weights[0]
         beta = weights[1]
         S_item = (alfa * self.S_CF_item) + ((1 - alfa) * self.S_CB)
-        R_user = self.S_user * self.URM
-        R_item = self.URM * S_item
-        R = (beta * R_item) + ((1 - beta) * R_user)
         final_result = pd.DataFrame(index=range(self.target_playlists.shape[0]), columns=('playlist_id', 'track_ids'))
 
+
         for i, target_playlist in tqdm(enumerate(np.array(self.target_playlists))):
-            result_tracks = self.u.get_top10_tracks(self.URM, target_playlist[0], R[target_playlist[0]])
+
+            URM_row_user = self.S_user[target_playlist,:] * self.URM
+            URM_row_item = self.URM[target_playlist,:] * S_item
+            URM_row = (beta * URM_row_item) + ((1 - beta) * URM_row_user)
+
+            result_tracks = self.u.get_top10_tracks(self.URM, target_playlist[0], URM_row)
             string_rec = ' '.join(map(str, result_tracks.reshape(1, 10)[0]))
             final_result['playlist_id'][i] = int(target_playlist)
             if is_test:

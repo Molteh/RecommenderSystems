@@ -60,7 +60,7 @@ class Utils(object):
     def get_itemsim_CF(self, URM, knn):
         UCM = self.get_UCM(URM)
 
-        similarity = Cosine_Similarity(dataMatrix=UCM, normalize=True, shrink=100, mode='cosine',
+        similarity = Cosine_Similarity(dataMatrix=UCM, normalize=True, shrink=200, mode='cosine',
                                                          topK = knn)
         S = similarity.compute_similarity()
 
