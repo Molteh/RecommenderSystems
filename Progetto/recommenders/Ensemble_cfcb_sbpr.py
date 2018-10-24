@@ -14,13 +14,13 @@ class Ensemble_cfcb_sbpr(object):
         self.target_playlists = None
         self.URM = None
 
-    def fit(self, URM, S_Slim_BPR, target_playlists, knn1, knn2, knn3):
+    def fit(self, URM, S_Slim_BPR, target_playlists, knn1, knn2, knn3, normalize):
         self.URM = URM
         self.S_Slim_BPR = S_Slim_BPR
         self.target_playlists = target_playlists
-        self.S_CF_I = self.u.get_itemsim_CF(self.URM, knn1, 100, "cosine")
-        self.S_CF_U = self.u.get_usersim_CF(self.URM, knn2, 100, "cosine")
-        self.S_CB = self.u.get_itemsim_CB(knn3, 100, "cosine")
+        self.S_CF_I = self.u.get_itemsim_CF(self.URM, knn1, 100, "cosine", normalize)
+        self.S_CF_U = self.u.get_usersim_CF(self.URM, knn2, 100, "cosine", normalize)
+        self.S_CB = self.u.get_itemsim_CB(knn3, 100, "cosine", normalize)
 
     def recommend(self, is_test, weights):
         print("Recommending", flush=True)
@@ -29,10 +29,10 @@ class Ensemble_cfcb_sbpr(object):
 
         for i, target_playlist in tqdm(enumerate(np.array(self.target_playlists))):
 
-            R_CB_row = self.URM[target_playlist, :] * self.S_CB
-            R_CF_I_row = self.URM[target_playlist, :] * self.S_CF_I
-            R_CF_U_row = self.S_CF_U[target_playlist, :] * self.URM
-            R_Slim_BPR_row = self.URM[target_playlist, :] * self.S_Slim_BPR
+            R_CB_row = self.URM[target_playlist].dot(self.S_CB)
+            R_CF_I_row = self.URM[target_playlist].dot(self.S_CF_I)
+            R_CF_U_row = self.S_CF_U[target_playlist].dot(self.URM)
+            R_Slim_BPR_row = self.URM[target_playlist].dot(self.S_Slim_BPR)
 
             R_row = (weights[0] * R_CF_I_row) + (weights[1] * R_CF_U_row) + (weights[2] * R_CB_row) + (
                         weights[3] * R_Slim_BPR_row)
