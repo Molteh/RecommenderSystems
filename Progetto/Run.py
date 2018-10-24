@@ -9,6 +9,7 @@ from Progetto.recommenders.Ensemble_item import Ensemble_item
 from Progetto.recommenders.Hybrid import Hybrid
 from Progetto.recommenders.SlimBPR import SlimBPR as SlimBPRRec
 from Progetto.recommenders.Ensemble_cf import Ensemble_cf
+from Progetto.recommenders.Ensemble_cfcb_sbpr import Ensemble_cfcb_sbpr
 import pandas as pd
 
 
@@ -138,10 +139,26 @@ class Recommender(object):
             result = rec.recommend(False)
             result.to_csv("predictions/slimBPR.csv", index=False)
 
+    def recommend_ensemble_cf_cb_SlimBPR(self, is_test, weights=[0.6, 0.4, 0.5, 0.4], knn1=400, knn2=400, knn3=300, knn4=500):
+        rec = Ensemble_cfcb_sbpr(self.u)
+        if is_test:
+            BPR_gen = SlimBPR(self.URM_train)
+            S_bpr = BPR_gen.get_S_SLIM_BPR(knn4)
+            target_playlists = self.e.get_target_playlists()
+            rec.fit(self.URM_train, S_bpr, target_playlists, knn1, knn2, knn3)
+            result = rec.recommend(True, weights)
+            self.e.MAP(result, self.e.get_target_tracks())
+        else:
+            BPR_gen = SlimBPR(self.URM_full)
+            S_bpr = BPR_gen.get_S_SLIM_BPR(knn4)
+            target = self.u.get_target_playlists()
+            rec.fit(self.URM_full, S_bpr, target, knn1, knn2, knn3)
+            result = rec.recommend(False, weights)
+            result.to_csv("predictions/ensemble_2.csv", index=False)
 
 
 if __name__ == '__main__':
     run = Recommender()
-    run.recommend_itemCFR(True)
+    run.recommend_itemCFR(True, normalize=True)
 
 

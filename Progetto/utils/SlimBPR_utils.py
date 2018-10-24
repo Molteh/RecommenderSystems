@@ -20,7 +20,7 @@ class SlimBPR(object):
         self.n_playlist = self.URM.shape[0]
         self.n_track = self.URM.shape[1]
 
-        self.similarity_matrix = sp.lil_matrix((self.n_track, self.n_playlist))
+        self.similarity_matrix = sp.lil_matrix((self.n_track, self.n_track))
 
     def sample(self):
 
