@@ -2,7 +2,8 @@ import numpy as np
 import scipy.sparse as sp
 from tqdm import tqdm
 
-class SlimBPR(object):
+
+class SlimBPR_utils(object):
 
     def __init__(self,
                  URM,

@@ -3,6 +3,7 @@ import scipy.sparse as sp
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.preprocessing import MultiLabelBinarizer, normalize
 from Progetto.utils.cosine_similarity import Compute_Similarity_Python as Cosine_Similarity
+from tqdm import tqdm
 
 class Utils(object):
 
@@ -48,7 +49,21 @@ class Utils(object):
     def get_URM(self):
         grouped = self.train.groupby('playlist_id', as_index=True).apply((lambda playlist: list(playlist['track_id'])))
         URM = MultiLabelBinarizer(classes=self.tracks['track_id'].unique(), sparse_output=True).fit_transform(grouped)
-        return URM
+        return self.get_weighted_URM(URM)
+
+    def get_weighted_URM(self, URM):
+        S = []
+        cols = URM.shape[1]
+        for i, row in tqdm(enumerate(URM)):
+            if i in list(self.target_playlists['playlist_id'][:5000]):
+                column_indexes = np.array(range(len(row.indices)))
+                row_values = row.data / np.log2(column_indexes + 2)
+                row_index = np.zeros((len(row.indices)), dtype=int)
+                new_row = sp.csr_matrix((row_values, (row_index, row.indices[row.indices.argsort()])), shape=(1, cols))
+            else:
+                new_row = row
+            S.append(new_row)
+        return sp.vstack(S).tocsr()
 
     def get_UCM(self, URM):
         UCM = TfidfTransformer().fit_transform(URM.T).T

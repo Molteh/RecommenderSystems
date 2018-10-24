@@ -1,16 +1,17 @@
 from Progetto.utils.MatrixBuilder import Utils
 from Progetto.utils.Evaluation import Eval
-from Progetto.utils.SlimBPR_utils import SlimBPR
+from Progetto.utils.SlimBPR_utils import SlimBPR_utils
 from Progetto.recommenders.Item_CFR import Item_CFR
 from Progetto.recommenders.User_CFR import User_CFR
 from Progetto.recommenders.Item_CBR import Item_CBR
 from Progetto.recommenders.Ensemble_cfcb import Ensemble_cfcb
 from Progetto.recommenders.Ensemble_item import Ensemble_item
 from Progetto.recommenders.Hybrid import Hybrid
-from Progetto.recommenders.SlimBPR import SlimBPR as SlimBPRRec
+from Progetto.recommenders.SlimBPR import SlimBPR
 from Progetto.recommenders.Ensemble_cf import Ensemble_cf
 from Progetto.recommenders.Ensemble_cfcb_sbpr import Ensemble_cfcb_sbpr
 import pandas as pd
+import scipy.sparse as sp
 
 
 class Recommender(object):
@@ -116,9 +117,9 @@ class Recommender(object):
             result.to_csv("predictions/hybrid.csv", index=False)
 
     def recommend_slimBPR(self, is_test, knn=100):
-        rec = SlimBPRRec()
+        rec = SlimBPR()
         if is_test:
-            BPR_gen = SlimBPR(self.URM_train)
+            BPR_gen = SlimBPR_utils(self.URM_train)
             S_bpr = BPR_gen.get_S_SLIM_BPR(knn)
             target_playlists = self.e.get_target_playlists()
             rec.fit(self.URM_train, S_bpr, target_playlists, 10000,
@@ -139,14 +140,14 @@ class Recommender(object):
     def recommend_ensemble_cfcb_SlimBPR(self, is_test, weights=[0.6, 0.3, 0.5, 0.6], knn1=400, knn2=400, knn3=300, knn4=800, normalize=True):
         rec = Ensemble_cfcb_sbpr(self.u)
         if is_test:
-            BPR_gen = SlimBPR(self.URM_train)
+            BPR_gen = SlimBPR_utils(self.URM_train)
             S_bpr = BPR_gen.get_S_SLIM_BPR(knn4)
             target_playlists = self.e.get_target_playlists()
             rec.fit(self.URM_train, S_bpr, target_playlists, knn1, knn2, knn3, normalize)
             result = rec.recommend(True, weights)
             self.e.MAP(result, self.e.get_target_tracks())
         else:
-            BPR_gen = SlimBPR(self.URM_full)
+            BPR_gen = SlimBPR_utils(self.URM_full)
             S_bpr = BPR_gen.get_S_SLIM_BPR(knn4)
             target = self.u.get_target_playlists()
             rec.fit(self.URM_full, S_bpr, target, knn1, knn2, knn3, normalize)
@@ -156,6 +157,9 @@ class Recommender(object):
 
 if __name__ == '__main__':
     run = Recommender()
-    run.recommend_ensemble_cfcb_SlimBPR(False)
+    run.recommend_userCFR(False)
+
+
+
 
 
