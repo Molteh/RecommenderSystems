@@ -13,12 +13,12 @@ class Ensemble_cfcb(object):
         self.target_playlists = None
         self.URM = None
 
-    def fit(self, URM, target_playlists, knn1, knn2, knn3, shrink, mode):
+    def fit(self, URM, target_playlists, knn1, knn2, knn3, shrink, mode, normalize):
         self.URM = URM
         self.target_playlists = target_playlists
-        self.S_CF_I = self.u.get_itemsim_CF(self.URM, knn1, shrink, mode)
-        self.S_CF_U = self.u.get_usersim_CF(self.URM, knn2, shrink, mode)
-        self.S_CB = self.u.get_itemsim_CB(knn3, shrink, mode)
+        self.S_CF_I = self.u.get_itemsim_CF(self.URM, knn1, shrink, mode, normalize)
+        self.S_CF_U = self.u.get_usersim_CF(self.URM, knn2, shrink, mode, normalize)
+        self.S_CB = self.u.get_itemsim_CB(knn3, shrink, mode, normalize)
 
     def recommend(self, is_test, weights):
         print("Recommending", flush=True)

@@ -11,10 +11,10 @@ class User_CFR(object):
         self.target_playlists = None
         self.S = None
 
-    def fit(self, URM, target_playlists, knn, shrink, mode):
+    def fit(self, URM, target_playlists, knn, shrink, mode, normalize):
         self.URM = URM
         self.target_playlists = target_playlists
-        self.S = self.u.get_usersim_CF(self.URM, knn, shrink, mode)
+        self.S = self.u.get_usersim_CF(self.URM, knn, shrink, mode, normalize)
 
     def recommend(self, is_test):
         print("Recommending", flush=True)

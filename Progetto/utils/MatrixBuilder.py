@@ -22,6 +22,29 @@ class Utils(object):
         top10_tracks = row.toarray().flatten().argsort()[-10:][::-1]
         return top10_tracks
 
+    @staticmethod
+    def get_similarity_normalized(matrix, knn, shrink, mode):
+        similarity = Cosine_Similarity(dataMatrix=matrix, normalize=True, shrink=shrink, similarity=mode, topK=knn)
+        S = similarity.compute_similarity()
+        return S.tocsr()
+
+    @staticmethod
+    def get_similarity(matrix, knn):
+        result = []
+        matrix = matrix.tocsr()
+        T = matrix.T.tocsr()
+
+        for row in matrix:
+            new_row = row.dot(T)
+            indices = new_row.data.argsort()[:-knn]
+            new_row.data[indices] = 0
+            sp.csr_matrix.eliminate_zeros(new_row)
+            result.append(new_row)
+
+        S = sp.vstack(result).tolil()
+        S.setdiag(0)
+        return S.tocsr()
+
     def get_URM(self):
         grouped = self.train.groupby('playlist_id', as_index=True).apply((lambda playlist: list(playlist['track_id'])))
         URM = MultiLabelBinarizer(classes=self.tracks['track_id'].unique(), sparse_output=True).fit_transform(grouped)
@@ -47,26 +70,23 @@ class Utils(object):
         ICM = sp.hstack((ICM_artists, ICM_albums))
         return ICM
 
-    def get_itemsim_CB(self, knn, shrink, mode):
+    def get_itemsim_CB(self, knn, shrink, mode, normalize):
         ICM = self.get_ICM()
+        if normalize:
+            return self.get_similarity_normalized(ICM.T, knn, shrink, mode)
+        else:
+            return self.get_similarity(ICM.T, knn)
 
-        similarity = Cosine_Similarity(dataMatrix=ICM.T, normalize=True, shrink=shrink, similarity=mode, topK=knn)
-        S = similarity.compute_similarity()
-
-        return S
-
-    def get_itemsim_CF(self, URM, knn, shrink, mode):
+    def get_itemsim_CF(self, URM, knn, shrink, mode, normalize):
         UCM = self.get_UCM(URM)
+        if normalize:
+            return self.get_similarity_normalized(UCM, knn, shrink, mode)
+        else:
+            return self.get_similarity(UCM.T, knn)
 
-        similarity = Cosine_Similarity(dataMatrix=UCM, normalize=True, shrink=shrink, similarity=mode, topK=knn)
-        S = similarity.compute_similarity()
-
-        return S
-
-    def get_usersim_CF(self, URM, knn, shrink, mode):
+    def get_usersim_CF(self, URM, knn, shrink, mode, normalize):
         UCM = self.get_UCM(URM)
-
-        similarity = Cosine_Similarity(dataMatrix=UCM.T, normalize=True, shrink=shrink, similarity=mode, topK=knn)
-        S = similarity.compute_similarity()
-
-        return S
+        if normalize:
+            return self.get_similarity_normalized(UCM.T, knn, shrink, mode)
+        else:
+            return self.get_similarity(UCM, knn)
