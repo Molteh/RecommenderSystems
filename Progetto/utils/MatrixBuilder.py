@@ -49,7 +49,7 @@ class Utils(object):
     def get_URM(self):
         grouped = self.train.groupby('playlist_id', as_index=True).apply((lambda playlist: list(playlist['track_id'])))
         URM = MultiLabelBinarizer(classes=self.tracks['track_id'].unique(), sparse_output=True).fit_transform(grouped)
-        return self.get_weighted_URM(URM)
+        return URM
 
     def get_weighted_URM(self, URM):
         S = []
@@ -90,7 +90,7 @@ class Utils(object):
         if normalize:
             return self.get_similarity_normalized(ICM.T, knn, shrink, mode)
         else:
-            return self.get_similarity(ICM.T, knn)
+            return self.get_similarity(ICM, knn)
 
     def get_itemsim_CF(self, URM, knn, shrink, mode, normalize):
         UCM = self.get_UCM(URM)

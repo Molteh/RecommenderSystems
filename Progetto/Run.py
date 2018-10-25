@@ -137,7 +137,7 @@ class Recommender(object):
             result = rec.recommend(False)
             result.to_csv("predictions/slimBPR.csv", index=False)
 
-    def recommend_ensemble_cfcb_SlimBPR(self, is_test, weights=[0.6, 0.3, 0.5, 0.6], knn1=400, knn2=400, knn3=300, knn4=800, normalize=True):
+    def recommend_ensemble_cfcb_SlimBPR(self, is_test, weights=[0.6, 0.5, 0.5, 0.6], knn1=400, knn2=400, knn3=300, knn4=500, normalize=True):
         rec = Ensemble_cfcb_sbpr(self.u)
         if is_test:
             BPR_gen = SlimBPR_utils(self.URM_train)
@@ -157,7 +157,7 @@ class Recommender(object):
 
 if __name__ == '__main__':
     run = Recommender()
-    run.recommend_userCFR(False)
+    run.recommend_ensemble_cfcb_SlimBPR(True, normalize=False)
 
 
 
