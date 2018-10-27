@@ -2,6 +2,7 @@ import random
 import pandas as pd
 import numpy as np
 
+
 class Eval(object):
 
     def __init__(self, u):
@@ -31,9 +32,6 @@ class Eval(object):
 
     def get_URM_train(self):
         return self.URM_train
-
-    def get_URM(self):
-        return self.URM
 
     def get_target_playlists(self):
         return self.target_playlists

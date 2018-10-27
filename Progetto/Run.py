@@ -11,7 +11,8 @@ from Progetto.recommenders.SlimBPR import SlimBPR
 from Progetto.recommenders.Ensemble_cf import Ensemble_cf
 from Progetto.recommenders.Ensemble_cfcb_sbpr import Ensemble_cfcb_sbpr
 import pandas as pd
-import scipy.sparse as sp
+import numpy as np
+from tqdm import tqdm
 
 
 class Recommender(object):
@@ -39,95 +40,97 @@ class Recommender(object):
                 final_result['track_ids'][i] = string_rec
         return final_result
 
-    def recommend_itemCBR(self, is_test, knn=300, shrink=300, mode='cosine', normalize=True):
+    def recommend_itemCBR(self, is_test, knn=150, shrink=10, mode='cosine', normalize=True):
         rec = Item_CBR(self.u)
         if is_test:
             target_playlists = self.e.get_target_playlists()
             rec.fit(self.URM_train, target_playlists, knn, shrink, mode, normalize)
-            result = rec.recommend(True)
+            result = self.evaluate(rec, True, target_playlists)
             self.e.MAP(result, self.e.get_target_tracks())
         else:
-            target = self.u.get_target_playlists()
-            rec.fit(self.URM_full, target, knn, shrink, mode, normalize)
-            result = rec.recommend(False)
+            target_playlists = self.u.get_target_playlists()
+            rec.fit(self.URM_full, target_playlists, knn, shrink, mode, normalize)
+            result = self.evaluate(rec, False, target_playlists)
             result.to_csv("predictions/item_cbr.csv", index=False)
 
-    def recommend_itemCFR(self, is_test, knn=500, shrink=300, mode='cosine', normalize=True):
+    def recommend_itemCFR(self, is_test, knn=150, shrink=10, mode='cosine', normalize=True):
         rec = Item_CFR(self.u)
         if is_test:
             target_playlists = self.e.get_target_playlists()
             rec.fit(self.URM_train, target_playlists, knn, shrink, mode, normalize)
-            result = rec.recommend(True)
+            result = self.evaluate(rec, True, target_playlists)
             self.e.MAP(result, self.e.get_target_tracks())
         else:
-            target = self.u.get_target_playlists()
-            rec.fit(self.URM_full, target, knn, shrink, mode, normalize)
-            result = rec.recommend(False)
+            target_playlists = self.u.get_target_playlists()
+            rec.fit(self.URM_full, target_playlists, knn, shrink, mode, normalize)
+            result = self.evaluate(rec, False, target_playlists)
             result.to_csv("predictions/item_cfr.csv", index=False)
 
-    def recommend_userCFR(self, is_test, knn=400, shrink=200, mode='cosine', normalize=True):
+    def recommend_userCFR(self, is_test, knn=250, shrink=10, mode='cosine', normalize=True):
         rec = User_CFR(self.u)
         if is_test:
             target_playlists = self.e.get_target_playlists()
             rec.fit(self.URM_train, target_playlists, knn, shrink, mode, normalize)
-            result = rec.recommend(True)
+            result = self.evaluate(rec, True, target_playlists)
             self.e.MAP(result, self.e.get_target_tracks())
         else:
-            target = self.u.get_target_playlists()
-            rec.fit(self.URM_full, target, knn, shrink, mode, normalize)
-            result = rec.recommend(False)
-            result.to_csv("predictions/user_cfr.csv", index=False)
+            target_playlists = self.u.get_target_playlists()
+            rec.fit(self.URM_full, target_playlists, knn, shrink, mode, normalize)
+            result = self.evaluate(rec, False, target_playlists)
+            result.to_csv("predictions/user_cfr1.csv", index=False)
 
-    def recommend_ensemble_item(self, is_test, alfa=0.7, knn1=400, knn2=400, shrink=200, mode='cosine', normalize=True):
+    def recommend_ensemble_item(self, is_test, alfa=0.6, knn1=150, knn2=250, shrink=10, mode='cosine', normalize=True):
         rec = Ensemble_item(self.u)
         if is_test:
             target_playlists = self.e.get_target_playlists()
-            rec.fit(self.URM_train, target_playlists, knn1, knn2, shrink, mode, normalize)
-            result = rec.recommend(True, alfa)
+            rec.fit(self.URM_train, target_playlists, knn1, knn2, shrink, mode, normalize, alfa)
+            result = self.evaluate(rec, True, target_playlists)
             self.e.MAP(result, self.e.get_target_tracks())
         else:
-            target = self.u.get_target_playlists()
-            rec.fit(self.URM_full, target, knn1, knn2, shrink, mode, normalize)
-            result = rec.recommend(False, alfa)
-            result.to_csv("predictions/item_avg.csv", index=False)
+            target_playlists = self.u.get_target_playlists()
+            rec.fit(self.URM_full, target_playlists, knn1, knn2, shrink, mode, normalize, alfa)
+            result = self.evaluate(rec, False, target_playlists)
+            result.to_csv("predictions/ensemble_item.csv", index=False)
 
-    def recommend_ensemble_cf(self, is_test, alfa=0.6, knn1=400, knn2=400, shrink=200, mode='cosine', normalize=True):
+    def recommend_ensemble_cf(self, is_test, alfa=0.6, knn1=150, knn2=150, shrink=10, mode='cosine', normalize=True):
         rec = Ensemble_cf(self.u)
         if is_test:
             target_playlists = self.e.get_target_playlists()
-            rec.fit(self.URM_train, target_playlists, knn1, knn2, shrink, mode, normalize)
-            result = rec.recommend(True, alfa)
+            rec.fit(self.URM_train, target_playlists, knn1, knn2, shrink, mode, normalize, alfa)
+            result = self.evaluate(rec, True, target_playlists)
             self.e.MAP(result, self.e.get_target_tracks())
         else:
-            target = self.u.get_target_playlists()
-            rec.fit(self.URM_full, target, knn1, knn2, shrink, mode, normalize)
-            result = rec.recommend(False, alfa)
+            target_playlists = self.u.get_target_playlists()
+            rec.fit(self.URM_full, target_playlists, knn1, knn2, shrink, mode, normalize, alfa)
+            result = self.evaluate(rec, False, target_playlists)
             result.to_csv("predictions/ensemble_cf.csv", index=False)
 
-    def recommend_ensemble_cfcb(self, is_test, weights=[0.6, 0.4, 0.5], knn1=400, knn2=400, knn3=300, shrink=200, mode='cosine', normalize=True):
+    def recommend_ensemble_cfcb(self, is_test, weights=[0.6, 0.4, 0.5], knn1=150, knn2=150, knn3=200, shrink=10,
+                                mode='cosine', normalize=True):
         rec = Ensemble_cfcb(self.u)
         if is_test:
             target_playlists = self.e.get_target_playlists()
-            rec.fit(self.URM_train, target_playlists, knn1, knn2, knn3, shrink, mode, normalize)
-            result = rec.recommend(True, weights)
+            rec.fit(self.URM_train, target_playlists, knn1, knn2, knn3, shrink, mode, normalize, weights)
+            result = self.evaluate(rec, True, target_playlists)
             self.e.MAP(result, self.e.get_target_tracks())
         else:
-            target = self.u.get_target_playlists()
-            rec.fit(self.URM_full, target, knn1, knn2, knn3, shrink, mode, normalize)
-            result = rec.recommend(False, weights)
+            target_playlists = self.u.get_target_playlists()
+            rec.fit(self.URM_full, target_playlists, knn1, knn2, knn3, shrink, mode, normalize, weights)
+            result = self.evaluate(rec, False, target_playlists)
             result.to_csv("predictions/ensemble_cfcb.csv", index=False)
 
-    def recommend_hybrid(self, is_test, weights=[0.7, 0.65], knn1=400, knn2=400, knn3=300, shrink=200, mode='cosine', normalize=True):
+    def recommend_hybrid(self, is_test, weights=[0.7, 0.65], knn1=150, knn2=150, knn3=200, shrink=10, mode='cosine',
+                         normalize=True):
         rec = Hybrid(self.u)
         if is_test:
             target_playlists = self.e.get_target_playlists()
-            rec.fit(self.URM_train, target_playlists, knn1, knn2, knn3, shrink, mode, normalize)
-            result = rec.recommend(True, weights)
+            rec.fit(self.URM_train, target_playlists, knn1, knn2, knn3, shrink, mode, normalize, weights)
+            result = self.evaluate(rec, True, target_playlists)
             self.e.MAP(result, self.e.get_target_tracks())
         else:
-            target = self.u.get_target_playlists()
-            rec.fit(self.URM_full, target, knn1, knn2, knn3, shrink, mode, normalize)
-            result = rec.recommend(False, weights)
+            target_playlists = self.u.get_target_playlists()
+            rec.fit(self.URM_full, target_playlists, knn1, knn2, knn3, shrink, mode, normalize, weights)
+            result = self.evaluate(rec, False, target_playlists)
             result.to_csv("predictions/hybrid.csv", index=False)
 
     def recommend_slimBPR(self, is_test, knn=100):
@@ -151,30 +154,30 @@ class Recommender(object):
             result = rec.recommend(False)
             result.to_csv("predictions/slimBPR.csv", index=False)
 
-    def recommend_ensemble_cfcb_SlimBPR(self, is_test, weights=[0.6, 0.5, 0.5, 0.6], knn1=400, knn2=400, knn3=300, knn4=500, normalize=True):
+    def recommend_ensemble_cfcb_SlimBPR(self, is_test, weights=[0.6, 0.5, 0.5, 0.6], knn1=150, knn2=150, knn3=200,
+                                        knn4=800, shrink=10, mode='cosine', normalize=True):
         rec = Ensemble_cfcb_sbpr(self.u)
         if is_test:
             BPR_gen = SlimBPR_utils(self.URM_train)
             S_bpr = BPR_gen.get_S_SLIM_BPR(knn4)
             target_playlists = self.e.get_target_playlists()
-            rec.fit(self.URM_train, S_bpr, target_playlists, knn1, knn2, knn3, normalize)
-            result = rec.recommend(True, weights)
+            rec.fit(self.URM_train, S_bpr, target_playlists, knn1, knn2, knn3, shrink, mode, normalize, weights)
+            result = self.evaluate(rec, True, target_playlists)
             self.e.MAP(result, self.e.get_target_tracks())
         else:
             BPR_gen = SlimBPR_utils(self.URM_full)
             S_bpr = BPR_gen.get_S_SLIM_BPR(knn4)
-            target = self.u.get_target_playlists()
-            rec.fit(self.URM_full, S_bpr, target, knn1, knn2, knn3, normalize)
-            result = rec.recommend(False, weights)
+            target_playlists = self.e.get_target_playlists()
+            rec.fit(self.URM_train, S_bpr, target_playlists, knn1, knn2, knn3, shrink, mode, normalize, weights)
+            result = self.evaluate(rec, False, target_playlists)
             result.to_csv("predictions/ensemble_cfcb_bpr.csv", index=False)
+
 
 
 if __name__ == '__main__':
     run = Recommender()
-    #run.recommend_ensemble_cfcb_SlimBPR(True, normalize=False)
-    URM = run.e.get_URM_train()
-    S_yours = run.u.get_itemsim_CF(URM, 400)
-    S_mine = run.u.get_itemsim_CF(URM, 400)
+    run.recommend_hybrid(True)
+
 
 
 

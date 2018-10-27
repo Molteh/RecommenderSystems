@@ -16,19 +16,11 @@ class Item_CBR(object):
         self.target_playlists = target_playlists
         self.S = self.u.get_itemsim_CB(knn, shrink, mode, normalize)
 
-    def recommend(self, is_test):
-        print("Recommending", flush=True)
-        final_result = pd.DataFrame(index=range(self.target_playlists.shape[0]), columns=('playlist_id', 'track_ids'))
-
-        for i, target_playlist in tqdm(enumerate(np.array(self.target_playlists))):
-            row = self.URM[target_playlist].dot(self.S)
-
-            result_tracks = self.u.get_top10_tracks(self.URM, target_playlist[0], row)
-            string_rec = ' '.join(map(str, result_tracks.reshape(1, 10)[0]))
-            final_result['playlist_id'][i] = int(target_playlist)
-            if is_test:
-                final_result['track_ids'][i] = result_tracks
-            else:
-                final_result['track_ids'][i] = string_rec
-
-        return final_result
+    def recommend(self, target_playlist):
+        row = self.URM[target_playlist].dot(self.S).toarray().ravel()
+        my_songs = self.URM.indices[self.URM.indptr[target_playlist]:self.URM.indptr[target_playlist + 1]]
+        row[my_songs] = -np.inf
+        relevant_items_partition = (-row).argpartition(10)[0:10]
+        relevant_items_partition_sorting = np.argsort(-row[relevant_items_partition])
+        ranking = relevant_items_partition[relevant_items_partition_sorting]
+        return ranking
