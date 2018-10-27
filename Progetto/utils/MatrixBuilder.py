@@ -27,27 +27,10 @@ class Utils(object):
 
     @staticmethod
     def get_similarity_normalized(matrix, normalize, knn, shrink, mode):
-        if normalize == False:
+        if normalize is False:
             shrink = 0
         similarity = Cosine_Similarity(dataMatrix=matrix, normalize=normalize, shrink=shrink, similarity=mode, topK=knn)
         S = similarity.compute_similarity()
-        return S.tocsr()
-
-    @staticmethod
-    def get_similarity(matrix, knn):
-        result = []
-        matrix = matrix.tocsr()
-        T = matrix.T.tocsr()
-
-        for row in matrix:
-            new_row = row.dot(T)
-            indices = new_row.data.argsort()[:-knn]
-            new_row.data[indices] = 0
-            sp.csr_matrix.eliminate_zeros(new_row)
-            result.append(new_row)
-
-        S = sp.vstack(result).tolil()
-        S.setdiag(0)
         return S.tocsr()
 
     def get_URM(self):
@@ -69,7 +52,8 @@ class Utils(object):
             S.append(new_row)
         return sp.vstack(S).tocsr()
 
-    def get_UCM(self, URM):
+    @staticmethod
+    def get_UCM(URM):
         UCM = TfidfTransformer().fit_transform(URM.T).T
         return UCM
 

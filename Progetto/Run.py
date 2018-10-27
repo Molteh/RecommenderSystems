@@ -46,7 +46,7 @@ class Recommender(object):
             target_playlists = self.e.get_target_playlists()
             rec.fit(self.URM_train, target_playlists, knn, shrink, mode, normalize)
             result = self.evaluate(rec, True, target_playlists)
-            self.e.MAP(result, self.e.get_target_tracks())
+            return self.e.MAP(result, self.e.get_target_tracks())
         else:
             target_playlists = self.u.get_target_playlists()
             rec.fit(self.URM_full, target_playlists, knn, shrink, mode, normalize)
@@ -72,7 +72,7 @@ class Recommender(object):
             target_playlists = self.e.get_target_playlists()
             rec.fit(self.URM_train, target_playlists, knn, shrink, mode, normalize)
             result = self.evaluate(rec, True, target_playlists)
-            self.e.MAP(result, self.e.get_target_tracks())
+            return self.e.MAP(result, self.e.get_target_tracks())
         else:
             target_playlists = self.u.get_target_playlists()
             rec.fit(self.URM_full, target_playlists, knn, shrink, mode, normalize)
@@ -85,7 +85,7 @@ class Recommender(object):
             target_playlists = self.e.get_target_playlists()
             rec.fit(self.URM_train, target_playlists, knn1, knn2, shrink, mode, normalize, alfa)
             result = self.evaluate(rec, True, target_playlists)
-            self.e.MAP(result, self.e.get_target_tracks())
+            return self.e.MAP(result, self.e.get_target_tracks())
         else:
             target_playlists = self.u.get_target_playlists()
             rec.fit(self.URM_full, target_playlists, knn1, knn2, shrink, mode, normalize, alfa)
@@ -98,7 +98,7 @@ class Recommender(object):
             target_playlists = self.e.get_target_playlists()
             rec.fit(self.URM_train, target_playlists, knn1, knn2, shrink, mode, normalize, alfa)
             result = self.evaluate(rec, True, target_playlists)
-            self.e.MAP(result, self.e.get_target_tracks())
+            return self.e.MAP(result, self.e.get_target_tracks())
         else:
             target_playlists = self.u.get_target_playlists()
             rec.fit(self.URM_full, target_playlists, knn1, knn2, shrink, mode, normalize, alfa)
@@ -112,7 +112,7 @@ class Recommender(object):
             target_playlists = self.e.get_target_playlists()
             rec.fit(self.URM_train, target_playlists, knn1, knn2, knn3, shrink, mode, normalize, weights)
             result = self.evaluate(rec, True, target_playlists)
-            self.e.MAP(result, self.e.get_target_tracks())
+            return self.e.MAP(result, self.e.get_target_tracks())
         else:
             target_playlists = self.u.get_target_playlists()
             rec.fit(self.URM_full, target_playlists, knn1, knn2, knn3, shrink, mode, normalize, weights)
@@ -126,7 +126,7 @@ class Recommender(object):
             target_playlists = self.e.get_target_playlists()
             rec.fit(self.URM_train, target_playlists, knn1, knn2, knn3, shrink, mode, normalize, weights)
             result = self.evaluate(rec, True, target_playlists)
-            self.e.MAP(result, self.e.get_target_tracks())
+            return self.e.MAP(result, self.e.get_target_tracks())
         else:
             target_playlists = self.u.get_target_playlists()
             rec.fit(self.URM_full, target_playlists, knn1, knn2, knn3, shrink, mode, normalize, weights)
@@ -143,7 +143,7 @@ class Recommender(object):
                     learning_rate=0.1, epochs=1, positive_item_regularization=1.0,
                     negative_item_regularization=1.0, nzz=1, u=self.u)
             result = rec.recommend(True)
-            self.e.MAP(result, self.e.get_target_tracks())
+            return self.e.MAP(result, self.e.get_target_tracks())
         else:
             BPR_gen = SlimBPR_utils(self.URM_full)
             S_bpr = BPR_gen.get_S_SLIM_BPR(knn)
@@ -163,7 +163,7 @@ class Recommender(object):
             target_playlists = self.e.get_target_playlists()
             rec.fit(self.URM_train, S_bpr, target_playlists, knn1, knn2, knn3, shrink, mode, normalize, weights)
             result = self.evaluate(rec, True, target_playlists)
-            self.e.MAP(result, self.e.get_target_tracks())
+            return self.e.MAP(result, self.e.get_target_tracks())
         else:
             BPR_gen = SlimBPR_utils(self.URM_full)
             S_bpr = BPR_gen.get_S_SLIM_BPR(knn4)
@@ -173,10 +173,9 @@ class Recommender(object):
             result.to_csv("predictions/ensemble_cfcb_bpr.csv", index=False)
 
 
-
 if __name__ == '__main__':
     run = Recommender()
-    run.recommend_hybrid(True, weights=[0.5, 0.7])
+    run.recommend_ensemble_item(False)
 
 
 

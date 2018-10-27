@@ -1,8 +1,3 @@
-import pandas as pd
-import numpy as np
-from tqdm import tqdm
-
-
 class Item_CBR(object):
 
     def __init__(self, u):

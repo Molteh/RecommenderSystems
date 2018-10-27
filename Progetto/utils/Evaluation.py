@@ -62,8 +62,10 @@ class Eval(object):
 
         MAP /= num_eval
         print("Recommender performance is {:.8f}".format(MAP))
+        return MAP
 
-    def result_diff(self, result_dfs):
+    @staticmethod
+    def result_diff(result_dfs):
 
         # load  all results form various recommenders
         # for file in files:

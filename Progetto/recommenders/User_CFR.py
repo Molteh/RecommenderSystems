@@ -1,7 +1,3 @@
-import numpy as np
-from tqdm import tqdm
-
-
 class User_CFR(object):
 
     def __init__(self, u):
