@@ -29,10 +29,5 @@ class Hybrid(object):
         row_user = self.S_user[target_playlist].dot(self.URM)
         row_item = self.URM[target_playlist].dot(self.S_item)
         row = ((self.weights[1] * row_item) + ((1 - self.weights[1]) * row_user)).toarray().ravel()
-        my_songs = self.URM.indices[self.URM.indptr[target_playlist]:self.URM.indptr[target_playlist + 1]]
-        row[my_songs] = -np.inf
-        relevant_items_partition = (-row).argpartition(10)[0:10]
-        relevant_items_partition_sorting = np.argsort(-row[relevant_items_partition])
-        ranking = relevant_items_partition[relevant_items_partition_sorting]
-        return ranking
+        return self.u.get_top_10(self.URM, target_playlist, row)
 

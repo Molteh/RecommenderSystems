@@ -32,9 +32,4 @@ class Ensemble_cfcb_sbpr(object):
             row = (self.weights[0] * row_R_CF_I) + (self.weights[1] * row_R_CF_U) + (self.weights[2] * row_R_CB) + (
                         self.weights[3] * row_R_Slim_BPR).toarray().ravel()
 
-            my_songs = self.URM.indices[self.URM.indptr[target_playlist]:self.URM.indptr[target_playlist + 1]]
-            row[my_songs] = -np.inf
-            relevant_items_partition = (-row).argpartition(10)[0:10]
-            relevant_items_partition_sorting = np.argsort(-row[relevant_items_partition])
-            ranking = relevant_items_partition[relevant_items_partition_sorting]
-            return ranking
+            return self.u.get_top_10(self.URM, target_playlist, row)

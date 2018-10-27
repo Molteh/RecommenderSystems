@@ -119,7 +119,7 @@ class Recommender(object):
             result = self.evaluate(rec, False, target_playlists)
             result.to_csv("predictions/ensemble_cfcb.csv", index=False)
 
-    def recommend_hybrid(self, is_test, weights=[0.7, 0.65], knn1=150, knn2=150, knn3=200, shrink=10, mode='cosine',
+    def recommend_hybrid(self, is_test, weights=[0.5, 0.7], knn1=150, knn2=150, knn3=200, shrink=10, mode='cosine',
                          normalize=True):
         rec = Hybrid(self.u)
         if is_test:
@@ -176,7 +176,7 @@ class Recommender(object):
 
 if __name__ == '__main__':
     run = Recommender()
-    run.recommend_hybrid(True)
+    run.recommend_hybrid(True, weights=[0.5, 0.7])
 
 
 

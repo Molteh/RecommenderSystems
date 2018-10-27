@@ -17,12 +17,13 @@ class Utils(object):
         return self.target_playlists
 
     @staticmethod
-    def get_top10_tracks(URM, my_id, row):
-        my_indices = URM.indices[URM.indptr[my_id]:URM.indptr[my_id + 1]]
-        indices = np.intersect1d(my_indices, row.indices)
-        row[0, indices] = -np.inf
-        top10_tracks = row.toarray().flatten().argsort()[-10:][::-1]
-        return top10_tracks
+    def get_top_10(URM, target_playlist, row):
+        my_songs = URM.indices[URM.indptr[target_playlist]:URM.indptr[target_playlist + 1]]
+        row[my_songs] = -np.inf
+        relevant_items_partition = (-row).argpartition(10)[0:10]
+        relevant_items_partition_sorting = np.argsort(-row[relevant_items_partition])
+        ranking = relevant_items_partition[relevant_items_partition_sorting]
+        return ranking
 
     @staticmethod
     def get_similarity_normalized(matrix, normalize, knn, shrink, mode):
