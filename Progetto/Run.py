@@ -25,6 +25,20 @@ class Recommender(object):
         self.URM_full = self.u.get_URM()
         self.URM_train = self.e.get_URM_train()
 
+    @staticmethod
+    def evaluate(recommender, is_test, target_playlists):
+        final_result = pd.DataFrame(index=range(target_playlists.shape[0]), columns=('playlist_id', 'track_ids'))
+
+        for i, target_playlist in tqdm(enumerate(np.array(target_playlists))):
+            result_tracks = recommender.recommend(int(target_playlist))
+            string_rec = ' '.join(map(str, result_tracks.reshape(1, 10)[0]))
+            final_result['playlist_id'][i] = int(target_playlist)
+            if is_test:
+                final_result['track_ids'][i] = result_tracks
+            else:
+                final_result['track_ids'][i] = string_rec
+        return final_result
+
     def recommend_itemCBR(self, is_test, knn=300, shrink=300, mode='cosine', normalize=True):
         rec = Item_CBR(self.u)
         if is_test:
@@ -128,7 +142,7 @@ class Recommender(object):
             result = rec.recommend(True)
             self.e.MAP(result, self.e.get_target_tracks())
         else:
-            BPR_gen = SlimBPR(self.URM_full)
+            BPR_gen = SlimBPR_utils(self.URM_full)
             S_bpr = BPR_gen.get_S_SLIM_BPR(knn)
             target = self.u.get_target_playlists()
             rec.fit(self.URM_full, S_bpr, target, 10000,
@@ -157,7 +171,10 @@ class Recommender(object):
 
 if __name__ == '__main__':
     run = Recommender()
-    run.recommend_ensemble_cfcb_SlimBPR(True, normalize=False)
+    #run.recommend_ensemble_cfcb_SlimBPR(True, normalize=False)
+    URM = run.e.get_URM_train()
+    S_yours = run.u.get_itemsim_CF(URM, 400)
+    S_mine = run.u.get_itemsim_CF(URM, 400)
 
 
 
