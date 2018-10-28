@@ -33,6 +33,11 @@ class Utils(object):
         S = similarity.compute_similarity()
         return S.tocsr()
 
+    @staticmethod
+    def get_UCM(URM):
+        UCM = TfidfTransformer().fit_transform(URM.T).T
+        return UCM
+
     def get_URM(self):
         grouped = self.train.groupby('playlist_id', as_index=True).apply((lambda playlist: list(playlist['track_id'])))
         URM = MultiLabelBinarizer(classes=self.tracks['track_id'].unique(), sparse_output=True).fit_transform(grouped)
@@ -51,11 +56,6 @@ class Utils(object):
                 new_row = row
             S.append(new_row)
         return sp.vstack(S).tocsr()
-
-    @staticmethod
-    def get_UCM(URM):
-        UCM = TfidfTransformer().fit_transform(URM.T).T
-        return UCM
 
     def get_ICM(self):  # returns Item Content Matrix
         grouped = self.tracks.groupby('track_id', as_index=True).apply((lambda track: list(track['artist_id'])))
@@ -78,9 +78,7 @@ class Utils(object):
         return self.get_similarity_normalized(ICM.T, normalize, knn, shrink, mode)
 
     def get_itemsim_CF(self, URM, knn, shrink, mode, normalize):
-        # UCM = self.get_UCM(URM)
         return self.get_similarity_normalized(URM, normalize, knn, shrink, mode)
 
     def get_usersim_CF(self, URM, knn, shrink, mode, normalize):
-        # UCM = self.get_UCM(URM)
         return self.get_similarity_normalized(URM.T, normalize, knn, shrink, mode)
