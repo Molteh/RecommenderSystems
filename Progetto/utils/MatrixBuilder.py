@@ -28,8 +28,9 @@ class Utils(object):
     @staticmethod
     def get_similarity_normalized(matrix, normalize, knn, shrink, mode):
         if normalize is False:
-            shrink = 0
-        similarity = Cosine_Similarity(dataMatrix=matrix, normalize=normalize, shrink=shrink, similarity=mode, topK=knn)
+            similarity = Cosine_Similarity(dataMatrix=matrix, normalize=False, similarity=mode, topK=knn)
+        else:
+            similarity = Cosine_Similarity(dataMatrix=matrix, normalize=True, shrink=shrink, similarity=mode, topK=knn)
         S = similarity.compute_similarity()
         return S.tocsr()
 

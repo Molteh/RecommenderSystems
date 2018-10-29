@@ -64,8 +64,7 @@ class Recommender(object):
         if is_test:
             target_playlists = self.e.get_target_playlists()
             rec.fit(self.URM_train, knn, shrink, mode, normalize)
-            result = self.evaluate(rec, True, target_playlists)
-            self.e.MAP(result, self.e.get_target_tracks())
+            return self.rec_and_evaluate(rec, target_playlists)
         else:
             target_playlists = self.u.get_target_playlists()
             rec.fit(self.URM_full, knn, shrink, mode, normalize)
@@ -158,7 +157,7 @@ class Recommender(object):
 
 if __name__ == '__main__':
     run = Recommender()
-    run.recommend_hybrid(True)
+    run.recommend_itemCFR(True)
 
 
 

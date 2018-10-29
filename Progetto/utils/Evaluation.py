@@ -1,6 +1,7 @@
 import random
 import pandas as pd
 import numpy as np
+import scipy.sparse as sp
 
 
 class Eval(object):
@@ -10,7 +11,7 @@ class Eval(object):
         self.target_playlists = None
         self.target_tracks = None
         self.URM_train = None
-        self.build_URM_test()
+        self.build_URM_test2()
 
     def build_URM_test(self):
         total_users = self.URM.shape[0]
@@ -28,6 +29,29 @@ class Eval(object):
             self.target_tracks.append(target_songs)
 
         self.target_tracks = np.array(self.target_tracks)
+        self.URM_train = self.URM_train.tocsr()
+
+    def build_URM_test2(self):
+        possible_playlists = [i for i in range(self.URM.shape[0]) if len(
+            self.URM.indices[self.URM.indptr[i]:self.URM.indptr[i + 1]]) > 10]  # playlists with more than 10 songs
+        self.target_playlists = np.random.choice(possible_playlists, 10000, replace=False)
+        self.URM_train = self.URM.copy().tolil()
+        self.target_tracks = []
+
+        for idx in self.target_playlists[:5000]:
+            length = int(len(self.URM[idx].indices) * 0.2)
+            target_songs = self.URM[idx].indices[-length:]
+            self.URM_train[idx, target_songs] = 0
+            self.target_tracks.append(target_songs)
+
+        for idx in self.target_playlists[-5000:]:
+            length = int(len(self.URM[idx].indices) * 0.2)
+            target_songs = np.random.choice(self.URM[idx].indices, length, replace=False)
+            self.URM_train[idx, target_songs] = 0
+            self.target_tracks.append(target_songs)
+
+        self.target_tracks = np.array(self.target_tracks)
+        self.target_playlists = pd.DataFrame(self.target_playlists, columns=['playlist_id'])  # target playlists, 20% of total playlists
         self.URM_train = self.URM_train.tocsr()
 
     def get_URM_train(self):
