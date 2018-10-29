@@ -1,6 +1,5 @@
 from Progetto.utils.MatrixBuilder import Utils
 from Progetto.utils.Evaluation import Eval
-from Progetto.utils.BPR_utils import SlimBPR_utils
 from Progetto.recommenders.Item_CFR import Item_CFR
 from Progetto.recommenders.User_CFR import User_CFR
 from Progetto.recommenders.Item_CBR import Item_CBR
@@ -157,7 +156,7 @@ class Recommender(object):
 
 if __name__ == '__main__':
     run = Recommender()
-    run.recommend_itemCFR(True)
+    run.u.preprocess_URM(run.e.get_URM_train(), run.e.target_playlists)
 
 
 

@@ -44,6 +44,14 @@ class Utils(object):
         URM = MultiLabelBinarizer(classes=self.tracks['track_id'].unique(), sparse_output=True).fit_transform(grouped)
         return URM
 
+    @staticmethod
+    def preprocess_URM(URM, target_playlists):
+        total_users = URM.shape[0]
+        possibile_playlists = [i for i in range(total_users) if len(
+            URM.indices[URM.indptr[i]:URM.indptr[i + 1]]) < 5 & i not in target_playlists['playlist_id']]
+        print(possibile_playlists)
+
+
     def get_weighted_URM(self, URM):
         S = []
         cols = URM.shape[1]
