@@ -160,13 +160,13 @@ class Recommender(object):
             return self.rec_and_evaluate(rec, target_playlists)
         else:
             target_playlists = self.e.get_target_playlists()
-            rec.fit(self.URM_train, knn1, knn2, knn3, knn4, shrink, mode, normalize, weights)
+            rec.fit(self.URM_full, knn1, knn2, knn3, knn4, shrink, mode, normalize, weights)
             self.rec_and_save(rec, target_playlists, "predictions/ensemble_cfcb_bpr.csv")
 
 
 if __name__ == '__main__':
     run = Recommender()
-    run.recommend_ensemble_cf(True)
+    run.recommend_userCFR(True)
 
 
 
