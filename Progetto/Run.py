@@ -41,6 +41,8 @@ class Recommender(object):
 
     @staticmethod
     def preprocess_URM(URM, target_playlists, n):
+        if n == 0:
+            return URM
         URM_new = URM.copy().tolil()
         total_users = URM.shape[0]
         possible_playlists = [i for i in range(total_users) if len(
@@ -116,7 +118,7 @@ class Recommender(object):
             rec.fit(self.URM_full, knn1, knn2, shrink, mode, normalize, alfa)
             self.rec_and_save(rec, target_playlists, "predictions/ensemble_item.csv")
 
-    def recommend_ensemble_cf(self, is_test, alfa=0.6, knn1=150, knn2=150, shrink=10, mode='cosine', normalize=True):
+    def recommend_ensemble_cf(self, is_test, alfa=0.81, knn1=250, knn2=250, shrink=10, mode='cosine', normalize=True):
         rec = Ensemble_cf(self.u)
         if is_test:
             target_playlists = self.e.get_target_playlists()
@@ -127,7 +129,7 @@ class Recommender(object):
             rec.fit(self.URM_full, knn1, knn2, shrink, mode, normalize, alfa)
             self.rec_and_save(rec, target_playlists, "predictions/ensemble_cf.csv")
 
-    def recommend_ensemble_cfcb(self, is_test, weights=(0.6, 0.4, 0.5), knn1=250, knn2=250, knn3=150, shrink=10,
+    def recommend_ensemble_cfcb(self, is_test, weights=(0.8, 0.2, 10), knn1=250, knn2=250, knn3=150, shrink=10,
                                 mode='cosine', normalize=True):
         rec = Ensemble_cfcb(self.u)
         if is_test:
@@ -166,7 +168,7 @@ class Recommender(object):
 
 if __name__ == '__main__':
     run = Recommender()
-    run.recommend_userCFR(True)
+    run.recommend_ensemble_cfcb(False, weights=(0.8, 0.2, 10))
 
 
 
