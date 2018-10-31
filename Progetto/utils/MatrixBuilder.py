@@ -31,8 +31,7 @@ class Utils(object):
             similarity = Cosine_Similarity(dataMatrix=matrix, normalize=False, similarity=mode, topK=knn)
         else:
             similarity = Cosine_Similarity(dataMatrix=matrix, normalize=True, shrink=shrink, similarity=mode, topK=knn)
-        S = similarity.compute_similarity()
-        return S.tocsr()
+        return similarity.compute_similarity().tocsr()
 
     @staticmethod
     def get_UCM(URM):
@@ -68,7 +67,9 @@ class Utils(object):
         return self.get_similarity(ICM.T, normalize, knn, shrink, mode)
 
     def get_itemsim_CF(self, URM, knn, shrink, mode, normalize):
-        return self.get_similarity(URM, normalize, knn, shrink, mode)
+        UCM = self.get_UCM(URM)
+        return self.get_similarity(UCM, normalize, knn, shrink, mode)
 
     def get_usersim_CF(self, URM, knn, shrink, mode, normalize):
-        return self.get_similarity(URM.T, normalize, knn, shrink, mode)
+        UCM = self.get_UCM(URM.T)
+        return self.get_similarity(UCM, normalize, knn, shrink, mode)

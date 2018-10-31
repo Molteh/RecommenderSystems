@@ -1,4 +1,4 @@
-class Hybrid(object):
+class Ensemble_cfcb2(object):
 
     def __init__(self, u):
         self.u = u

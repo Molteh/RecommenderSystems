@@ -50,7 +50,7 @@ class Eval(object):
             self.target_tracks.append(target_songs)
 
         self.target_tracks = np.array(self.target_tracks)
-        self.target_playlists = pd.DataFrame(self.target_playlists, columns=['playlist_id'])  # target playlists, 20% of total playlists
+        self.target_playlists = pd.DataFrame(self.target_playlists, columns=['playlist_id'])
         self.URM_train = self.URM_train.tocsr()
 
     def get_URM_train(self):
