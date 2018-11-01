@@ -14,7 +14,7 @@ from tqdm import tqdm
 
 class Recommender(object):
 
-    def __init__(self, n=5):
+    def __init__(self, n=0):
         self.train = pd.read_csv("data/train.csv")
         self.tracks = pd.read_csv("data/tracks.csv")
         self.target_playlists = pd.read_csv("data/target_playlists.csv")
@@ -105,7 +105,7 @@ class Recommender(object):
                     negative_item_regularization=1.0, nzz=1, u=self.u, knn=knn)
             self.rec_and_save(rec, target_playlists, "predictions/slimBPR.csv")
 
-    def recommend_ensemble_cfcb(self, is_test, weights=(1, 0.25, 0.8), knn1=250, knn2=250, knn3=150, shrink=10,
+    def recommend_ensemble_cfcb(self, is_test, weights=(0.25, 0.8), knn1=250, knn2=250, knn3=150, shrink=10,
                                 mode='cosine', normalize=True):
         rec = Ensemble_cfcb(self.u)
         if is_test:
@@ -117,7 +117,7 @@ class Recommender(object):
             rec.fit(self.URM_full, knn1, knn2, knn3, shrink, mode, normalize, weights)
             self.rec_and_save(rec, target_playlists, "predictions/ensemble_cfcb.csv")
 
-    def recommend_ensemble_cfcb2(self, is_test, weights=(0.6, 0.7), knn1=250, knn2=250, knn3=150, shrink=10, mode='cosine',
+    def recommend_ensemble_cfcb2(self, is_test, weights=(0.3, 0.3), knn1=250, knn2=250, knn3=150, shrink=10, mode='cosine',
                          normalize=True):
         rec = Ensemble_cfcb2(self.u)
         if is_test:
@@ -129,7 +129,7 @@ class Recommender(object):
             rec.fit(self.URM_full, knn1, knn2, knn3, shrink, mode, normalize, weights)
             self.rec_and_save(rec, target_playlists, "predictions/hybrid.csv")
 
-    def recommend_ensemble_cfcb_SlimBPR(self, is_test, weights=(1, 0.2, 10, 6), knn1=250, knn2=250, knn3=150,
+    def recommend_ensemble_cfcb_SlimBPR(self, is_test, weights=(0.2, 10, 6), knn1=250, knn2=250, knn3=150,
                                         knn4=800, shrink=10, mode='cosine', normalize=True):
         rec = Ensemble_cfcb_sbpr(self.u)
         if is_test:

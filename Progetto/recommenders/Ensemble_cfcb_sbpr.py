@@ -26,7 +26,7 @@ class Ensemble_cfcb_sbpr(object):
             row_R_CF_I = self.URM[target_playlist].dot(self.S_CF_I)
             row_R_CF_U = self.S_CF_U[target_playlist].dot(self.URM)
             row_R_Slim_BPR = self.URM[target_playlist].dot(self.S)
-            row = ((self.weights[0] * row_R_CF_I) + (self.weights[1] * row_R_CF_U) + (self.weights[2] * row_R_CB) + (
-                        self.weights[3] * row_R_Slim_BPR)).toarray().ravel()
+            row = (row_R_CF_I + (self.weights[0] * row_R_CF_U) + (self.weights[1] * row_R_CB) + (
+                        self.weights[2] * row_R_Slim_BPR)).toarray().ravel()
 
             return self.u.get_top_10(self.URM, target_playlist, row)
