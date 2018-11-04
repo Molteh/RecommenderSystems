@@ -12,14 +12,14 @@ class Ensemble_cfcb_sbpr(object):
         self.URM = None
         self.weights = None
 
-    def fit(self, URM, knn1, knn2, knn3, knn4, shrink, mode, normalize, weights):
+    def fit(self, URM, knn1, knn2, knn3, knn4, shrink, weights):
         self.URM = URM
         self.weights = weights
         BPR_gen = SlimBPR_utils(self.URM)
         self.S = BPR_gen.get_S_SLIM_BPR(knn4)
-        self.S_CF_I = self.u.get_itemsim_CF(self.URM, knn1, shrink, mode, normalize)
-        self.S_CF_U = self.u.get_usersim_CF(self.URM, knn2, shrink, mode, normalize)
-        self.S_CB = self.u.get_itemsim_CB(knn3, shrink, mode, normalize)
+        self.S_CF_I = self.u.get_itemsim_CF(self.URM, knn1, shrink,)
+        self.S_CF_U = self.u.get_usersim_CF(self.URM, knn2, shrink,)
+        self.S_CB = self.u.get_itemsim_CB(knn3, shrink)
 
     def recommend(self, target_playlist):
             row_R_CB = self.URM[target_playlist].dot(self.S_CB)

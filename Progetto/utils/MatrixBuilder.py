@@ -26,11 +26,8 @@ class Utils(object):
         return ranking
 
     @staticmethod
-    def get_similarity(matrix, normalize, knn, shrink, mode):
-        if normalize is False:
-            similarity = Cosine_Similarity(dataMatrix=matrix, normalize=False, similarity=mode, topK=knn)
-        else:
-            similarity = Cosine_Similarity(dataMatrix=matrix, normalize=True, shrink=shrink, similarity=mode, topK=knn)
+    def get_similarity(matrix, knn, shrink):
+        similarity = Cosine_Similarity(dataMatrix=matrix, normalize=True, shrink=shrink, similarity='cosine', topK=knn)
         return similarity.compute_similarity().tocsr()
 
     @staticmethod
@@ -62,14 +59,14 @@ class Utils(object):
         ICM = sp.hstack((ICM_artists, ICM_albums))
         return ICM
 
-    def get_itemsim_CB(self, knn, shrink, mode, normalize):
+    def get_itemsim_CB(self, knn, shrink):
         ICM = self.get_ICM()
-        return self.get_similarity(ICM.T, normalize, knn, shrink, mode)
+        return self.get_similarity(ICM.T, knn, shrink)
 
-    def get_itemsim_CF(self, URM, knn, shrink, mode, normalize):
+    def get_itemsim_CF(self, URM, knn, shrink):
         UCM = self.get_UCM(URM)
-        return self.get_similarity(UCM, normalize, knn, shrink, mode)
+        return self.get_similarity(UCM, knn, shrink)
 
-    def get_usersim_CF(self, URM, knn, shrink, mode, normalize):
+    def get_usersim_CF(self, URM, knn, shrink):
         UCM = self.get_UCM(URM.T)
-        return self.get_similarity(UCM, normalize, knn, shrink, mode)
+        return self.get_similarity(UCM, knn, shrink)

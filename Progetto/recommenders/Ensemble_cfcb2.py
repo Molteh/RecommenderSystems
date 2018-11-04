@@ -10,13 +10,13 @@ class Ensemble_cfcb2(object):
         self.URM = None
         self.weights = None
 
-    def fit(self, URM, knn1, knn2, knn3, shrink, mode, normalize, weights):
+    def fit(self, URM, knn1, knn2, knn3, shrink, weights):
         self.URM = URM
         self.weights = weights
-        self.S_CF_item = self.u.get_itemsim_CF(self.URM, knn1, shrink, mode, normalize)
-        self.S_user = self.u.get_usersim_CF(self.URM, knn2, shrink, mode, normalize)
-        self.S_CB = self.u.get_itemsim_CB(knn3, shrink, mode, normalize)
-        self.S_item = self.S_CF_item + (weights[0] * self.S_CB)
+        self.S_CF_item = self.u.get_itemsim_CF(self.URM, knn1, shrink)
+        self.S_user = self.u.get_usersim_CF(self.URM, knn2, shrink)
+        self.S_CB = self.u.get_itemsim_CB(knn3, shrink)
+        self.S_item = (weights[0] * self.S_CF_item) + self.S_CB
 
     def recommend(self, target_playlist):
         row_user = self.S_user[target_playlist].dot(self.URM)

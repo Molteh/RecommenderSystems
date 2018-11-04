@@ -35,8 +35,7 @@ def run_SLIM():
 
     print('Trying to fit recommender')
 
-    recommender.fit(epochs=2, validate_every_N_epochs=1,
-                    logFile=logFile, batch_size=1, sgd_mode='rmsprop', learning_rate=1e-4)
+    recommender.fit(,
 
     print('Recommender fit')
     #results_run = recommender.evaluateRecommendations(URM_test, at=5)
