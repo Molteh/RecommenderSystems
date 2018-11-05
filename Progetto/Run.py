@@ -133,7 +133,7 @@ class Recommender(object):
         rec = Ensemble_cfcb_sbpr(self.u)
         if is_test:
             target_playlists = self.e.get_target_playlists()
-            rec.fit(self.URM_train, knn1, knn2, knn3, knn4, shrink, weights)
+            rec.fit(self.URM_train, knn1, knn2, knn3, knn4, shrink, weights, use_cython=True)
             return self.rec_and_evaluate(rec, target_playlists)
         else:
             target_playlists = self.u.get_target_playlists()
@@ -156,7 +156,7 @@ class Recommender(object):
 
 if __name__ == '__main__':
     run = Recommender()
-    run.recommend_ensemble_cfcb2(False)
+    run.recommend_ensemble_cfcb_SlimBPR(True)
 
 
 
