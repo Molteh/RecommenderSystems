@@ -34,7 +34,6 @@ class Utils(object):
     @staticmethod
     def get_similarity(matrix, knn, shrink, cython):
         if cython:
-            print("ciao")
             similarity = Cython_Cosine_Similarity(matrix, normalize=True, shrink=shrink, mode='cosine', topK=knn)
         else:
             similarity = Cosine_Similarity(dataMatrix=matrix, normalize=True, shrink=shrink, similarity='cosine', topK=knn)

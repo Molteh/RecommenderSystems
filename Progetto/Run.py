@@ -58,26 +58,26 @@ class Recommender(object):
         result = self.evaluate(rec, False, target_playlists)
         result.to_csv(path, index=False)
 
-    def recommend_itemCBR(self, is_test, knn=150, shrink=10):
+    def recommend_itemCBR(self, is_test, knn=150, shrink=10, cython=True):
         rec = Item_CBR(self.u)
         if is_test:
             target_playlists = self.e.get_target_playlists()
-            rec.fit(self.URM_train, knn, shrink)
+            rec.fit(self.URM_train, knn, shrink, cython)
             return self.rec_and_evaluate(rec, target_playlists)
         else:
             target_playlists = self.u.get_target_playlists()
-            rec.fit(self.URM_full, knn, shrink)
+            rec.fit(self.URM_full, knn, shrink, cython)
             self.rec_and_save(rec, target_playlists, "predictions/item_cbr.csv")
 
-    def recommend_itemCFR(self, is_test, knn=250, shrink=10):
+    def recommend_itemCFR(self, is_test, knn=250, shrink=10, cython=True):
         rec = Item_CFR(self.u)
         if is_test:
             target_playlists = self.e.get_target_playlists()
-            rec.fit(self.URM_train, knn, shrink)
+            rec.fit(self.URM_train, knn, shrink, cython)
             return self.rec_and_evaluate(rec, target_playlists)
         else:
             target_playlists = self.u.get_target_playlists()
-            rec.fit(self.URM_full, knn, shrink)
+            rec.fit(self.URM_full, knn, shrink, cython)
             self.rec_and_save(rec, target_playlists, "predictions/item_cfr.csv")
 
     def recommend_userCFR(self, is_test, knn=250, shrink=10, cython=True):
@@ -106,26 +106,26 @@ class Recommender(object):
                     negative_item_regularization=1.0, nzz=1, u=self.u, knn=knn)
             self.rec_and_save(rec, target_playlists, "predictions/slimBPR.csv")
 
-    def recommend_ensemble_cfcb(self, is_test, weights=(1.5, 0.4), knn1=150, knn2=150, knn3=150, shrink=10):
+    def recommend_ensemble_cfcb(self, is_test, weights=(1.5, 0.4), knn1=150, knn2=150, knn3=150, shrink=10, cython=True):
         rec = Ensemble_cfcb(self.u)
         if is_test:
             target_playlists = self.e.get_target_playlists()
-            rec.fit(self.URM_train, knn1, knn2, knn3, shrink, weights)
+            rec.fit(self.URM_train, knn1, knn2, knn3, shrink, weights, cython)
             return self.rec_and_evaluate(rec, target_playlists)
         else:
             target_playlists = self.u.get_target_playlists()
-            rec.fit(self.URM_full, knn1, knn2, knn3, shrink, weights)
+            rec.fit(self.URM_full, knn1, knn2, knn3, shrink, weights, cython)
             self.rec_and_save(rec, target_playlists, "predictions/ensemble_cfcb.csv")
 
-    def recommend_ensemble_cfcb2(self, is_test, weights=(1.5, 0.4), knn1=150, knn2=150, knn3=150, shrink=10):
+    def recommend_ensemble_cfcb2(self, is_test, weights=(1.5, 0.4), knn1=150, knn2=150, knn3=150, shrink=10, cython=True):
         rec = Ensemble_cfcb2(self.u)
         if is_test:
             target_playlists = self.e.get_target_playlists()
-            rec.fit(self.URM_train, knn1, knn2, knn3, shrink, weights)
+            rec.fit(self.URM_train, knn1, knn2, knn3, shrink, weights, cython)
             return self.rec_and_evaluate(rec, target_playlists)
         else:
             target_playlists = self.u.get_target_playlists()
-            rec.fit(self.URM_full, knn1, knn2, knn3, shrink, weights)
+            rec.fit(self.URM_full, knn1, knn2, knn3, shrink, weights, cython)
             self.rec_and_save(rec, target_playlists, "predictions/hybrid.csv")
 
     def recommend_ensemble_cfcb_SlimBPR(self, is_test, weights=(1.5, 0, 1), knn1=150, knn2=150, knn3=150,
@@ -156,7 +156,8 @@ class Recommender(object):
 
 if __name__ == '__main__':
     run = Recommender(n=5)
-    run.recommend_ensemble_cfcb(False)
+    run.recommend_ensemble_cfcb(True, cython=True)
+    run.recommend_ensemble_cfcb2(True, cython=True)
 
 
 
