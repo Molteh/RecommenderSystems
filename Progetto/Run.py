@@ -80,15 +80,15 @@ class Recommender(object):
             rec.fit(self.URM_full, knn, shrink)
             self.rec_and_save(rec, target_playlists, "predictions/item_cfr.csv")
 
-    def recommend_userCFR(self, is_test, knn=250, shrink=10):
+    def recommend_userCFR(self, is_test, knn=250, shrink=10, cython=True):
         rec = User_CFR(self.u)
         if is_test:
             target_playlists = self.e.get_target_playlists()
-            rec.fit(self.URM_train, knn, shrink)
+            rec.fit(self.URM_train, knn, shrink, cython)
             return self.rec_and_evaluate(rec, target_playlists)
         else:
             target_playlists = self.u.get_target_playlists()
-            rec.fit(self.URM_full, knn, shrink)
+            rec.fit(self.URM_full, knn, shrink, cython)
             self.rec_and_save(rec, target_playlists, "predictions/user_cfr1.csv")
 
     def recommend_slimBPR(self, is_test, knn=800):
@@ -156,7 +156,7 @@ class Recommender(object):
 
 if __name__ == '__main__':
     run = Recommender()
-    run.recommend_ensemble_cfcb_SlimBPR(True)
+    run.recommend_userCFR(True)
 
 
 

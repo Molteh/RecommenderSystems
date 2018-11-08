@@ -2,6 +2,12 @@ import numpy as np
 import scipy.sparse as sp
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.preprocessing import MultiLabelBinarizer
+
+try:
+    from Progetto.utils.cython.cosine_similarity import Cosine_Similarity as Cython_Cosine_Similarity
+except ImportError:
+    print("Unable to load Cython Cosine_Similarity, reverting to Python")
+
 from Progetto.utils.cosine_similarity import Compute_Similarity_Python as Cosine_Similarity
 
 
@@ -26,8 +32,13 @@ class Utils(object):
         return ranking
 
     @staticmethod
-    def get_similarity(matrix, knn, shrink):
-        similarity = Cosine_Similarity(dataMatrix=matrix, normalize=True, shrink=shrink, similarity='cosine', topK=knn)
+    def get_similarity(matrix, knn, shrink, cython):
+        if cython:
+            print("ciao")
+            similarity = Cython_Cosine_Similarity(matrix, normalize=True, shrink=shrink, mode='cosine', topK=knn)
+        else:
+            similarity = Cosine_Similarity(dataMatrix=matrix, normalize=True, shrink=shrink, similarity='cosine', topK=knn)
+
         return similarity.compute_similarity().tocsr()
 
     @staticmethod
@@ -59,14 +70,14 @@ class Utils(object):
         ICM = sp.hstack((ICM_artists, ICM_albums))
         return ICM
 
-    def get_itemsim_CB(self, knn, shrink):
+    def get_itemsim_CB(self, knn, shrink, cython):
         ICM = self.get_ICM()
-        return self.get_similarity(ICM.T, knn, shrink)
+        return self.get_similarity(ICM.T, knn, shrink, cython)
 
-    def get_itemsim_CF(self, URM, knn, shrink):
+    def get_itemsim_CF(self, URM, knn, shrink, cython):
         UCM = self.get_UCM(URM)
-        return self.get_similarity(UCM, knn, shrink)
+        return self.get_similarity(UCM, knn, shrink, cython)
 
-    def get_usersim_CF(self, URM, knn, shrink):
+    def get_usersim_CF(self, URM, knn, shrink, cython):
         UCM = self.get_UCM(URM.T)
-        return self.get_similarity(UCM, knn, shrink)
+        return self.get_similarity(UCM, knn, shrink, cython)
