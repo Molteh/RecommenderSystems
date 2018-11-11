@@ -59,15 +59,15 @@ class Recommender(object):
         result = self.evaluate(rec, False, target_playlists)
         result.to_csv(path, index=False)
 
-    def recommend_itemCBR(self, is_test, knn=150, shrink=10, cython=True):
+    def recommend_itemCBR(self, is_test, knn=150, shrink=10, weights=[1,1], cython=True):
         rec = Item_CBR(self.u)
         if is_test:
             target_playlists = self.e.get_target_playlists()
-            rec.fit(self.URM_train, knn, shrink, cython)
+            rec.fit(self.URM_train, knn, shrink, weights, cython)
             return self.rec_and_evaluate(rec, target_playlists)
         else:
             target_playlists = self.u.get_target_playlists()
-            rec.fit(self.URM_full, knn, shrink, cython)
+            rec.fit(self.URM_full, knn, shrink, weights, cython)
             self.rec_and_save(rec, target_playlists, "predictions/item_cbr.csv")
 
     def recommend_itemCFR(self, is_test, knn=250, shrink=10, cython=True):
@@ -157,8 +157,8 @@ class Recommender(object):
 
 if __name__ == '__main__':
     run = Recommender(n=5)
-    run.recommend_ensemble_cfcb(True)
-
+    run.recommend_itemCBR(True, weights=[0.5, 1])
+    run.recommend_itemCBR(True, weights=[1, 0.5])
 
 
 
