@@ -19,7 +19,8 @@ class Recommender(object):
         self.train = pd.read_csv("data/train.csv")
         self.tracks = pd.read_csv("data/tracks.csv")
         self.target_playlists = pd.read_csv("data/target_playlists.csv")
-        self.u = Utils(self.train, self.tracks, self.target_playlists)
+        self.train_sequential = pd.read_csv("data/train_sequential.csv")
+        self.u = Utils(self.train, self.tracks, self.target_playlists, self.train_sequential)
         self.e = Eval(self.u)
         self.URM_full = self.preprocess_URM(self.u.get_URM(), self.target_playlists, n)
         self.URM_train = self.preprocess_URM(self.e.get_URM_train(), self.e.get_target_playlists(), n)
@@ -128,16 +129,16 @@ class Recommender(object):
             rec.fit(self.URM_full, knn1, knn2, knn3, shrink, weights, cython)
             self.rec_and_save(rec, target_playlists, "predictions/hybrid.csv")
 
-    def recommend_ensemble_cfcb_SlimBPR(self, is_test, weights=(1.5, 0, 1), knn1=150, knn2=150, knn3=150,
-                                        knn4=500, shrink=10):
+    def recommend_ensemble_cfcb_SlimBPR(self, is_test, weights=(1.5, 0, 0.5), knn1=150, knn2=150, knn3=150,
+                                        knn4=500, shrink=10, cython=True):
         rec = Ensemble_cfcb_sbpr(self.u)
         if is_test:
             target_playlists = self.e.get_target_playlists()
-            rec.fit(self.URM_train, knn1, knn2, knn3, knn4, shrink, weights, use_cython=True)
+            rec.fit(self.URM_train, knn1, knn2, knn3, knn4, shrink, weights, cython)
             return self.rec_and_evaluate(rec, target_playlists)
         else:
             target_playlists = self.u.get_target_playlists()
-            rec.fit(self.URM_full, knn1, knn2, knn3, knn4, shrink, weights)
+            rec.fit(self.URM_full, knn1, knn2, knn3, knn4, shrink, weights, cython)
             self.rec_and_save(rec, target_playlists, "predictions/ensemble_cfcb_bpr.csv")
 
     def recommend_Cython_SlimBPR(self, is_test, recompile=False, epochs=2, val_every_n_ep=1, sgd_mode='rmsprop',
@@ -156,8 +157,9 @@ class Recommender(object):
 
 if __name__ == '__main__':
     run = Recommender(n=5)
-    run.recommend_ensemble_cfcb(True, cython=True)
-    run.recommend_ensemble_cfcb2(True, cython=True)
+    run.recommend_ensemble_cfcb(True)
+
+
 
 
 

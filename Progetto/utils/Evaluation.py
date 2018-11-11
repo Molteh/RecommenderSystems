@@ -7,10 +7,11 @@ class Eval(object):
 
     def __init__(self, u):
         self.URM = u.get_URM()
+        self.train_sequential = u.get_train_sequential()
         self.target_playlists = None
         self.target_tracks = None
         self.URM_train = None
-        self.build_URM_test2()
+        self.build_URM_test3()
 
     def build_URM_test(self):
         total_users = self.URM.shape[0]
@@ -40,6 +41,32 @@ class Eval(object):
         for idx in self.target_playlists[:5000]:
             length = int(len(self.URM[idx].indices) * 0.2)
             target_songs = self.URM[idx].indices[-length:]
+            self.URM_train[idx, target_songs] = 0
+            self.target_tracks.append(target_songs)
+
+        for idx in self.target_playlists[-5000:]:
+            length = int(len(self.URM[idx].indices) * 0.2)
+            target_songs = np.random.choice(self.URM[idx].indices, length, replace=False)
+            self.URM_train[idx, target_songs] = 0
+            self.target_tracks.append(target_songs)
+
+        self.target_tracks = np.array(self.target_tracks)
+        self.target_playlists = pd.DataFrame(self.target_playlists, columns=['playlist_id'])
+        self.URM_train = self.URM_train.tocsr()
+
+    def build_URM_test3(self):
+        target_seq = list(self.train_sequential['playlist_id'][:5000])
+        possible_playlists = [i for i in range(self.URM.shape[0]) if len(
+            self.URM.indices[self.URM.indptr[i]:self.URM.indptr[i + 1]]) > 7]  # playlists with more than 10 songs
+        possible_playlists = np.setdiff1d(possible_playlists, target_seq)
+        target_random = np.random.choice(possible_playlists, 5000, replace=False)
+        self.target_playlists = np.concatenate((target_seq, target_random))
+        self.URM_train = self.URM.copy().tolil()
+        self.target_tracks = []
+
+        for idx in self.target_playlists[:5000]:
+            length = int(len(self.URM[idx].indices) * 0.2)
+            target_songs = np.array(self.train_sequential[self.train_sequential['playlist_id'] == idx]['track_id'][-length:])
             self.URM_train[idx, target_songs] = 0
             self.target_tracks.append(target_songs)
 

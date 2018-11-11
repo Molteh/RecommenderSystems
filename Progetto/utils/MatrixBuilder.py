@@ -13,14 +13,18 @@ from Progetto.utils.cosine_similarity import Compute_Similarity_Python as Cosine
 
 class Utils(object):
 
-    def __init__(self, train, tracks, target_playlists):
+    def __init__(self, train, tracks, target_playlists, train_sequential):
         self.train = train
         self.tracks = tracks
         self.target_playlists = target_playlists
+        self.train_sequential = train_sequential
         self.URM = self.build_URM()
 
     def get_target_playlists(self):
         return self.target_playlists
+
+    def get_train_sequential(self):
+        return self.train_sequential
 
     @staticmethod
     def get_top_10(URM, target_playlist, row):
@@ -58,7 +62,6 @@ class Utils(object):
 
         ICM_artists = MultiLabelBinarizer(classes=self.tracks['artist_id'].unique(), sparse_output=True).fit_transform(
             grouped)
-        ICM_artists = ICM_artists * 0.8  # best weight for the artis feature
         ICM_artists = TfidfTransformer().fit_transform(ICM_artists.T).T
 
         grouped = self.tracks.groupby('track_id', as_index=True).apply((lambda track: list(track['album_id'])))
