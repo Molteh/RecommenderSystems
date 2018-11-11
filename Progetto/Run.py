@@ -157,7 +157,8 @@ class Recommender(object):
 
 if __name__ == '__main__':
     run = Recommender(n=5)
-    run.recommend_ensemble_cfcb(False, cython=False, weights=(1, 0.4), knn2=100)
+    run.recommend_ensemble_cfcb(True, weights=(1, 0.4))
+    run.recommend_ensemble_cfcb(True)
 
 
 

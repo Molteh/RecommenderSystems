@@ -10,7 +10,7 @@ class Eval(object):
         self.target_playlists = None
         self.target_tracks = None
         self.URM_train = None
-        self.build_URM_test()
+        self.build_URM_test3()
 
     def build_URM_test(self):
         possible_playlists = [i for i in range(self.URM.shape[0]) if len(
