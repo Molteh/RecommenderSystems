@@ -5,9 +5,9 @@ class Item_CBR(object):
         self.URM = None
         self.S = None
 
-    def fit(self, URM, knn, shrink, weights, cython):
+    def fit(self, URM, knn, shrink, alfa, cython):
         self.URM = URM
-        self.S = self.u.get_itemsim_CB(knn, shrink, weights, cython)
+        self.S = self.u.get_itemsim_CB(knn, shrink, alfa, cython)
 
     def recommend(self, target_playlist):
         row = self.URM[target_playlist].dot(self.S).toarray().ravel()
