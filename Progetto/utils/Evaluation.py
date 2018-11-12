@@ -101,7 +101,9 @@ class Eval(object):
         MAP = 0.0
         num_eval = 0
 
-        for i in range(df.shape[0]):
+        targets = np.random.choice(df.shape[0], 5000, replace=False)
+
+        for i in targets:
             relevant = relevant_items[i]
             if len(relevant_items) > 0:
                 recommended_items = df['track_ids'][i]

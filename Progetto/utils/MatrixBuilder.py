@@ -36,6 +36,15 @@ class Utils(object):
         return ranking
 
     @staticmethod
+    def get_top(URM, target_playlist, row):
+        row = row.tolil()
+        my_songs = URM.indices[URM.indptr[target_playlist]:URM.indptr[target_playlist + 1]]
+        row[0, my_songs] = -np.inf
+        row = row.tocsr()
+        row = row.indices[np.argsort(row.data)][::-1]
+        return row
+
+    @staticmethod
     def get_similarity(matrix, knn, shrink, cython):
         if cython:
             similarity = Cython_Cosine_Similarity(matrix, normalize=True, shrink=shrink, mode='cosine', topK=knn)

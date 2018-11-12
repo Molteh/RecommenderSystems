@@ -5,6 +5,7 @@ from Progetto.recommenders.User_CFR import User_CFR
 from Progetto.recommenders.Item_CBR import Item_CBR
 from Progetto.recommenders.Ensemble_cfcb import Ensemble_cfcb
 from Progetto.recommenders.Ensemble_cfcb2 import Ensemble_cfcb2
+from Progetto.recommenders.Ensemble_cfcb3 import Ensemble_cfcb3
 from Progetto.recommenders.Slim_BPR import Slim_BPR
 from Progetto.recommenders.Ensemble_cfcb_sbpr import Ensemble_cfcb_sbpr
 from Progetto.recommenders.Slim_BPR_Cython.SLIM_BPR_Cython import SLIM_BPR_Cython
@@ -129,7 +130,19 @@ class Recommender(object):
             rec.fit(self.URM_full, knn1, knn2, knn3, shrink, weights, alfa, cython)
             self.rec_and_save(rec, target_playlists, "predictions/hybrid.csv")
 
-    def recommend_ensemble_cfcb_SlimBPR(self, is_test, weights=(1.5, 0, 0.5), knn1=150, knn2=150, knn3=150,
+    def recommend_ensemble_cfcb3(self, is_test, weights=(1.5, 0.4, 1), knn1=150, knn2=150, knn3=150, shrink=10, alfa=1,
+                                 cython=True):
+        rec = Ensemble_cfcb3(self.u)
+        if is_test:
+            target_playlists = self.e.get_target_playlists()
+            rec.fit(self.URM_train, knn1, knn2, knn3, shrink, weights, alfa, cython)
+            return self.rec_and_evaluate(rec, target_playlists)
+        else:
+            target_playlists = self.u.get_target_playlists()
+            rec.fit(self.URM_full, knn1, knn2, knn3, shrink, weights, alfa, cython)
+            self.rec_and_save(rec, target_playlists, "predictions/ensemble_cfcb3.csv")
+
+    def recommend_ensemble_cfcb_SlimBPR(self, is_test, weights=(0, 0.4, 0, 0.5), knn1=150, knn2=150, knn3=150,
                                         knn4=500, shrink=10, cython=True):
         rec = Ensemble_cfcb_sbpr(self.u)
         if is_test:
@@ -157,8 +170,7 @@ class Recommender(object):
 
 if __name__ == '__main__':
     run = Recommender(n=5)
-    run.recommend_ensemble_cfcb(True, weights=(1, 0.4))
-    run.recommend_ensemble_cfcb(True)
+    run.recommend_ensemble_cfcb3(False)
 
 
 

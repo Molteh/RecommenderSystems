@@ -31,7 +31,7 @@ class Ensemble_cfcb_sbpr(object):
         if weights[1] != 0:
             self.S_CF_U = self.u.get_usersim_CF(self.URM, knn2, shrink, cython)
         if weights[2] != 0:
-            self.S_CB = self.u.get_itemsim_CB(knn3, shrink, cython)
+            self.S_CB = self.u.get_itemsim_CB(knn3, shrink, 1, cython)
 
     def recommend(self, target_playlist):
             row_R_CB = self.URM[target_playlist].dot(self.S_CB)
