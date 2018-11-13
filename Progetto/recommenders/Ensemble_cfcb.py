@@ -6,11 +6,13 @@ class Ensemble_cfcb(object):
         self.S_CF_I = None
         self.S_CF_U = None
         self.URM = None
+        self.URM2 = None
         self.weights = None
 
-    def fit(self, URM, knn1, knn2, knn3, shrink, weights, alfa, cython):
+    def fit(self, URM, knn1, knn2, knn3, shrink, weights, alfa, cython, mode):
         self.URM = URM
         self.weights = weights
+
         self.S_CF_I = self.u.get_itemsim_CF(self.URM, knn1, shrink, cython)
         self.S_CF_U = self.u.get_usersim_CF(self.URM, knn2, shrink, cython)
         self.S_CB = self.u.get_itemsim_CB(knn3, shrink, alfa, cython)

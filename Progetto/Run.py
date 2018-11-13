@@ -10,6 +10,7 @@ from Progetto.recommenders.Ensemble_cfcb4 import Ensemble_cfcb4
 from Progetto.recommenders.Slim_BPR import Slim_BPR
 from Progetto.recommenders.Ensemble_cfcb_sbpr import Ensemble_cfcb_sbpr
 from Progetto.recommenders.Slim_BPR_Cython.SLIM_BPR_Cython import SLIM_BPR_Cython
+from Progetto.recommenders.MFBPR import MFBPR
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
@@ -23,7 +24,7 @@ class Recommender(object):
         self.target_playlists = pd.read_csv("data/target_playlists.csv")
         self.train_sequential = pd.read_csv("data/train_sequential.csv")
         self.u = Utils(self.train, self.tracks, self.target_playlists, self.train_sequential)
-        self.e = Eval(self.u)
+        self.e = Eval(self.u, self.target_playlists)
         self.URM_full = self.preprocess_URM(self.u.get_URM(), self.target_playlists, n)
         self.URM_train = self.preprocess_URM(self.e.get_URM_train(), self.e.get_target_playlists(), n)
 
@@ -113,11 +114,11 @@ class Recommender(object):
         rec = Ensemble_cfcb(self.u)
         if is_test:
             target_playlists = self.e.get_target_playlists()
-            rec.fit(self.URM_train, knn1, knn2, knn3, shrink, weights, alfa, cython)
+            rec.fit(self.URM_train, knn1, knn2, knn3, shrink, weights, alfa, cython, 'cosine')
             return self.rec_and_evaluate(rec, target_playlists)
         else:
             target_playlists = self.u.get_target_playlists()
-            rec.fit(self.URM_full, knn1, knn2, knn3, shrink, weights, alfa, cython)
+            rec.fit(self.URM_full, knn1, knn2, knn3, shrink, weights, alfa, cython, 'cosine')
             self.rec_and_save(rec, target_playlists, "predictions/ensemble_cfcb.csv")
 
     def recommend_ensemble_cfcb2(self, is_test, weights=(1.5, 0.4), knn1=150, knn2=150, knn3=150, shrink=10, alfa=1, cython=True):
@@ -152,7 +153,7 @@ class Recommender(object):
         else:
             target_playlists = self.u.get_target_playlists()
             rec.fit(self.URM_full, knn1, knn2, knn3, shrink, weights, alfa, cython)
-            self.rec_and_save(rec, target_playlists, "predictions/ensemble_cfcb.csv")
+            self.rec_and_save(rec, target_playlists, "predictions/ensemble_cfcb4.csv")
 
     def recommend_ensemble_cfcb_SlimBPR(self, is_test, weights=(0, 0.4, 0, 0.5), knn1=150, knn2=150, knn3=150,
                                         knn4=500, shrink=10, cython=True):
@@ -179,10 +180,23 @@ class Recommender(object):
             rec.fit(epochs=epochs, validate_every_N_epochs=val_every_n_ep, batch_size=1, sgd_mode=sgd_mode, learning_rate=learning_rate)
             self.rec_and_save(rec, target_playlists, "predictions/cython_Slim_BPR.csv")
 
+    def recommend_MFBPR(self, is_test, epochs=10):
+
+        if is_test:
+            rec = MFBPR(self.URM_train, self.u, epochs=epochs)
+            target_playlists = self.e.get_target_playlists()
+            rec.fit()
+            return self.rec_and_evaluate(rec, target_playlists)
+        else:
+            rec = MFBPR(self.URM_train, self.u, epochs=epochs)
+            target_playlists = self.u.get_target_playlists()
+            rec.fit()
+            self.rec_and_save(rec, target_playlists, "predictions/MFBPR.csv")
+
 
 if __name__ == '__main__':
     run = Recommender()
-    run.recommend_ensemble_cfcb4(False, weights=(1, 1, 0.5))
+    run.recommend_itemCFR(True)
 
 
 

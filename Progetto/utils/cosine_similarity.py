@@ -34,7 +34,7 @@ def check_matrix(X, format='csc', dtype=np.float32):
 class Compute_Similarity_Python:
 
     def __init__(self, dataMatrix, topK=100, shrink=0, normalize=True,
-                 asymmetric_alpha=0.5, tversky_alpha=1.0, tversky_beta=1.0,
+                 asymmetric_alpha=0.4, tversky_alpha=1.0, tversky_beta=1.0,
                  similarity="cosine", row_weights=None):
         """
         Computes the cosine similarity on the columns of dataMatrix
@@ -239,8 +239,8 @@ class Compute_Similarity_Python:
             sumOfSquared = np.sqrt(sumOfSquared)
 
         if self.asymmetric_cosine:
-            sumOfSquared_to_1_minus_alpha = sumOfSquared.power(2 * (1 - self.asymmetric_alpha))
-            sumOfSquared_to_alpha = sumOfSquared.power(2 * self.asymmetric_alpha)
+            sumOfSquared_to_1_minus_alpha = np.power(sumOfSquared,(2 * (1 - self.asymmetric_alpha)))
+            sumOfSquared_to_alpha = np.power(sumOfSquared,(2 * self.asymmetric_alpha))
 
         self.dataMatrix = check_matrix(self.dataMatrix, 'csc')
 
