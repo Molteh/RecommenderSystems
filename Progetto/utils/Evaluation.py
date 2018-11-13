@@ -83,7 +83,6 @@ class Eval(object):
         target_seq = list(self.train_sequential['playlist_id'][:5000])
         self.target = target_seq
 
-
         for x in range(20):
             length = len([i for i in self.target_playlists['playlist_id'][5000:] if (len(
                 self.URM.indices[self.URM.indptr[i]:self.URM.indptr[i + 1]]) >= (x * 5)) &
@@ -94,7 +93,6 @@ class Eval(object):
             possible_playlists = np.setdiff1d(possible_playlists, target_seq)
             target_random = np.random.choice(possible_playlists, length, replace=False)
             self.target = np.concatenate((self.target, target_random))
-        print(sum)
         self.URM_train = self.URM.copy().tolil()
         self.target_tracks = []
 

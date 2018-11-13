@@ -15,8 +15,8 @@ class SLIM_BPR_Cython(SLIM_BPR_Python):
 
 
     def __init__(self, URM_train, positive_threshold=4,
-                 recompile_cython = False, sparse_weights = False,
-                 symmetric = True, sgd_mode='adagrad'):
+                 recompile_cython=False, sparse_weights = False,
+                 symmetric=True, sgd_mode='rmsprop'):
 
 
         super(SLIM_BPR_Cython, self).__init__(URM_train,

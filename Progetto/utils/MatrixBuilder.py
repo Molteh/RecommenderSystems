@@ -66,7 +66,7 @@ class Utils(object):
     def get_URM(self):
         return self.URM
 
-    def get_ICM(self, alfa):  # returns Item Content Matrix
+    def get_ICM(self):  # returns Item Content Matrix
         grouped = self.tracks.groupby('track_id', as_index=True).apply((lambda track: list(track['artist_id'])))
 
         ICM_artists = MultiLabelBinarizer(classes=self.tracks['artist_id'].unique(), sparse_output=True).fit_transform(
@@ -78,11 +78,11 @@ class Utils(object):
             grouped)
         ICM_albums = TfidfTransformer().fit_transform(ICM_albums.T).T
 
-        ICM = sp.hstack((alfa*ICM_artists, ICM_albums))
+        ICM = sp.hstack((ICM_artists, ICM_albums))
         return ICM
 
-    def get_itemsim_CB(self, knn, shrink, alfa, cython):
-        ICM = self.get_ICM(alfa)
+    def get_itemsim_CB(self, knn, shrink, cython):
+        ICM = self.get_ICM()
         return self.get_similarity(ICM.T, knn, shrink, cython)
 
     def get_itemsim_CF(self, URM, knn, shrink, cython):
