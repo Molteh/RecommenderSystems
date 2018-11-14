@@ -4,7 +4,8 @@ import numpy as np
 
 class Eval(object):
 
-    def __init__(self, u, target_playlists):
+    def __init__(self, u, target_playlists, mask):
+        self.mask = mask
         self.URM = u.get_URM()
         self.train_sequential = u.get_train_sequential()
         self.target_playlists = target_playlists
@@ -54,7 +55,7 @@ class Eval(object):
         self.URM_train = self.URM_train.tocsr()
 
     def build_URM_test3(self):
-        target_seq = list(self.train_sequential['playlist_id'][:5000])
+        target_seq = list(self.train_sequential['playlist_id'].unqiue()[:5000])
         possible_playlists = [i for i in range(self.URM.shape[0]) if len(
             self.URM.indices[self.URM.indptr[i]:self.URM.indptr[i + 1]]) > 7]  # playlists with more than 10 songs
         possible_playlists = np.setdiff1d(possible_playlists, target_seq)
@@ -80,10 +81,9 @@ class Eval(object):
         self.URM_train = self.URM_train.tocsr()
 
     def build_URM_test4(self):
-        target_seq = list(self.train_sequential['playlist_id'][:5000])
+        target_seq = list(self.train_sequential['playlist_id'].unique()[:5000])
         self.target = target_seq
-
-        for x in range(20):
+        for x in range(15):
             length = len([i for i in self.target_playlists['playlist_id'][5000:] if (len(
                 self.URM.indices[self.URM.indptr[i]:self.URM.indptr[i + 1]]) >= (x * 5)) &
                           (len(self.URM.indices[self.URM.indptr[i]:self.URM.indptr[i + 1]]) < ((x + 1) * 5))])
@@ -134,10 +134,11 @@ class Eval(object):
         print("Evaluating", flush=True)
         MAP = 0.0
         num_eval = 0
+        df = df.filter(self.mask, axis=0)
 
-        targets = np.random.choice(df.shape[0], 5000, replace=False)
 
-        for i in targets:
+
+        for i in df.index.tolist():
             relevant = relevant_items[i]
             if len(relevant_items) > 0:
                 recommended_items = df['track_ids'][i]

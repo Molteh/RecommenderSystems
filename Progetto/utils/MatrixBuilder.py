@@ -2,6 +2,7 @@ import numpy as np
 import scipy.sparse as sp
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.preprocessing import MultiLabelBinarizer
+from scipy.sparse.linalg import svds
 
 try:
     from Progetto.utils.cython.cosine_similarity import Cosine_Similarity as Cython_Cosine_Similarity
@@ -92,3 +93,25 @@ class Utils(object):
     def get_usersim_CF(self, URM, knn, shrink, cython):
         UCM = self.get_UCM(URM.T)
         return self.get_similarity(UCM, knn, shrink, cython)
+
+    @staticmethod
+    def get_itemsim_SVD(URM_old, k, knn):
+        print('Computing S _URM_SVD...')
+
+        S_matrix_list = []
+
+        URM = sp.csr_matrix(URM_old, dtype=float)
+
+        u, s, vt = svds(URM, k=k)
+        v = vt.T
+
+        for i in range(v.shape[0]):
+            S_row = v[i].dot(vt)
+            r = S_row.argsort()[:-knn]
+            S_row[r] = 0
+            S_row_sparse = sp.lil_matrix(S_row)
+            S_matrix_list.append(S_row_sparse.tocsr())
+
+        S = sp.vstack(S_matrix_list)
+        S.setdiag(0)
+        return S
