@@ -96,8 +96,6 @@ class Utils(object):
 
     @staticmethod
     def get_itemsim_SVD(URM_old, k, knn):
-        print('Computing S _URM_SVD...')
-
         S_matrix_list = []
 
         URM = sp.csr_matrix(URM_old, dtype=float)
@@ -112,6 +110,6 @@ class Utils(object):
             S_row_sparse = sp.lil_matrix(S_row)
             S_matrix_list.append(S_row_sparse.tocsr())
 
-        S = sp.vstack(S_matrix_list)
+        S = sp.vstack(S_matrix_list).tolil()
         S.setdiag(0)
-        return S
+        return S.tocsr()

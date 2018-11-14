@@ -1,4 +1,3 @@
-from Progetto.utils.BPR_utils import SlimBPR_utils
 from Progetto.recommenders.Slim_BPR_Cython.SLIM_BPR_Cython import SLIM_BPR_Cython
 
 
@@ -17,13 +16,9 @@ class Ensemble_cfcb_sbpr(object):
         self.URM = URM
         self.weights = weights
 
-        if cython:
-            slim_BPR_Cython = SLIM_BPR_Cython(self.URM, recompile_cython=False, positive_threshold=0, sparse_weights=False)
-            slim_BPR_Cython.fit(epochs=epochs, validate_every_N_epochs=1, batch_size=1, sgd_mode=sgd_mode, learning_rate=lr, topK=knn4)
-            self.S = slim_BPR_Cython.S
-        else:
-            BPR_gen = SlimBPR_utils(self.URM)
-            self.S = BPR_gen.get_S_SLIM_BPR(knn4)
+        slim_BPR_Cython = SLIM_BPR_Cython(self.URM, recompile_cython=False, positive_threshold=0, sparse_weights=False)
+        slim_BPR_Cython.fit(epochs=epochs, validate_every_N_epochs=1, batch_size=1, sgd_mode=sgd_mode, learning_rate=lr, topK=knn4)
+        self.S = slim_BPR_Cython.S
 
         self.S_CF_I = self.u.get_itemsim_CF(self.URM, knn1, shrink[0], cython)
         self.S_CF_U = self.u.get_usersim_CF(self.URM, knn2, shrink[1], cython)
