@@ -4,11 +4,11 @@ import numpy as np
 
 class Eval(object):
 
-    def __init__(self, u, target_playlists, mask):
+    def __init__(self, u, mask):
         self.mask = mask
         self.URM = u.get_URM()
         self.train_sequential = u.get_train_sequential()
-        self.target_playlists = target_playlists
+        self.target_playlists = u.get_target_playlists()
         self.target = None
         self.target_tracks = None
         self.URM_train = None
