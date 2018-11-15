@@ -95,7 +95,7 @@ class Utils(object):
         return self.get_similarity(UCM, knn, shrink, cython)
 
     @staticmethod
-    def get_itemsim_SVD(URM_old, k, knn):
+    def get_itemsim_SVD(URM_old, knn, k):
         S_matrix_list = []
 
         URM = sp.csr_matrix(URM_old, dtype=float)
