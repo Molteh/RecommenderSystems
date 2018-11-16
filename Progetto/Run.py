@@ -67,7 +67,7 @@ class Recommender(object):
             rec.fit(epochs=epochs, batch_size=1, learning_rate=learning_rate, topK=knn)
             self.rec_and_save(rec, target_playlists, "predictions/slim_BPR.csv")
 
-    def recommend_ensemble_post(self, is_test, knn=(150, 150, 150, 150, 250), shrink=(10, 10, 5),
+    def recommend_ensemble_post(self, is_test, knn=(150, 150, 150, 250, 250), shrink=(10, 10, 5),
                                 weights=(1.65, 0.55, 1, 0.1, 0.005), k=300, cython=True, epochs=5, minmax=True):
         rec = Ensemble_post(self.u)
         if is_test:
