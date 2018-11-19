@@ -147,12 +147,9 @@ class SLIM_BPR_Cython(SLIM_BPR_Python):
             self.W = self.S
 
 
-
     def epochIteration(self):
 
         self.cythonEpoch.epochIteration_Cython()
-
-
 
 
     def writeCurrentConfig(self, currentEpoch, results_run, logFile):
