@@ -8,6 +8,8 @@ Created on 28 June 2017
 
 import sys
 import time
+from tqdm import tqdm
+import pandas as pd
 
 import numpy as np
 import scipy.sparse as sps
@@ -227,7 +229,7 @@ class SLIM_BPR_Python(BPR_Sampling, Similarity_Matrix_Recommender, Recommender):
 
     def fit_alreadyInitialized(self, epochs=30, logFile=None, URM_test=None, filterTopPop = False, minRatingsPerUser=1,
             batch_size = 1000, validate_every_N_epochs = 1, start_validation_after_N_epochs = 0,
-            lambda_i = 0.0025, lambda_j = 0.00025, learning_rate = 0.05, topK = False):
+            lambda_i = 0.0025, lambda_j = 0.00025, learning_rate = 0.05, topK = False, validate=False, target_playlists=None, e=None):
         """
         Fits the model performing a round of testing at the end of each epoch
         :param epochs:
@@ -248,6 +250,10 @@ class SLIM_BPR_Python(BPR_Sampling, Similarity_Matrix_Recommender, Recommender):
         self.lambda_j = lambda_j
         self.learning_rate = learning_rate
 
+        self.e = e
+        self.validate = validate
+        self.target_playlists = target_playlists
+
 
         start_time_train = time.time()
 
@@ -261,7 +267,7 @@ class SLIM_BPR_Python(BPR_Sampling, Similarity_Matrix_Recommender, Recommender):
                 print("No batch not available")
 
 
-            if (URM_test is not None) and ((currentEpoch +1 )% validate_every_N_epochs == 0) and \
+            '''if (URM_test is not None) and ((currentEpoch +1 )% validate_every_N_epochs == 0) and \
                             currentEpoch >= start_validation_after_N_epochs:
 
                 print("Evaluation begins")
@@ -274,7 +280,27 @@ class SLIM_BPR_Python(BPR_Sampling, Similarity_Matrix_Recommender, Recommender):
                 self.writeCurrentConfig(currentEpoch, results_run, logFile)
 
                 print("Epoch {} of {} complete in {:.2f} minutes".format(currentEpoch+1, epochs,
-                                                                     float(time.time() - start_time_epoch) / 60))
+                                                                     float(time.time() - start_time_epoch) / 60))'''
+            if (e is not None) and validate==True and ((currentEpoch +1 )% validate_every_N_epochs == 0) and \
+                            currentEpoch >= start_validation_after_N_epochs:
+
+                print("Evaluation begins")
+
+                self.updateSimilarityMatrix()
+
+                final_result = pd.DataFrame(index=range(self.target_playlists.shape[0]),
+                                            columns=('playlist_id', 'track_ids'))
+
+                for i, target_playlist in tqdm(enumerate(np.array(self.target_playlists))):
+                    result_tracks = self.recommend(int(target_playlist))
+                    final_result['playlist_id'][i] = int(target_playlist)
+                    final_result['track_ids'][i] = result_tracks
+
+                self.e.MAP(final_result, self.e.get_target_tracks())
+
+                print("Epoch {} of {} complete in {:.2f} minutes".format(currentEpoch + 1, epochs,
+                                                                         float(time.time() - start_time_epoch) / 60))
+
 
 
             # Fit with no validation

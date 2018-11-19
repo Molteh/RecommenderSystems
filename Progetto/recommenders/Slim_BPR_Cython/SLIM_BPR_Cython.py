@@ -49,8 +49,9 @@ class SLIM_BPR_Cython(SLIM_BPR_Python):
 
     def fit(self, epochs=30, logFile=None, URM_test=None, filterTopPop = False, minRatingsPerUser=1,
             batch_size = 1000, validate_every_N_epochs = 1, start_validation_after_N_epochs = 0,
-            lambda_i = 0.0, lambda_j = 0.0, learning_rate = 0.01, topK = 200, sgd_mode='adagrad'):
+            lambda_i = 0.0, lambda_j = 0.0, learning_rate = 0.01, topK = 200, sgd_mode='adagrad', validate=False, target_playlists=None, e=None):
 
+        self.target_playlists = target_playlists
 
         # Select only positive interactions
         URM_train_positive = self.URM_train.copy()
@@ -89,7 +90,10 @@ class SLIM_BPR_Cython(SLIM_BPR_Python):
                                          lambda_i = lambda_i,
                                          lambda_j = lambda_j,
                                          learning_rate = learning_rate,
-                                         topK = topK)
+                                         topK = topK,
+                                         validate=validate,
+                                         target_playlists=target_playlists,
+                                         e = e)
 
 
 
