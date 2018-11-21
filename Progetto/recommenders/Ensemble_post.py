@@ -34,11 +34,11 @@ class Ensemble_post(object):
 
         if weights[4] != 0:
             slim_BPR_Cython = SLIM_BPR_Cython(self.URM, recompile_cython=False, positive_threshold=0,
-                                              sparse_weights=False)
-            slim_BPR_Cython.fit(epochs=epochs, validate_every_N_epochs=1, batch_size=1, sgd_mode=sgd_mode,
+                                              train_with_sparse_weights=False, final_model_sparse_weights=False)
+            slim_BPR_Cython.fit(epochs=epochs, batch_size=1, sgd_mode=sgd_mode, gamma=0.2,
                                 learning_rate=lr,
                                 topK=knn[4])
-            self.S_Slim = slim_BPR_Cython.S
+            self.S_Slim = slim_BPR_Cython.W
 
     def recommend(self, target_playlist):
         row_cb = 0

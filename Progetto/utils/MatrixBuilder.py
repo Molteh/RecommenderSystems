@@ -4,13 +4,8 @@ from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.preprocessing import MultiLabelBinarizer
 from scipy.sparse.linalg import svds
 
-try:
-    from Progetto.utils.cython.cosine_similarity import Cosine_Similarity as Cython_Cosine_Similarity
-except ImportError:
-    print("Unable to load Cython Cosine_Similarity, reverting to Python")
 
-from Progetto.utils.cosine_similarity import Compute_Similarity_Python as Cosine_Similarity
-
+from Progetto.utils.cython.Compute_Similarity_Cython import Compute_Similarity_Cython as Cython_Cosine_Similarity
 
 class Utils(object):
 
@@ -47,11 +42,8 @@ class Utils(object):
 
     @staticmethod
     def get_similarity(matrix, knn, shrink, cython):
-        if cython:
-            similarity = Cython_Cosine_Similarity(matrix, normalize=True, shrink=shrink, mode='cosine', topK=knn)
-        else:
-            similarity = Cosine_Similarity(dataMatrix=matrix, normalize=True, shrink=shrink, similarity='cosine', topK=knn)
 
+        similarity = Cython_Cosine_Similarity(matrix, normalize=True, shrink=shrink, similarity='cosine', topK=knn)
         return similarity.compute_similarity().tocsr()
 
     @staticmethod

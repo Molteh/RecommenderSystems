@@ -12,6 +12,6 @@ from Cython.Build import cythonize
 import numpy
 
 setup(
-    ext_modules = cythonize("Compute_Similarity_Cython.pyx"),
+    ext_modules = cythonize("SLIM_BPR_Cython_Epoch.pyx"),
     include_dirs=[numpy.get_include()]
 )

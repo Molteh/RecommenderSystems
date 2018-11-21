@@ -8,16 +8,14 @@ Created on 28 June 2017
 
 import sys
 import time
-from tqdm import tqdm
-import pandas as pd
 
 import numpy as np
 import scipy.sparse as sps
 from Progetto.recommenders.Slim_BPR_Cython.Recommender_utils import similarityMatrixTopK
-from Progetto.recommenders.Slim_BPR_Cython.Similarity_Matrix_Recommender import Similarity_Matrix_Recommender
+from Progetto.recommenders.Slim_BPR_Cython.SimilarityMatrixRecommender import SimilarityMatrixRecommender
 from scipy.special import expit
 
-from Progetto.recommenders.Slim_BPR_Cython.BPR_Sampling import BPR_Sampling
+from Progetto.recommenders.Slim_BPR_Cython.BPR_sampling import BPR_Sampling
 from Progetto.recommenders.Slim_BPR_Cython.Recommender import Recommender
 
 
@@ -25,9 +23,11 @@ def sigmoidFunction(x):
   return 1 / (1 + np.exp(-x))
 
 
-class SLIM_BPR_Python(BPR_Sampling, Similarity_Matrix_Recommender, Recommender):
+class SLIM_BPR_Python(BPR_Sampling, SimilarityMatrixRecommender, Recommender):
 
-    def __init__(self, URM_train, positive_threshold=4, sparse_weights = False):
+    RECOMMENDER_NAME = "SLIM_BPR_Recommender"
+
+    def __init__(self, URM_train, positive_threshold=0, sparse_weights = False):
         super(SLIM_BPR_Python, self).__init__()
 
         """
@@ -197,6 +197,8 @@ class SLIM_BPR_Python(BPR_Sampling, Similarity_Matrix_Recommender, Recommender):
             self.S[j] -= self.learning_rate * gradient * itemsToUpdate
             self.S[j, j] = 0
 
+
+
     def fit(self, epochs=30, logFile=None, URM_test=None, filterTopPop = False, minRatingsPerUser=1,
             batch_size = 1000, validate_every_N_epochs = 1, start_validation_after_N_epochs = 0,
             lambda_i = 0.0025, lambda_j = 0.00025, learning_rate = 0.05, topK = False):
@@ -212,33 +214,6 @@ class SLIM_BPR_Python(BPR_Sampling, Similarity_Matrix_Recommender, Recommender):
         self.initializeFastSampling(positive_threshold=self.positive_threshold)
 
 
-        self.fit_alreadyInitialized(epochs=epochs,
-                                    logFile=logFile,
-                                    URM_test=URM_test,
-                                    filterTopPop = filterTopPop,
-                                    minRatingsPerUser=minRatingsPerUser,
-                                    batch_size = batch_size,
-                                    validate_every_N_epochs = validate_every_N_epochs,
-                                    start_validation_after_N_epochs = start_validation_after_N_epochs,
-                                    lambda_i = lambda_i,
-                                    lambda_j = lambda_j,
-                                    learning_rate = learning_rate,
-                                    topK = topK)
-
-
-
-    def fit_alreadyInitialized(self, epochs=30, logFile=None, URM_test=None, filterTopPop = False, minRatingsPerUser=1,
-            batch_size = 1000, validate_every_N_epochs = 1, start_validation_after_N_epochs = 0,
-            lambda_i = 0.0025, lambda_j = 0.00025, learning_rate = 0.05, topK = False, validate=False, target_playlists=None, e=None):
-        """
-        Fits the model performing a round of testing at the end of each epoch
-        :param epochs:
-        :param batch_size:
-        :param logFile:
-        :param URM_test:
-        :return:
-        """
-
 
         if(topK != False and topK<1):
             raise ValueError("TopK not valid. Acceptable values are either False or a positive integer value. Provided value was '{}'".format(topK))
@@ -249,10 +224,6 @@ class SLIM_BPR_Python(BPR_Sampling, Similarity_Matrix_Recommender, Recommender):
         self.lambda_i = lambda_i
         self.lambda_j = lambda_j
         self.learning_rate = learning_rate
-
-        self.e = e
-        self.validate = validate
-        self.target_playlists = target_playlists
 
 
         start_time_train = time.time()
@@ -267,8 +238,8 @@ class SLIM_BPR_Python(BPR_Sampling, Similarity_Matrix_Recommender, Recommender):
                 print("No batch not available")
 
 
-            '''if (URM_test is not None) and ((currentEpoch +1 )% validate_every_N_epochs == 0) and \
-                            currentEpoch >= start_validation_after_N_epochs:
+            if (URM_test is not None) and ((currentEpoch +1 )% validate_every_N_epochs == 0) and \
+                            currentEpoch+1 >= start_validation_after_N_epochs:
 
                 print("Evaluation begins")
 
@@ -277,30 +248,10 @@ class SLIM_BPR_Python(BPR_Sampling, Similarity_Matrix_Recommender, Recommender):
                 results_run = self.evaluateRecommendations(URM_test, filterTopPop=filterTopPop,
                                                            minRatingsPerUser=minRatingsPerUser)
 
-                self.writeCurrentConfig(currentEpoch, results_run, logFile)
+                self.writeCurrentConfig(currentEpoch+1, results_run, logFile)
 
                 print("Epoch {} of {} complete in {:.2f} minutes".format(currentEpoch+1, epochs,
-                                                                     float(time.time() - start_time_epoch) / 60))'''
-            if (e is not None) and validate==True and ((currentEpoch +1 )% validate_every_N_epochs == 0) and \
-                            currentEpoch >= start_validation_after_N_epochs:
-
-                print("Evaluation begins")
-
-                self.updateSimilarityMatrix()
-
-                final_result = pd.DataFrame(index=range(self.target_playlists.shape[0]),
-                                            columns=('playlist_id', 'track_ids'))
-
-                for i, target_playlist in tqdm(enumerate(np.array(self.target_playlists))):
-                    result_tracks = self.recommend(int(target_playlist))
-                    final_result['playlist_id'][i] = int(target_playlist)
-                    final_result['track_ids'][i] = result_tracks
-
-                self.e.MAP(final_result, self.e.get_target_tracks())
-
-                print("Epoch {} of {} complete in {:.2f} minutes".format(currentEpoch + 1, epochs,
-                                                                         float(time.time() - start_time_epoch) / 60))
-
+                                                                     float(time.time() - start_time_epoch) / 60))
 
 
             # Fit with no validation
@@ -334,6 +285,7 @@ class SLIM_BPR_Python(BPR_Sampling, Similarity_Matrix_Recommender, Recommender):
             logFile.write("Test case: {}, Results {}\n".format(current_config, results_run))
             # logFile.write("Weights: {}\n".format(str(list(self.weights))))
             logFile.flush()
+
 
 
 

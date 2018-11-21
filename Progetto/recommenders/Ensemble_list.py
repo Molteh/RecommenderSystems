@@ -28,7 +28,7 @@ class Ensemble_list(object):
 
         if weights[3] != 0:
             slim_BPR_Cython = SLIM_BPR_Cython(self.URM, recompile_cython=False, positive_threshold=0,
-                                              sparse_weights=False)
+                                              train_with_sparse_weights=False)
             slim_BPR_Cython.fit(epochs=epochs, validate_every_N_epochs=1, batch_size=1, sgd_mode=sgd_mode,
                                 learning_rate=lr,
                                 topK=knn[3])

@@ -55,19 +55,6 @@ class Recommender(object):
         result = self.evaluate(rec, False, target_playlists)
         result.to_csv(path, index=False)
 
-    def recommend_SlimBPR_Cython(self, is_test, recompile=False, epochs=5, learning_rate=0.1, knn=250, sparse_weights=False,
-                                 pt=0, sgd='rmsprop'):
-        if is_test:
-            rec = SLIM_BPR_Cython(self.URM_train, recompile_cython=recompile, positive_threshold=pt, sparse_weights=sparse_weights, sgd_mode=sgd)
-            target_playlists = self.e.get_target_playlists()
-            rec.fit(epochs=epochs, batch_size=1, learning_rate=learning_rate, topK=knn)
-            return self.rec_and_evaluate(rec, target_playlists)
-        else:
-            rec = SLIM_BPR_Cython(self.URM_full, recompile_cython=recompile, positive_threshold=pt, sparse_weights=sparse_weights, sgd_mode=sgd)
-            target_playlists = self.u.get_target_playlists()
-            rec.fit(epochs=epochs, batch_size=1, learning_rate=learning_rate, topK=knn)
-            self.rec_and_save(rec, target_playlists, "predictions/slim_BPR.csv")
-
     def recommend_ensemble_post(self, is_test, knn=(150, 150, 150, 250, 250), shrink=(10, 10, 5),
                                 weights=(1.65, 0.55, 1, 0.1, 0.005), k=300, cython=True, epochs=5, normalize=False,
                                 lr=0.1):
@@ -110,12 +97,7 @@ class Recommender(object):
 
 if __name__ == '__main__':
     run = Recommender(n=0)
-    run.recommend_ensemble_post(True, weights=(1.65, 0.55, 1, 0, 0.005))
-    run.recommend_ensemble_post(True, normalize=True, weights=(1, 0.9, 0.3, 0, 0.005))
-    run.recommend_ensemble_post(True, normalize=True, weights=(1, 0.9, 0.3, 0, 0.7))
-    run.recommend_ensemble_post(True, normalize=True, weights=(1, 0.9, 0.3, 0, 0.6))
-    run.recommend_ensemble_post(True, normalize=True, weights=(1, 0.9, 0.3, 0, 0.5))
-    run.recommend_ensemble_post(True, normalize=True, weights=(1, 0.9, 0.3, 0, 0.4))
+    run.recommend_ensemble_post(True, weights=(0,0,0,0,1))
 
 
 

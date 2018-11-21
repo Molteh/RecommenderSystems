@@ -1,8 +1,9 @@
+
+
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Created on 5/09/2017
-
 @author: Maurizio Ferrari Dacrema
 """
 
@@ -100,4 +101,3 @@ class BPR_Sampling(object):
                     neg_item_id_list[sample_index] = neg_item_id
 
         return user_id_list, pos_item_id_list, neg_item_id_list
-
