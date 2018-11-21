@@ -1,21 +1,24 @@
 import numpy as np
-from Progetto.recommenders.Slim_BPR_Cython.SLIM_BPR_Cython import SLIM_BPR_Cython
+from Progetto.recommenders.SlimBPR.SLIM_BPR_Cython import SLIM_BPR_Cython
 
 
 class Ensemble_list(object):
 
     def __init__(self, u):
+        self.norm = False
         self.u = u
-        self.weights = 0
+        self.S_CB = 0
         self.S_CF_I = 0
         self.S_CF_U = 0
-        self.S_CB = 0
+        self.S_SVD = 0
         self.S_Slim = 0
         self.URM = 0
+        self.weights = 0
 
-    def fit(self, URM, knn, shrink, weights, cython, epochs, lr, sgd_mode='rmsprop'):
+    def fit(self, URM, knn, shrink, weights, k, cython, epochs, lr, norm=False, sgd_mode='rmsprop'):
         self.URM = URM
         self.weights = weights
+        self.norm = norm
 
         if weights[0] != 0:
             self.S_CF_I = self.u.get_itemsim_CF(self.URM, knn[0], shrink[0], cython)
@@ -27,17 +30,19 @@ class Ensemble_list(object):
             self.S_CB = self.u.get_itemsim_CB(knn[2], shrink[2], cython)
 
         if weights[3] != 0:
-            slim_BPR_Cython = SLIM_BPR_Cython(self.URM, recompile_cython=False, positive_threshold=0,
-                                              train_with_sparse_weights=False)
-            slim_BPR_Cython.fit(epochs=epochs, validate_every_N_epochs=1, batch_size=1, sgd_mode=sgd_mode,
-                                learning_rate=lr,
-                                topK=knn[3])
-            self.S_Slim = slim_BPR_Cython.S
+            self.S_SVD = self.u.get_itemsim_SVD(self.URM, knn[3], k)
+
+        if weights[4] != 0:
+            slim_BPR_Cython = SLIM_BPR_Cython(self.URM)
+            slim_BPR_Cython.fit(epochs=epochs, sgd_mode=sgd_mode, gamma=0.2,
+                                learning_rate=lr, topK=knn[4])
+            self.S_Slim = slim_BPR_Cython.W
 
     def recommend(self, target_playlist):
         row_cb = 0
         row_cf_i = 0
         row_cf_u = 0
+        row_svd = 0
         row_slim = 0
 
         if self.weights[0] != 0:
@@ -50,13 +55,17 @@ class Ensemble_list(object):
             row_cb = (self.URM[target_playlist].dot(self.S_CB))
 
         if self.weights[3] != 0:
+            row_svd = (self.URM[target_playlist].dot(self.S_SVD))
+
+        if self.weights[4] != 0:
             row_slim = self.URM[target_playlist].dot(self.S_Slim).toarray().ravel()
 
         row_cf_i = row_cf_i * self.weights[0]
         row_cf_u = row_cf_u * self.weights[1]
         row_cb = row_cb * self.weights[2]
+        row_svd = row_svd * self.weights[3]
 
-        row_item = (row_cf_i + row_cf_u + row_cb).toarray().ravel()
+        row_item = (row_cf_i + row_cf_u + row_cb + row_svd).toarray().ravel()
 
         top10_item = self.u.get_top_10(self.URM, target_playlist, row_item)
         top10_slim = self.u.get_top_10(self.URM, target_playlist, row_slim)

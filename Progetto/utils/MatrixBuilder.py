@@ -3,6 +3,7 @@ import scipy.sparse as sp
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.preprocessing import MultiLabelBinarizer
 from scipy.sparse.linalg import svds
+from sklearn.utils.extmath import randomized_svd
 
 
 from Progetto.utils.cython.Compute_Similarity_Cython import Compute_Similarity_Cython as Cython_Cosine_Similarity
@@ -105,3 +106,10 @@ class Utils(object):
         S = sp.vstack(S_matrix_list).tolil()
         S.setdiag(0)
         return S.tocsr()
+
+    @staticmethod
+    def get_itemsim_PureSVD(URM, k):
+        U, Sigma, VT = randomized_svd(URM, n_components=k, n_iter=5, random_state=None)
+        s_Vt = sp.diags(Sigma) * VT
+        return sp.csr_matrix(s_Vt)
+

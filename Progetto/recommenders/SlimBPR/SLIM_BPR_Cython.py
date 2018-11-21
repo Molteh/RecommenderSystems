@@ -7,17 +7,17 @@ Created on 07/09/17
 """
 
 
-from Progetto.recommenders.Slim_BPR_Cython.Recommender import Recommender
-from Progetto.recommenders.Slim_BPR_Cython.SimilarityMatrixRecommender import SimilarityMatrixRecommender
-from Progetto.recommenders.Slim_BPR_Cython.Recommender_utils import similarityMatrixTopK
-from Progetto.recommenders.Slim_BPR_Cython.Incremental_Training_Early_Stopping import Incremental_Training_Early_Stopping
+from Progetto.recommenders.Base.Recommender import Recommender
+from Progetto.recommenders.SlimBPR.SimilarityMatrixRecommender import SimilarityMatrixRecommender
+from Progetto.recommenders.SlimBPR.Recommender_utils import similarityMatrixTopK
+from Progetto.recommenders.Base.Incremental_Training_Early_Stopping import Incremental_Training_Early_Stopping
 
 
 import subprocess
-import os, sys, time
+import os, sys
 
 import numpy as np
-from Progetto.recommenders.Slim_BPR_Cython.Evaluator import SequentialEvaluator
+from Progetto.recommenders.Base.Evaluator import SequentialEvaluator
 
 
 
@@ -31,7 +31,7 @@ class SLIM_BPR_Cython(SimilarityMatrixRecommender, Recommender, Incremental_Trai
 
 
     def __init__(self, URM_train, positive_threshold=0, URM_validation = None,
-                 recompile_cython = False, final_model_sparse_weights = True, train_with_sparse_weights = False,
+                 recompile_cython = False, final_model_sparse_weights = False, train_with_sparse_weights = False,
                  symmetric = True):
 
 
@@ -97,7 +97,7 @@ class SLIM_BPR_Cython(SimilarityMatrixRecommender, Recommender, Incremental_Trai
 
 
         # Import compiled module
-        from Progetto.recommenders.Slim_BPR_Cython.SLIM_BPR_Cython_Epoch import SLIM_BPR_Cython_Epoch
+        from Progetto.recommenders.SlimBPR.SLIM_BPR_Cython_Epoch import SLIM_BPR_Cython_Epoch
 
         # Select only positive interactions
         URM_train_positive = self.URM_train.copy()

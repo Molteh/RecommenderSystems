@@ -2,8 +2,7 @@ from Progetto.utils.MatrixBuilder import Utils
 from Progetto.utils.Evaluation import Eval
 from Progetto.recommenders.Ensemble_post import Ensemble_post
 from Progetto.recommenders.Ensemble_list import Ensemble_list
-from Progetto.recommenders.Slim_BPR_Cython.SLIM_BPR_Cython import SLIM_BPR_Cython
-#from Progetto.recommenders.MFBPR import MFBPR
+from Progetto.recommenders.MF_BPR import MF_BPR
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
@@ -81,23 +80,23 @@ class Recommender(object):
             self.rec_and_save(rec, target_playlists, "predictions/ensemble_post.csv")
 
     #OUTDATED!
-    def recommend_MFBPR(self, is_test, epochs=10):
+    def recommend_MFBPR(self, is_test, k=100, epochs=10, sgd_mode='adagrad', lr=0.1):
 
         if is_test:
-            rec = MFBPR(self.URM_train, self.u, epochs=epochs)
+            rec = MF_BPR(self.u)
             target_playlists = self.e.get_target_playlists()
-            rec.fit()
+            rec.fit(self.URM_train, k, epochs, sgd_mode, lr)
             return self.rec_and_evaluate(rec, target_playlists)
         else:
-            rec = MFBPR(self.URM_train, self.u, epochs=epochs)
+            rec = MF_BPR(self.u)
             target_playlists = self.u.get_target_playlists()
-            rec.fit()
-            self.rec_and_save(rec, target_playlists, "predictions/MFBPR.csv")
+            rec.fit(self.URM_full, k, epochs, sgd_mode, lr)
+            self.rec_and_save(rec, target_playlists, "predictions/MF_BPR.csv")
 
 
 if __name__ == '__main__':
     run = Recommender(n=0)
-    run.recommend_ensemble_post(True, weights=(0,0,0,0,1))
+    run.recommend_MFBPR(True)
 
 
 
