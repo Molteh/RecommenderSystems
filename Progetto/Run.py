@@ -55,28 +55,28 @@ class Recommender(object):
         result.to_csv(path, index=False)
 
     def recommend_ensemble_post(self, is_test, knn=(150, 150, 150, 250, 250), shrink=(10, 10, 5),
-                                weights=(1.65, 0.55, 1, 0.1, 0.005), k=300, cython=True, epochs=5, normalize=False,
+                                weights=(1.65, 0.55, 1, 0.1, 0.005), k=300, epochs=5, normalize=False,
                                 lr=0.1):
         rec = Ensemble_post(self.u)
         if is_test:
             target_playlists = self.e.get_target_playlists()
-            rec.fit(self.URM_train, knn, shrink, weights, k, cython, epochs, normalize, lr)
+            rec.fit(self.URM_train, knn, shrink, weights, k, epochs, normalize, lr)
             return self.rec_and_evaluate(rec, target_playlists)
         else:
             target_playlists = self.u.get_target_playlists()
-            rec.fit(self.URM_full, knn, shrink, weights, k, cython, epochs, normalize, lr)
+            rec.fit(self.URM_full, knn, shrink, weights, k, epochs, normalize, lr)
             self.rec_and_save(rec, target_playlists, "predictions/ensemble_post.csv")
 
     def recommend_ensemble_list(self, is_test, knn=(150, 150, 150, 250), shrink=(10, 10, 5),
-                                weights=(1.65, 0.55, 1, 1), cython=True, epochs=5, lr=0.1):
+                                weights=(1.65, 0.55, 1, 1), epochs=5, lr=0.1):
         rec = Ensemble_list(self.u)
         if is_test:
             target_playlists = self.e.get_target_playlists()
-            rec.fit(self.URM_train, knn, shrink, weights, cython, epochs, lr)
+            rec.fit(self.URM_train, knn, shrink, weights, epochs, lr)
             return self.rec_and_evaluate(rec, target_playlists)
         else:
             target_playlists = self.u.get_target_playlists()
-            rec.fit(self.URM_full, knn, shrink, weights, cython, epochs, lr)
+            rec.fit(self.URM_full, knn, shrink, weights, epochs, lr)
             self.rec_and_save(rec, target_playlists, "predictions/ensemble_post.csv")
 
     #OUTDATED!

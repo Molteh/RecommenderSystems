@@ -15,27 +15,26 @@ class Ensemble_post(object):
         self.URM = 0
         self.weights = 0
 
-    def fit(self, URM, knn, shrink, weights, k, cython, epochs, lr, norm=False, sgd_mode='rmsprop'):
+    def fit(self, URM, knn, shrink, weights, k, epochs, lr, norm=False, sgd_mode='rmsprop'):
         self.URM = URM
         self.weights = weights
         self.norm = norm
 
         if weights[0] != 0:
-            self.S_CF_I = self.u.get_itemsim_CF(self.URM, knn[0], shrink[0], cython)
+            self.S_CF_I = self.u.get_itemsim_CF(self.URM, knn[0], shrink[0])
 
         if weights[1] != 0:
-            self.S_CF_U = self.u.get_usersim_CF(self.URM, knn[1], shrink[1], cython)
+            self.S_CF_U = self.u.get_usersim_CF(self.URM, knn[1], shrink[1])
 
         if weights[2] != 0:
-            self.S_CB = self.u.get_itemsim_CB(knn[2], shrink[2], cython)
+            self.S_CB = self.u.get_itemsim_CB(knn[2], shrink[2])
 
         if weights[3] != 0:
             self.S_SVD = self.u.get_itemsim_SVD(self.URM, knn[3], k)
 
         if weights[4] != 0:
             slim_BPR_Cython = SLIM_BPR_Cython(self.URM)
-            slim_BPR_Cython.fit(epochs=epochs, sgd_mode=sgd_mode, gamma=0.2,
-                                learning_rate=lr, topK=knn[4])
+            slim_BPR_Cython.fit(epochs=epochs, sgd_mode=sgd_mode, gamma=0.2, learning_rate=lr, topK=knn[4])
             self.S_Slim = slim_BPR_Cython.W
 
     def recommend(self, target_playlist):

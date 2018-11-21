@@ -8,6 +8,7 @@ from sklearn.utils.extmath import randomized_svd
 
 from Progetto.utils.cython.Compute_Similarity_Cython import Compute_Similarity_Cython as Cython_Cosine_Similarity
 
+
 class Utils(object):
 
     def __init__(self, train, tracks, target_playlists, train_sequential):
@@ -42,8 +43,7 @@ class Utils(object):
         return row
 
     @staticmethod
-    def get_similarity(matrix, knn, shrink, cython):
-
+    def get_similarity(matrix, knn, shrink):
         similarity = Cython_Cosine_Similarity(matrix, normalize=True, shrink=shrink, similarity='cosine', topK=knn)
         return similarity.compute_similarity().tocsr()
 
@@ -75,17 +75,17 @@ class Utils(object):
         ICM = sp.hstack((ICM_artists, ICM_albums))
         return ICM
 
-    def get_itemsim_CB(self, knn, shrink, cython):
+    def get_itemsim_CB(self, knn, shrink):
         ICM = self.get_ICM()
-        return self.get_similarity(ICM.T, knn, shrink, cython)
+        return self.get_similarity(ICM.T, knn, shrink)
 
-    def get_itemsim_CF(self, URM, knn, shrink, cython):
+    def get_itemsim_CF(self, URM, knn, shrink):
         UCM = self.get_UCM(URM)
-        return self.get_similarity(UCM, knn, shrink, cython)
+        return self.get_similarity(UCM, knn, shrink)
 
-    def get_usersim_CF(self, URM, knn, shrink, cython):
+    def get_usersim_CF(self, URM, knn, shrink):
         UCM = self.get_UCM(URM.T)
-        return self.get_similarity(UCM, knn, shrink, cython)
+        return self.get_similarity(UCM, knn, shrink)
 
     @staticmethod
     def get_itemsim_SVD(URM_old, knn, k):
