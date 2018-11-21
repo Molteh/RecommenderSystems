@@ -96,8 +96,7 @@ class Recommender(object):
 
 if __name__ == '__main__':
     run = Recommender(n=0)
-    run.recommend_ensemble_post(False, k=100, epochs=1, weights=(0,0,0,0,1))
-
+    run.recommend_MFBPR(True)
 
 
 
