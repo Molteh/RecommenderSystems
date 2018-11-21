@@ -1,6 +1,7 @@
 from Progetto.utils.MatrixBuilder import Utils
 from Progetto.utils.Evaluation import Eval
 from Progetto.recommenders.Ensemble_post import Ensemble_post
+from Progetto.recommenders.Ensemble_list import Ensemble_list
 from Progetto.recommenders.Slim_BPR_Cython.SLIM_BPR_Cython import SLIM_BPR_Cython
 #from Progetto.recommenders.MFBPR import MFBPR
 import pandas as pd
@@ -26,11 +27,11 @@ class Recommender(object):
 
         for i, target_playlist in tqdm(enumerate(np.array(target_playlists))):
             result_tracks = recommender.recommend(int(target_playlist))
-            string_rec = ' '.join(map(str, result_tracks.reshape(1, 10)[0]))
             final_result['playlist_id'][i] = int(target_playlist)
             if is_test:
                 final_result['track_ids'][i] = result_tracks
             else:
+                string_rec = ' '.join(map(str, result_tracks.reshape(1, 10)[0]))
                 final_result['track_ids'][i] = string_rec
         return final_result
 
@@ -55,29 +56,41 @@ class Recommender(object):
         result.to_csv(path, index=False)
 
     def recommend_SlimBPR_Cython(self, is_test, recompile=False, epochs=5, learning_rate=0.1, knn=250, sparse_weights=False,
-                                 pt=0, sgd='rmsprop', validate=False, lambda_i = 0.0, lambda_j = 0.0):
+                                 pt=0, sgd='rmsprop'):
         if is_test:
             rec = SLIM_BPR_Cython(self.URM_train, recompile_cython=recompile, positive_threshold=pt, sparse_weights=sparse_weights, sgd_mode=sgd)
             target_playlists = self.e.get_target_playlists()
-            rec.fit(epochs=epochs, batch_size=1, learning_rate=learning_rate, topK=knn, validate=validate, target_playlists=target_playlists, e=self.e,
-                    validate_every_N_epochs = 1, start_validation_after_N_epochs = 2, lambda_i = lambda_i, lambda_j = lambda_j)
+            rec.fit(epochs=epochs, batch_size=1, learning_rate=learning_rate, topK=knn)
             return self.rec_and_evaluate(rec, target_playlists)
         else:
             rec = SLIM_BPR_Cython(self.URM_full, recompile_cython=recompile, positive_threshold=pt, sparse_weights=sparse_weights, sgd_mode=sgd)
             target_playlists = self.u.get_target_playlists()
-            rec.fit(epochs=epochs, batch_size=1, learning_rate=learning_rate, topK=knn, lambda_i = lambda_i, lambda_j = lambda_j)
+            rec.fit(epochs=epochs, batch_size=1, learning_rate=learning_rate, topK=knn)
             self.rec_and_save(rec, target_playlists, "predictions/slim_BPR.csv")
 
     def recommend_ensemble_post(self, is_test, knn=(150, 150, 150, 250, 250), shrink=(10, 10, 5),
-                                weights=(1.65, 0.55, 1, 0.1, 0.005), k=300, cython=True, epochs=5, minmax=False):
+                                weights=(1.65, 0.55, 1, 0.1, 0.005), k=300, cython=True, epochs=5, normalize=False,
+                                lr=0.1):
         rec = Ensemble_post(self.u)
         if is_test:
             target_playlists = self.e.get_target_playlists()
-            rec.fit(self.URM_train, knn, shrink, weights, k, cython, epochs, minmax)
+            rec.fit(self.URM_train, knn, shrink, weights, k, cython, epochs, normalize, lr)
             return self.rec_and_evaluate(rec, target_playlists)
         else:
             target_playlists = self.u.get_target_playlists()
-            rec.fit(self.URM_full, knn, shrink, weights, k, cython, epochs, minmax)
+            rec.fit(self.URM_full, knn, shrink, weights, k, cython, epochs, normalize, lr)
+            self.rec_and_save(rec, target_playlists, "predictions/ensemble_post.csv")
+
+    def recommend_ensemble_list(self, is_test, knn=(150, 150, 150, 250), shrink=(10, 10, 5),
+                                weights=(1.65, 0.55, 1, 1), cython=True, epochs=5, lr=0.1):
+        rec = Ensemble_list(self.u)
+        if is_test:
+            target_playlists = self.e.get_target_playlists()
+            rec.fit(self.URM_train, knn, shrink, weights, cython, epochs, lr)
+            return self.rec_and_evaluate(rec, target_playlists)
+        else:
+            target_playlists = self.u.get_target_playlists()
+            rec.fit(self.URM_full, knn, shrink, weights, cython, epochs, lr)
             self.rec_and_save(rec, target_playlists, "predictions/ensemble_post.csv")
 
     #OUTDATED!
@@ -96,8 +109,16 @@ class Recommender(object):
 
 
 if __name__ == '__main__':
-    run = Recommender(n=5)
-    run.recommend_ensemble_post(False, weights=(1.65, 0.55, 1, 0, 0.005), epochs=500, minmax=False)
+    run = Recommender(n=0)
+    run.recommend_ensemble_post(True, weights=(1.65, 0.55, 1, 0, 0.005))
+    run.recommend_ensemble_post(True, normalize=True, weights=(1, 0.9, 0.3, 0, 0.005))
+    run.recommend_ensemble_post(True, normalize=True, weights=(1, 0.9, 0.3, 0, 0.7))
+    run.recommend_ensemble_post(True, normalize=True, weights=(1, 0.9, 0.3, 0, 0.6))
+    run.recommend_ensemble_post(True, normalize=True, weights=(1, 0.9, 0.3, 0, 0.5))
+    run.recommend_ensemble_post(True, normalize=True, weights=(1, 0.9, 0.3, 0, 0.4))
+
+
+
 
 
 
