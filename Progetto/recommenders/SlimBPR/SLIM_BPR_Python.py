@@ -11,7 +11,7 @@ import time
 
 import numpy as np
 import scipy.sparse as sps
-from Progetto.recommenders.SlimBPR.Recommender_utils import similarityMatrixTopK
+from Progetto.recommenders.Base.Recommender_utils import similarityMatrixTopK
 from Progetto.recommenders.SlimBPR.SimilarityMatrixRecommender import SimilarityMatrixRecommender
 from scipy.special import expit
 

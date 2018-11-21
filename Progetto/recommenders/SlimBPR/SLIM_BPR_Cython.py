@@ -9,7 +9,7 @@ Created on 07/09/17
 
 from Progetto.recommenders.Base.Recommender import Recommender
 from Progetto.recommenders.SlimBPR.SimilarityMatrixRecommender import SimilarityMatrixRecommender
-from Progetto.recommenders.SlimBPR.Recommender_utils import similarityMatrixTopK
+from Progetto.recommenders.Base.Recommender_utils import similarityMatrixTopK
 from Progetto.recommenders.Base.Incremental_Training_Early_Stopping import Incremental_Training_Early_Stopping
 
 

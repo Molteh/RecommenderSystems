@@ -15,7 +15,7 @@ class Ensemble_post(object):
         self.URM = 0
         self.weights = 0
 
-    def fit(self, URM, knn, shrink, weights, k, epochs, lr, norm=False, sgd_mode='rmsprop'):
+    def fit(self, URM, knn, shrink, weights, k, epochs, lr, norm=False, sgd_mode='adagrad'):
         self.URM = URM
         self.weights = weights
         self.norm = norm
