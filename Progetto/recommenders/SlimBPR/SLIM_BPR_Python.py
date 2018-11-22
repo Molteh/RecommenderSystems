@@ -11,12 +11,12 @@ import time
 
 import numpy as np
 import scipy.sparse as sps
-from Progetto.recommenders.Base.Recommender_utils import similarityMatrixTopK
+from Progetto.recommenders.SlimBPR.Recommender_utils import similarityMatrixTopK
 from Progetto.recommenders.SlimBPR.SimilarityMatrixRecommender import SimilarityMatrixRecommender
 from scipy.special import expit
 
 from Progetto.recommenders.SlimBPR.BPR_sampling import BPR_Sampling
-from Progetto.recommenders.Base.Recommender import Recommender
+from Progetto.recommenders.SlimBPR.Recommender import Recommender
 
 
 def sigmoidFunction(x):
@@ -27,7 +27,7 @@ class SLIM_BPR_Python(BPR_Sampling, SimilarityMatrixRecommender, Recommender):
 
     RECOMMENDER_NAME = "SLIM_BPR_Recommender"
 
-    def __init__(self, URM_train, positive_threshold=0, sparse_weights = False):
+    def __init__(self, URM_train, positive_threshold=4, sparse_weights = False):
         super(SLIM_BPR_Python, self).__init__()
 
         """

@@ -7,17 +7,17 @@ Created on 07/09/17
 """
 
 
-from Progetto.recommenders.Base.Recommender import Recommender
+from Progetto.recommenders.SlimBPR.Recommender import Recommender
 from Progetto.recommenders.SlimBPR.SimilarityMatrixRecommender import SimilarityMatrixRecommender
-from Progetto.recommenders.Base.Recommender_utils import similarityMatrixTopK
-from Progetto.recommenders.Base.Incremental_Training_Early_Stopping import Incremental_Training_Early_Stopping
+from Progetto.recommenders.SlimBPR.Recommender_utils import similarityMatrixTopK
+from Progetto.recommenders.SlimBPR.Incremental_Training_Early_Stopping import Incremental_Training_Early_Stopping
 
 
 import subprocess
-import os, sys
+import os, sys, time
 
 import numpy as np
-from Progetto.recommenders.Base.Evaluator import SequentialEvaluator
+from Progetto.recommenders.SlimBPR.Evaluator import SequentialEvaluator
 
 
 
@@ -31,7 +31,7 @@ class SLIM_BPR_Cython(SimilarityMatrixRecommender, Recommender, Incremental_Trai
 
 
     def __init__(self, URM_train, positive_threshold=0, URM_validation = None,
-                 recompile_cython = False, final_model_sparse_weights = False, train_with_sparse_weights = False,
+                 recompile_cython = True, final_model_sparse_weights = True, train_with_sparse_weights = False,
                  symmetric = True):
 
 
@@ -222,8 +222,7 @@ class SLIM_BPR_Cython(SimilarityMatrixRecommender, Recommender, Incremental_Trai
         # Run compile script setting the working directory to ensure the compiled file are contained in the
         # appropriate subfolder and not the project root
 
-        #compiledModuleSubfolder = "/SLIM_BPR/Cython"
-        compiledModuleSubfolder = ""
+        compiledModuleSubfolder = "/recommenders/SlimBPR"
         #fileToCompile_list = ['Sparse_Matrix_CSR.pyx', 'SLIM_BPR_Cython_Epoch.pyx']
         fileToCompile_list = ['SLIM_BPR_Cython_Epoch.pyx']
 

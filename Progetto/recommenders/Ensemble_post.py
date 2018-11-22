@@ -33,7 +33,7 @@ class Ensemble_post(object):
             self.S_SVD = self.u.get_itemsim_SVD(self.URM, knn[3], k)
 
         if weights[4] != 0:
-            slim_BPR_Cython = SLIM_BPR_Cython(self.URM)
+            slim_BPR_Cython = SLIM_BPR_Cython(self.URM, recompile_cython=True)
             slim_BPR_Cython.fit(epochs=epochs, sgd_mode=sgd_mode, gamma=0.2, learning_rate=lr, topK=knn[4])
             self.S_Slim = slim_BPR_Cython.W
 
