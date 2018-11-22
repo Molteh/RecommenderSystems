@@ -6,9 +6,9 @@ Created on 07/09/17
 @author: Maurizio Ferrari Dacrema
 """
 
-from Progetto.recommenders.Base.Recommender import Recommender
-from Progetto.recommenders.Base.Incremental_Training_Early_Stopping import Incremental_Training_Early_Stopping
-from Progetto.recommenders.Base.Evaluator import SequentialEvaluator
+from Progetto.recommenders.MatrixFactorization.Recommender import Recommender
+from Progetto.recommenders.MatrixFactorization.Incremental_Training_Early_Stopping import Incremental_Training_Early_Stopping
+from Progetto.recommenders.MatrixFactorization.Evaluator import SequentialEvaluator
 
 import subprocess
 import os, sys

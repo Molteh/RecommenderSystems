@@ -15,7 +15,7 @@ class Ensemble_post(object):
         self.URM = 0
         self.weights = 0
 
-    def fit(self, URM, knn, shrink, weights, k, epochs, lr, norm=False, sgd_mode='adagrad'):
+    def fit(self, URM, knn, shrink, weights, k, epochs, lr, sgd_mode, gamma, beta1, beta2, norm):
         self.URM = URM
         self.weights = weights
         self.norm = norm
@@ -33,9 +33,10 @@ class Ensemble_post(object):
             self.S_SVD = self.u.get_itemsim_SVD(self.URM, knn[3], k)
 
         if weights[4] != 0:
-            slim_BPR_Cython = SLIM_BPR_Cython(self.URM, recompile_cython=True)
-            slim_BPR_Cython.fit(epochs=epochs, sgd_mode=sgd_mode, gamma=0.2, learning_rate=lr, topK=knn[4])
-            self.S_Slim = slim_BPR_Cython.W
+            slim_BPR_Cython = SLIM_BPR_Cython(self.URM)
+            slim_BPR_Cython.fit(epochs=epochs, sgd_mode=sgd_mode, learning_rate=lr, topK=knn[4], gamma=gamma,
+                                beta_1=beta1, beta_2=beta2)
+            self.S_Slim = slim_BPR_Cython.W_sparse
 
     def recommend(self, target_playlist):
         row_cb = 0
