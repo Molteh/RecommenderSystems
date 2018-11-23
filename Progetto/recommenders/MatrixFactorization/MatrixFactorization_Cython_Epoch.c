@@ -2370,7 +2370,7 @@ static const char __pyx_k_Non_native_byte_order_not_suppor[] = "Non-native byte 
 static const char __pyx_k_Out_of_bounds_on_buffer_access_a[] = "Out of bounds on buffer access (axis %d)";
 static const char __pyx_k_Processed_2f_in_2f_seconds_BPR_l[] = "Processed {} ( {:.2f}% ) in {:.2f} seconds. BPR loss {:.2E}. Sample per second: {:.0f}";
 static const char __pyx_k_Processed_2f_in_2f_seconds_MSE_l[] = "Processed {} ( {:.2f}% ) in {:.2f} seconds. MSE loss {:.2E}. Sample per second: {:.0f}";
-static const char __pyx_k_Progetto_recommenders_Base_Recom[] = "Progetto.recommenders.Base.Recommender_utils";
+static const char __pyx_k_Progetto_recommenders_MatrixFact[] = "Progetto.recommenders.MatrixFactorization.Recommender_utils";
 static const char __pyx_k_SGD_mode_not_valid_Acceptable_va[] = "SGD_mode not valid. Acceptable values are: 'sgd', 'adagrad', 'rmsprop', 'adam'. Provided value was '{}'";
 static const char __pyx_k_Unable_to_convert_item_to_object[] = "Unable to convert item to object";
 static const char __pyx_k_epochIteration_Cython_ASY_SVD_SG[] = "epochIteration_Cython_ASY_SVD_SGD";
@@ -2415,7 +2415,7 @@ static PyObject *__pyx_kp_s_Out_of_bounds_on_buffer_access_a;
 static PyObject *__pyx_n_s_PickleError;
 static PyObject *__pyx_kp_s_Processed_2f_in_2f_seconds_BPR_l;
 static PyObject *__pyx_kp_s_Processed_2f_in_2f_seconds_MSE_l;
-static PyObject *__pyx_n_s_Progetto_recommenders_Base_Recom;
+static PyObject *__pyx_n_s_Progetto_recommenders_MatrixFact;
 static PyObject *__pyx_n_s_RuntimeError;
 static PyObject *__pyx_kp_s_SGD_mode_not_valid_Acceptable_va;
 static PyObject *__pyx_n_s_TypeError;
@@ -27168,7 +27168,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_PickleError, __pyx_k_PickleError, sizeof(__pyx_k_PickleError), 0, 0, 1, 1},
   {&__pyx_kp_s_Processed_2f_in_2f_seconds_BPR_l, __pyx_k_Processed_2f_in_2f_seconds_BPR_l, sizeof(__pyx_k_Processed_2f_in_2f_seconds_BPR_l), 0, 0, 1, 0},
   {&__pyx_kp_s_Processed_2f_in_2f_seconds_MSE_l, __pyx_k_Processed_2f_in_2f_seconds_MSE_l, sizeof(__pyx_k_Processed_2f_in_2f_seconds_MSE_l), 0, 0, 1, 0},
-  {&__pyx_n_s_Progetto_recommenders_Base_Recom, __pyx_k_Progetto_recommenders_Base_Recom, sizeof(__pyx_k_Progetto_recommenders_Base_Recom), 0, 0, 1, 1},
+  {&__pyx_n_s_Progetto_recommenders_MatrixFact, __pyx_k_Progetto_recommenders_MatrixFact, sizeof(__pyx_k_Progetto_recommenders_MatrixFact), 0, 0, 1, 1},
   {&__pyx_n_s_RuntimeError, __pyx_k_RuntimeError, sizeof(__pyx_k_RuntimeError), 0, 0, 1, 1},
   {&__pyx_kp_s_SGD_mode_not_valid_Acceptable_va, __pyx_k_SGD_mode_not_valid_Acceptable_va, sizeof(__pyx_k_SGD_mode_not_valid_Acceptable_va), 0, 0, 1, 0},
   {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
@@ -28078,7 +28078,7 @@ if (!__Pyx_RefNanny) {
   /* "MatrixFactorization_Cython_Epoch.pyx":18
  * #defining NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
  * 
- * from Progetto.recommenders.Base.Recommender_utils import check_matrix             # <<<<<<<<<<<<<<
+ * from Progetto.recommenders.MatrixFactorization.Recommender_utils import check_matrix             # <<<<<<<<<<<<<<
  * import numpy as np
  * cimport numpy as np
  */
@@ -28087,7 +28087,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_INCREF(__pyx_n_s_check_matrix);
   __Pyx_GIVEREF(__pyx_n_s_check_matrix);
   PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_check_matrix);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_Progetto_recommenders_Base_Recom, __pyx_t_1, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_Progetto_recommenders_MatrixFact, __pyx_t_1, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_check_matrix); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 18, __pyx_L1_error)
@@ -28098,7 +28098,7 @@ if (!__Pyx_RefNanny) {
 
   /* "MatrixFactorization_Cython_Epoch.pyx":19
  * 
- * from Progetto.recommenders.Base.Recommender_utils import check_matrix
+ * from Progetto.recommenders.MatrixFactorization.Recommender_utils import check_matrix
  * import numpy as np             # <<<<<<<<<<<<<<
  * cimport numpy as np
  * import time
