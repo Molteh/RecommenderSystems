@@ -135,8 +135,8 @@ class SLIM_BPR_Cython(SimilarityMatrixRecommender, Recommender, Incremental_Trai
         else:
             self.validation_every_n = np.inf
 
-        if evaluator_object is None and stop_on_validation:
-            evaluator_object = SequentialEvaluator(self.URM_validation, [5])
+        #if evaluator_object is None and stop_on_validation:
+        #    evaluator_object = SequentialEvaluator(self.URM_validation, [5])
 
 
         self.batch_size = batch_size
@@ -173,6 +173,9 @@ class SLIM_BPR_Cython(SimilarityMatrixRecommender, Recommender, Incremental_Trai
 
     def _run_epoch(self, num_epoch):
        self.cythonEpoch.epochIteration_Cython()
+
+    def _get_W(self):
+        return self.S_incremental
 
 
 

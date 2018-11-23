@@ -3,6 +3,7 @@ from Progetto.utils.Evaluation import Eval
 from Progetto.recommenders.Ensemble_post import Ensemble_post
 from Progetto.recommenders.Ensemble_list import Ensemble_list
 from Progetto.recommenders.MF_BPR import MF_BPR
+from Progetto.recommenders.SlimBPR.MyEvaluator import MyEvaluator
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
@@ -19,6 +20,7 @@ class Recommender(object):
         self.e = Eval(self.u, (np.random.choice(range(10000), 5000, replace=False)).tolist())
         self.URM_full = self.preprocess_URM(self.u.get_URM(), self.target_playlists, n)
         self.URM_train = self.preprocess_URM(self.e.get_URM_train(), self.e.get_target_playlists(), n)
+        self.myEvaluator = MyEvaluator(URM=self.URM_train, target_playlists=self.target_playlists, e=self.e)
 
     @staticmethod
     def evaluate(recommender, is_test, target_playlists):
@@ -60,7 +62,7 @@ class Recommender(object):
         rec = Ensemble_post(self.u)
         if is_test:
             target_playlists = self.e.get_target_playlists()
-            rec.fit(self.URM_train, knn, shrink, weights, k, epochs, lr, sgd_mode, gamma, beta1, beta2, normalize)
+            rec.fit(self.URM_train, self.URM_full, knn, shrink, weights, k, epochs, lr, sgd_mode, gamma, beta1, beta2, normalize, self.myEvaluator)
             return self.rec_and_evaluate(rec, target_playlists)
         else:
             target_playlists = self.u.get_target_playlists()

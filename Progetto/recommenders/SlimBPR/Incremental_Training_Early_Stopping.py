@@ -79,6 +79,9 @@ class Incremental_Training_Early_Stopping(object):
         """
         raise NotImplementedError()
 
+    def _get_W(self):
+        raise NotImplementedError()
+
     # def _validation_incremental_model(self):
     #     raise NotImplementedError()
 
@@ -111,8 +114,9 @@ class Incremental_Training_Early_Stopping(object):
 
                 self._update_incremental_model()
 
-                results_run, _ = evaluator_object.evaluateRecommender(self)
-                results_run = results_run[list(results_run.keys())[0]]
+
+                evaluator_object.update(self._get_W())
+                results_run = evaluator_object.rec_and_evaluate()
 
                 print("{}: {}".format(algorithm_name, results_run))
 
@@ -120,7 +124,7 @@ class Incremental_Training_Early_Stopping(object):
                 # If validation is required, check whether result is better
                 if stop_on_validation:
 
-                    current_metric_value = results_run[validation_metric]
+                    current_metric_value = results_run
 
                     if self.best_validation_metric is None or self.best_validation_metric < current_metric_value:
 
