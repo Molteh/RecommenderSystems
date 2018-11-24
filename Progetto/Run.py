@@ -20,7 +20,7 @@ class Recommender(object):
         self.e = Eval(self.u, (np.random.choice(range(10000), 5000, replace=False)).tolist())
         self.URM_full = self.preprocess_URM(self.u.get_URM(), self.target_playlists, n)
         self.URM_train = self.preprocess_URM(self.e.get_URM_train(), self.e.get_target_playlists(), n)
-        self.myEvaluator = MyEvaluator(URM=self.URM_train, target_playlists=self.target_playlists, e=self.e)
+        self.myEvaluator = MyEvaluator(URM=self.URM_train, e=self.e)
 
     @staticmethod
     def evaluate(recommender, is_test, target_playlists):
@@ -58,11 +58,12 @@ class Recommender(object):
 
     def recommend_ensemble_post(self, is_test, knn=(150, 150, 150, 250, 250), shrink=(10, 10, 5),
                                 weights=(1.65, 0.55, 1, 0.1, 0.005), k=300, epochs=5, normalize=False,
-                                lr=0.1, sgd_mode='sgd', gamma=0.95, beta1=0.9, beta2=0.999):
+                                lr=0.1, sgd_mode='adagrad', gamma=0.95, beta1=0.9, beta2=0.999):
         rec = Ensemble_post(self.u)
         if is_test:
             target_playlists = self.e.get_target_playlists()
-            rec.fit(self.URM_train, self.URM_full, knn, shrink, weights, k, epochs, lr, sgd_mode, gamma, beta1, beta2, normalize, self.myEvaluator)
+            rec.fit(self.URM_train, knn, shrink, weights, k, epochs, lr, sgd_mode, gamma, beta1, beta2,
+                    normalize, self.myEvaluator)
             return self.rec_and_evaluate(rec, target_playlists)
         else:
             target_playlists = self.u.get_target_playlists()

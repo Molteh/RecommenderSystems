@@ -6,14 +6,13 @@ from tqdm import tqdm
 
 class MyEvaluator(object):
 
-    def __init__(self, URM, target_playlists, norm=True, weights=(0,0,0,0,0), e=None):
+    def __init__(self, URM, norm=True, weights=(0,0,0,0,0), e=None):
         self.S_ICF = 0
         self.S_UCF = 0
         self.S_CBR = 0
         self.S_SVD = 0
         self.S_SLIM_BPR = 0
         self.URM = URM
-        self.target_playlists = target_playlists
         self.norm = norm
         self.weights = weights
         self.e = e
@@ -81,7 +80,8 @@ class MyEvaluator(object):
         return self.get_top_10(self.URM, target_playlist, row)
 
     def rec_and_evaluate(self):
-        result = self.evaluate(self.target_playlists)
+        target_playlists = self.e.get_target_playlists()
+        result = self.evaluate(target_playlists)
         return self.e.MAP(result, self.e.get_target_tracks())
 
     def evaluate(self, target_playlists):

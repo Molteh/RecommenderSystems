@@ -114,8 +114,7 @@ class Incremental_Training_Early_Stopping(object):
 
                 self._update_incremental_model()
 
-
-                evaluator_object.update(self._get_W())
+                evaluator_object.update(S_SLIM_BPR=self._get_W())
                 results_run = evaluator_object.rec_and_evaluate()
 
                 print("{}: {}".format(algorithm_name, results_run))

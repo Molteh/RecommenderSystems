@@ -172,10 +172,10 @@ class SLIM_BPR_Cython(SimilarityMatrixRecommender, Recommender, Incremental_Trai
         self.S_best = self.S_incremental.copy()
 
     def _run_epoch(self, num_epoch):
-       self.cythonEpoch.epochIteration_Cython()
+        self.cythonEpoch.epochIteration_Cython()
 
     def _get_W(self):
-        return self.S_incremental
+        return self.W_sparse
 
 
 
