@@ -13,7 +13,6 @@ class Ensemble_post(object):
         self.S_SVD = 0
         self.S_Slim = 0
         self.URM = 0
-        self.URM_test = 0
         self.weights = 0
         self.myEvaluator = None
 
@@ -34,16 +33,17 @@ class Ensemble_post(object):
         if weights[3] != 0:
             self.S_SVD = self.u.get_itemsim_SVD(self.URM, knn[3], k)
 
-        self.myEvaluator = myEvaluator
-        myEvaluator.setWeights(self.weights)
-        myEvaluator.update(S_ICF=self.S_CF_I, S_UCF=self.S_CF_U, S_CBR=self.S_CB, S_SVD=self.S_SVD)
-
         if weights[4] != 0:
-            #myEvaluator.setWeights(weights=(1,0,0,0,0))
+            if myEvaluator is not None:
+                self.myEvaluator = myEvaluator
+                myEvaluator.setWeights(self.weights)
+                myEvaluator.update(S_ICF=self.S_CF_I, S_UCF=self.S_CF_U, S_CBR=self.S_CB, S_SVD=self.S_SVD)
+
             slim_BPR_Cython = SLIM_BPR_Cython(self.URM)
             slim_BPR_Cython.fit(epochs=epochs, sgd_mode=sgd_mode, stop_on_validation=True, learning_rate=lr, topK=knn[4],
                                 gamma=gamma, beta_1=beta1, beta_2=beta2, evaluator_object=myEvaluator)
             self.S_Slim = slim_BPR_Cython.W_sparse
+
 
     def recommend(self, target_playlist):
         row_cb = 0
