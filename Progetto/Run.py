@@ -20,14 +20,14 @@ class Recommender(object):
         self.e = Eval(self.u, (np.random.choice(range(10000), 5000, replace=False)).tolist())
         self.URM_full = self.preprocess_URM(self.u.get_URM(), self.target_playlists, n)
         self.URM_train = self.preprocess_URM(self.e.get_URM_train(), self.e.get_target_playlists(), n)
-        self.myEvaluator = MyEvaluator(URM=self.URM_train, e=self.e)
+        self.myEvaluator = MyEvaluator(URM=self.URM_train, norm=False, e=self.e)
 
     @staticmethod
     def evaluate(recommender, is_test, target_playlists):
         final_result = pd.DataFrame(index=range(target_playlists.shape[0]), columns=('playlist_id', 'track_ids'))
 
         for i, target_playlist in tqdm(enumerate(np.array(target_playlists))):
-            result_tracks = recommender.recommend(int(target_playlist))
+            result_tracks = recommender.recommend(i, int(target_playlist))
             final_result['playlist_id'][i] = int(target_playlist)
             if is_test:
                 final_result['track_ids'][i] = result_tracks
@@ -67,6 +67,8 @@ class Recommender(object):
                 ev = None
             target_playlists = self.e.get_target_playlists()
             rec.fit(self.URM_train, knn, shrink, weights, k, epochs, lr, sgd_mode, gamma, beta1, beta2, normalize, ev)
+            #ev.update(S_ICF=rec.S_CF_I, S_UCF=rec.S_CF_U, S_CBR=rec.S_CB, S_SVD=rec.S_SVD, S_SLIM_BPR=rec.S_Slim)
+            #ev.rec_and_evaluate()
             return self.rec_and_evaluate(rec, target_playlists)
         else:
             target_playlists = self.u.get_target_playlists()
@@ -101,8 +103,9 @@ class Recommender(object):
 
 if __name__ == '__main__':
     run = Recommender(n=0)
-    run.recommend_ensemble_post(True, epochs=5, weights=(0, 0, 0, 0, 1), sgd_mode='adagrad', es=True)
-
+    run.recommend_ensemble_post(True, epochs=1, weights=(1.65, 0.55, 1, 0.1, 0.005), sgd_mode='adagrad', es=True)
+    run.recommend_ensemble_post(True, epochs=1, weights=(1.65, 0.4, 1, 0.1, 0.005), sgd_mode='adagrad', es=True)
+    run.recommend_ensemble_post(True, epochs=1, weights=(1.65, 0.4, 1, 0.1, 0.05), sgd_mode='adagrad', es=True)
 
 
 

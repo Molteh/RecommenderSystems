@@ -37,7 +37,7 @@ class MyEvaluator(object):
         if S_SLIM_BPR is not None:
             self.S_SLIM_BPR = S_SLIM_BPR
 
-    def recommend(self, target_playlist):
+    def recommend(self, i, target_playlist):
         row_cb = 0
         row_cf_i = 0
         row_cf_u = 0
@@ -88,7 +88,7 @@ class MyEvaluator(object):
         final_result = pd.DataFrame(index=range(target_playlists.shape[0]), columns=('playlist_id', 'track_ids'))
 
         for i, target_playlist in tqdm(enumerate(np.array(target_playlists))):
-            result_tracks = self.recommend(int(target_playlist))
+            result_tracks = self.recommend(i, int(target_playlist))
             final_result['playlist_id'][i] = int(target_playlist)
             final_result['track_ids'][i] = result_tracks
         return final_result
