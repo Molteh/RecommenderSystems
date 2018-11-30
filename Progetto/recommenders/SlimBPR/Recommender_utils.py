@@ -183,7 +183,7 @@ def removeTopPop(URM_1, URM_2=None, percentageToRemove=0.2):
 #             print("Processed {} cells".format(numCells))
 #
 #         if (len(line)) > 1:
-#             line = line.split(",")
+#             line = line.split.csv(",")
 #
 #             value = line[2].replace("\n", "")
 #

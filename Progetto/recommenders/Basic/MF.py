@@ -12,7 +12,7 @@ class MF_BPR(object):
     def fit(self, URM, k, epochs, sgd_mode, lr):
         self.URM = URM
 
-        matrixFactorization = MatrixFactorization_Cython(self.URM, positive_threshold=0, algorithm='FUNK_SVD')
+        matrixFactorization = MatrixFactorization_Cython(self.URM, positive_threshold=0, algorithm='MF_BPR')
         matrixFactorization.fit(epochs=epochs, num_factors=k, learning_rate=lr, sgd_mode=sgd_mode)
         self.W = matrixFactorization.W_best
         self.H = matrixFactorization.H_best.T

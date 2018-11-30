@@ -2,8 +2,6 @@ import numpy as np
 import scipy.sparse as sp
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.preprocessing import MultiLabelBinarizer
-from scipy.sparse.linalg import svds
-from sklearn.utils.extmath import randomized_svd
 
 
 from Progetto.utils.cython.Compute_Similarity_Cython import Compute_Similarity_Cython as Cython_Cosine_Similarity
@@ -43,14 +41,18 @@ class Utils(object):
         return row
 
     @staticmethod
-    def get_similarity(matrix, knn, shrink):
-        similarity = Cython_Cosine_Similarity(matrix, normalize=True, shrink=shrink, similarity='cosine', topK=knn)
+    def get_similarity(matrix, knn, shrink, normalize, similarity):
+        similarity = Cython_Cosine_Similarity(matrix, normalize=normalize, shrink=shrink, similarity=similarity,
+                                              topK=knn)
         return similarity.compute_similarity().tocsr()
 
     @staticmethod
-    def get_UCM(URM):
-        UCM = TfidfTransformer().fit_transform(URM.T).T
-        return UCM
+    def get_UCM(URM, tfidf):
+        if not tfidf:
+            return URM
+        else:
+            UCM = TfidfTransformer().fit_transform(URM.T).T
+            return UCM
 
     def build_URM(self):
         grouped = self.train.groupby('playlist_id', as_index=True).apply((lambda playlist: list(playlist['track_id'])))
@@ -60,56 +62,32 @@ class Utils(object):
     def get_URM(self):
         return self.URM
 
-    def get_ICM(self):  # returns Item Content Matrix
+    def get_ICM(self, tfidf):  # returns Item Content Matrix
         grouped = self.tracks.groupby('track_id', as_index=True).apply((lambda track: list(track['artist_id'])))
 
         ICM_artists = MultiLabelBinarizer(classes=self.tracks['artist_id'].unique(), sparse_output=True).fit_transform(
             grouped)
-        ICM_artists = TfidfTransformer().fit_transform(ICM_artists.T).T
+        if tfidf:
+            ICM_artists = TfidfTransformer().fit_transform(ICM_artists.T).T
 
         grouped = self.tracks.groupby('track_id', as_index=True).apply((lambda track: list(track['album_id'])))
         ICM_albums = MultiLabelBinarizer(classes=self.tracks['album_id'].unique(), sparse_output=True).fit_transform(
             grouped)
-        ICM_albums = TfidfTransformer().fit_transform(ICM_albums.T).T
+        if tfidf:
+            ICM_albums = TfidfTransformer().fit_transform(ICM_albums.T).T
 
         ICM = sp.hstack((ICM_artists, ICM_albums))
         return ICM
 
-    def get_itemsim_CB(self, knn, shrink):
-        ICM = self.get_ICM()
-        return self.get_similarity(ICM.T, knn, shrink)
+    def get_itemsim_CB(self, knn, shrink, normalize=True, similarity='cosine', tfidf=True):
+        ICM = self.get_ICM(tfidf)
+        return self.get_similarity(ICM.T, knn, shrink, normalize, similarity)
 
-    def get_itemsim_CF(self, URM, knn, shrink):
-        UCM = self.get_UCM(URM)
-        return self.get_similarity(UCM, knn, shrink)
+    def get_itemsim_CF(self, URM, knn, shrink, normalize=True, similarity='cosine', tfidf=True):
+        UCM = self.get_UCM(URM, tfidf)
+        return self.get_similarity(UCM, knn, shrink, normalize, similarity)
 
-    def get_usersim_CF(self, URM, knn, shrink):
-        UCM = self.get_UCM(URM.T)
-        return self.get_similarity(UCM, knn, shrink)
-
-    @staticmethod
-    def get_itemsim_SVD(URM_old, knn, k):
-        S_matrix_list = []
-
-        URM = sp.csr_matrix(URM_old, dtype=float)
-
-        u, s, vt = svds(URM, k=k)
-        v = vt.T
-
-        for i in range(v.shape[0]):
-            S_row = v[i].dot(vt)
-            r = S_row.argsort()[:-knn]
-            S_row[r] = 0
-            S_row_sparse = sp.lil_matrix(S_row)
-            S_matrix_list.append(S_row_sparse.tocsr())
-
-        S = sp.vstack(S_matrix_list).tolil()
-        S.setdiag(0)
-        return S.tocsr()
-
-    @staticmethod
-    def get_itemsim_PureSVD(URM, k):
-        U, Sigma, VT = randomized_svd(URM, n_components=k, n_iter=5, random_state=None)
-        s_Vt = sp.diags(Sigma) * VT
-        return sp.csr_matrix(s_Vt)
+    def get_usersim_CF(self, URM, knn, shrink, normalize=True, similarity='cosine', tfidf=True):
+        UCM = self.get_UCM(URM.T, tfidf)
+        return self.get_similarity(UCM, knn, shrink, normalize, similarity)
 

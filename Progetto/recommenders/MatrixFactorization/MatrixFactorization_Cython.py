@@ -63,7 +63,7 @@ class MatrixFactorization_Cython(Recommender, Incremental_Training_Early_Stoppin
 
 
     def fit(self, epochs=300, batch_size = 1000, num_factors=10,
-            learning_rate = 0.01, sgd_mode='sgd', user_reg = 0.0, positive_reg = 0.0, negative_reg = 0.0,
+            learning_rate = 0.01, sgd_mode='sgd', user_reg = 0.0, positive_reg = 0.000, negative_reg = 0.0,
             stop_on_validation = False, lower_validatons_allowed = 5, validation_metric = "MAP",
             evaluator_object = None, validation_every_n = 5):
 
