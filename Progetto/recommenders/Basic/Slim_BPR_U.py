@@ -11,7 +11,7 @@ class Slim_BPR_U(object):
     def fit(self, URM, knn, epochs, sgd_mode, lr, lower, evaluator):
         self.URM = URM
 
-        slim_BPR_Cython = SLIM_BPR_Cython(self.URM.T)
+        slim_BPR_Cython = SLIM_BPR_Cython(self.URM.T, train_with_sparse_weights=True)
         slim_BPR_Cython.fit(epochs=epochs, sgd_mode=sgd_mode, stop_on_validation=True, learning_rate=lr, topK=knn,
                             evaluator_object=evaluator, lower_validatons_allowed=lower)
         self.S_Slim = slim_BPR_Cython.W_sparse

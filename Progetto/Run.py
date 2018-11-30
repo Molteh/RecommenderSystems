@@ -135,7 +135,7 @@ class Recommender(object):
 
 if __name__ == '__main__':
     run = Recommender()
-    #run.recommend_itemCFR()
+    run.recommend_ensemble_post(False, weights=(1.65, 0.55, 1.1, 0.2, 0.05), epochs=100, es=False, k=400, lr=0.01)
 
 
 
