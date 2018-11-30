@@ -109,17 +109,11 @@ class Recommender(object):
         rec.fit(self.URM_train, k, epochs, sgd_mode, lr)
         return self.rec_and_evaluate(rec, target_playlists)
 
-    def recommend_PureSVD(self, is_test, k=700, n_iter=1, random_state=False):
-        if is_test:
-            rec = PureSVD(self.u)
-            target_playlists = self.e.get_target_playlists()
-            rec.fit(self.URM_train, k, n_iter, random_state)
-            return self.rec_and_evaluate(rec, target_playlists)
-        else:
-            rec = PureSVD(self.u)
-            target_playlists = self.u.get_target_playlists()
-            rec.fit(self.URM_full, k, n_iter, random_state)
-            self.rec_and_save(rec, target_playlists, "predictions/SVD.csv")
+    def recommend_PureSVD(self, k=700, n_iter=1, random_state=False):
+        rec = PureSVD(self.u)
+        target_playlists = self.e.get_target_playlists()
+        rec.fit(self.URM_train, k, n_iter, random_state)
+        return self.rec_and_evaluate(rec, target_playlists)
 
     def recommend_ensemble_post(self, is_test, knn=(150, 150, 150, 250, 250), shrink=(10, 10, 5),
                                 weights=(1.65, 0.55, 1, 0.1, 0.005), k=500, epochs=5,
