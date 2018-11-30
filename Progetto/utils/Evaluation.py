@@ -64,6 +64,8 @@ class Eval(object):
         self.URM_test = self.URM_target.copy().tolil()
         self.URM_test[validation_playlists['playlist_id'], :] = 0
 
+        assert self.URM_valid.nnz + self.URM_test.nnz + self.URM_train.nnz == self.URM.nnz
+
     def get_URM_train(self):
         return self.URM_train
 
