@@ -6,16 +6,14 @@ Created on 07/09/17
 @author: Maurizio Ferrari Dacrema
 """
 
-from Progetto.recommenders.MatrixFactorization.Recommender import Recommender
-from Progetto.recommenders.MatrixFactorization.Incremental_Training_Early_Stopping import Incremental_Training_Early_Stopping
-from Progetto.recommenders.MatrixFactorization.Evaluator import SequentialEvaluator
+from Progetto.recommenders.SlimBPR.Recommender import Recommender
+from Progetto.recommenders.SlimBPR.Incremental_Training_Early_Stopping import Incremental_Training_Early_Stopping
+from Progetto.recommenders.SlimBPR.Evaluator import SequentialEvaluator
 
 import subprocess
 import os, sys
 import pickle
 import numpy as np
-
-
 
 
 class MatrixFactorization_Cython(Recommender, Incremental_Training_Early_Stopping):

@@ -9,6 +9,7 @@ from Progetto.recommenders.Basic.Item_CBR import Item_CBR
 from Progetto.recommenders.Basic.User_CFR import User_CFR
 from Progetto.recommenders.Basic.Slim_BPR import Slim_BPR
 from Progetto.recommenders.Basic.Slim_BPR_U import Slim_BPR_U
+from Progetto.recommenders.Basic.P3Alfa_R import P3Alfa_R
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
@@ -115,6 +116,12 @@ class Recommender(object):
         rec.fit(self.URM_train, k, n_iter, random_state)
         return self.rec_and_evaluate(rec, target_playlists)
 
+    def recommend_P3(self, knn=50, alfa=0.4913308519684296, normalize=True, implicit=True, min_rating=0):
+        rec = P3Alfa_R(self.u)
+        target_playlists = self.e.get_target_playlists()
+        rec.fit(self.URM_train, knn, alfa, normalize, implicit, min_rating)
+        return self.rec_and_evaluate(rec, target_playlists)
+
     def recommend_ensemble_post(self, is_test, knn=(150, 150, 150, 250, 250), shrink=(10, 10, 5),
                                 weights=(1.65, 0.55, 1, 0.1, 0.005), k=500, epochs=5,
                                 lr=0.1, sgd_mode='adagrad', lower=5, es=True):
@@ -135,7 +142,9 @@ class Recommender(object):
 
 if __name__ == '__main__':
     run = Recommender()
-    run.recommend_ensemble_post(False, weights=(1.65, 0.55, 1.1, 0.2, 0.05), epochs=100, es=False, k=400, lr=0.01)
+    run.recommend_P3()
+    run.recommend_P3(knn=600, alfa=1.3209155426441093)
+
 
 
 
