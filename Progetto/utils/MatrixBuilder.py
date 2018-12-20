@@ -32,15 +32,6 @@ class Utils(object):
         return ranking
 
     @staticmethod
-    def get_top(URM, target_playlist, row):
-        row = row.tolil()
-        my_songs = URM.indices[URM.indptr[target_playlist]:URM.indptr[target_playlist + 1]]
-        row[0, my_songs] = -np.inf
-        row = row.tocsr()
-        row = row.indices[np.argsort(row.data)][::-1]
-        return row
-
-    @staticmethod
     def get_similarity(matrix, knn, shrink, normalize, similarity):
         similarity = Cython_Cosine_Similarity(matrix, normalize=normalize, shrink=shrink, similarity=similarity,
                                               topK=knn)
@@ -90,4 +81,24 @@ class Utils(object):
     def get_usersim_CF(self, URM, knn, shrink, normalize=True, similarity='cosine', tfidf=True):
         UCM = self.get_UCM(URM.T, tfidf)
         return self.get_similarity(UCM, knn, shrink, normalize, similarity)
+
+    @staticmethod
+    def okapi_BM_25(dataMatrix, K1=2, B=0.9):
+        assert B > 0 and B < 1, "okapi_BM_25: B must be in (0,1)"
+        assert K1 > 0, "okapi_BM_25: K1 must be > 0"
+
+        dataMatrix = sp.coo_matrix(dataMatrix)
+
+        N = float(dataMatrix.shape[0])
+        idf = np.log(N / (1 + np.bincount(dataMatrix.col)))
+
+        row_sums = np.ravel(dataMatrix.sum(axis=1))
+
+        average_length = row_sums.mean()
+        length_norm = (1.0 - B) + B * row_sums / average_length
+
+        dataMatrix.data = dataMatrix.data * (K1 + 1.0) / (K1 * length_norm[dataMatrix.row] + dataMatrix.data) * idf[
+            dataMatrix.col]
+
+        return dataMatrix.tocsr()
 

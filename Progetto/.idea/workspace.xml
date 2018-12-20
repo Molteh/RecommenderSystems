@@ -1,0 +1,884 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="34c94f58-158e-4911-a0a4-22601b75ddbb" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Progetto/Run.py" beforeDir="false" afterPath="$PROJECT_DIR$/Progetto/Run.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Progetto/recommenders/Basic/Slim_BPR_U.py" beforeDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="-775288761">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="148" />
+          <entry key="project.open.time.0" value="10" />
+          <entry key="project.open.time.2" value="20" />
+          <entry key="project.open.time.3" value="67" />
+          <entry key="project.open.time.4" value="42" />
+          <entry key="project.open.time.5" value="7" />
+          <entry key="project.open.time.6" value="1" />
+          <entry key="project.open.time.8" value="1" />
+          <entry key="project.opened" value="148" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="c" value="14" />
+          <entry key="csv" value="6" />
+          <entry key="html" value="2" />
+          <entry key="ipynb" value="9" />
+          <entry key="py" value="261" />
+          <entry key="pyx" value="22" />
+          <entry key="split" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="C++" value="14" />
+          <entry key="CSV" value="3" />
+          <entry key="Cython" value="20" />
+          <entry key="HTML" value="2" />
+          <entry key="IPNB" value="9" />
+          <entry key="PLAIN_TEXT" value="6" />
+          <entry key="Python" value="261" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="dummy" value="32" />
+          <entry key="py" value="21407" />
+          <entry key="pyx" value="185" />
+          <entry key="txt" value="33" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="Cython" value="185" />
+          <entry key="PLAIN_TEXT" value="65" />
+          <entry key="Python" value="21407" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Progetto/Run.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="146">
+              <caret line="39" column="80" selection-start-line="39" selection-start-column="16" selection-end-line="39" selection-end-column="80" />
+              <folding>
+                <element signature="e#0#46#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Progetto/utils/Evaluation.py">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Progetto/recommenders/SlimBPR/MyEvaluator.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="435">
+              <caret line="32" column="78" selection-start-line="32" selection-start-column="78" selection-end-line="32" selection-end-column="78" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Progetto/recommenders/Basic/Slim_BPR.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="315">
+              <caret line="21" selection-start-line="21" selection-end-line="21" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>check_matrix</find>
+      <find>check</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Francesco Lorenzo &lt;francesco1.lorenzo@mail.polimi.it&gt;" />
+      </list>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/Progetto/iPython Notebook/Main.ipynb" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Item_CFR.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Hybrid.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Ensemble_item.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Ensemble_cf.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/User_CFR.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Slim_BPR.py" />
+        <option value="$PROJECT_DIR$/Progetto/utils/cosine_similarity.py" />
+        <option value="$PROJECT_DIR$/Progetto/utils/cosine_similarity_c.pyx" />
+        <option value="$PROJECT_DIR$/Progetto/utils/similarity/Cosine_Similarity_Cython.pyx" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Ensemble_cfcb3.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Item_CBR.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Ensemble_cfcb2.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Ensemble_cfcb4.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Ensemble_cfcbsvd.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Ensemble_cfcb_sbpr.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Ensemble.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Ensemble_cfcb.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Ensemble_pre.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Slim_BPR_Cython/Ensemble_list.py" />
+        <option value="$PROJECT_DIR$/Progetto/utils/cython/cosine_similarity.pyx" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/MFBPR.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Slim_BPR_Cython/SLIM_BPR_Cython.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/MatrixFactorization/compileCython.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/SlimBPR/MF_BPR.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/SlimBPR/SLIM_BPR_Cython_Epoch.pyx" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Base/Incremental_Training_Early_Stopping.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/SlimBPR/SLIM_BPR.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/MF_BPR.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/MatrixFactorization/MatrixFactorization_Cython_Epoch.pyx" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Pure_SVD.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Ensemble_list.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/SlimBPR/SLIM_BPR_Cython.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Tuner.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Basic/Item_CFR.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Basic/Item_CBR.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Basic/User_CFR.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Basic/MF_BPR.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/SlimBPR/MyEvaluator.py" />
+        <option value="$PROJECT_DIR$/Progetto/utils/MatrixBuilder.py" />
+        <option value="$PROJECT_DIR$/Progetto/utils/Evaluation.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Basic/Slim_BPR_U.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Basic/P3Alpha.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/GraphBased/P3.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/MatrixFactorization/MatrixFactorization_Cython.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/GraphBased/P3Alpha.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Basic/P3_R.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Basic/P3Alfa_R.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Basic/Slim_BPR.py" />
+        <option value="$PROJECT_DIR$/Progetto/recommenders/Ensemble_post.py" />
+        <option value="$PROJECT_DIR$/Progetto/Run.py" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="46" />
+    <option name="y" value="23" />
+    <option name="width" value="1394" />
+    <option name="height" value="877" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State />
+          <State>
+            <id>Buildout</id>
+          </State>
+          <State>
+            <id>General</id>
+          </State>
+          <State>
+            <id>Spelling</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>General</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="Scope" currentSubView="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope" proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="Recommender_Systems_2018" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Recommender_Systems_2018" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Recommender_Systems_2018" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Recommender_Systems_2018" type="462c0819:PsiDirectoryNode" />
+              <item name="Progetto" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Recommender_Systems_2018" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Recommender_Systems_2018" type="462c0819:PsiDirectoryNode" />
+              <item name="Progetto" type="462c0819:PsiDirectoryNode" />
+              <item name="recommenders" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Recommender_Systems_2018" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Recommender_Systems_2018" type="462c0819:PsiDirectoryNode" />
+              <item name="Progetto" type="462c0819:PsiDirectoryNode" />
+              <item name="recommenders" type="462c0819:PsiDirectoryNode" />
+              <item name="MatrixFactorization" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Recommender_Systems_2018" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Recommender_Systems_2018" type="462c0819:PsiDirectoryNode" />
+              <item name="Progetto" type="462c0819:PsiDirectoryNode" />
+              <item name="recommenders" type="462c0819:PsiDirectoryNode" />
+              <item name="SlimBPR" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Recommender_Systems_2018" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Recommender_Systems_2018" type="462c0819:PsiDirectoryNode" />
+              <item name="Progetto" type="462c0819:PsiDirectoryNode" />
+              <item name="utils" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Recommender_Systems_2018" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope">
+        <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
+          <expand>
+            <path>
+              <item name="Recommender_Systems_2018" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+            </path>
+            <path>
+              <item name="Recommender_Systems_2018" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="Progetto" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="Recommender_Systems_2018" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="Progetto" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="recommenders" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="Recommender_Systems_2018" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="Progetto" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="recommenders" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="SlimBPR" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="Recommender_Systems_2018" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="Progetto" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+              <item name="utils" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="terminal" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Progetto/recommenders/MatrixFactorization" />
+      <recent name="$PROJECT_DIR$/Progetto/recommenders" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Progetto/data" />
+      <recent name="$PROJECT_DIR$/Progetto/recommenders/Basic" />
+      <recent name="$PROJECT_DIR$/Progetto/recommenders/Base" />
+      <recent name="$PROJECT_DIR$/Progetto/recommenders" />
+      <recent name="$PROJECT_DIR$/Progetto/recommenders/MatrixFactorization" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python.Run (1)">
+    <configuration name="MatrixBuilder" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Recommender_Systems_2018" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Utils" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Utils/MatrixBuilder.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Run (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Recommender_Systems_2018" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Progetto" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Progetto/Run.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Run" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Recommender_Systems_2018" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/2018/Run.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.Run" />
+      <item itemvalue="Python.MatrixBuilder" />
+      <item itemvalue="Python.Run (1)" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.Run (1)" />
+        <item itemvalue="Python.Run" />
+        <item itemvalue="Python.MatrixBuilder" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="34c94f58-158e-4911-a0a4-22601b75ddbb" name="Default Changelist" comment="" />
+      <created>1540230175227</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1540230175227</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Initial commit">
+      <created>1540234818050</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1540234818050</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Second commit">
+      <created>1540237119163</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1540237119163</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Test">
+      <created>1540237565397</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1540237565397</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Test">
+      <created>1540294471603</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1540294471603</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Test">
+      <created>1540300584998</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1540300584998</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Test">
+      <created>1540362358738</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1540362358738</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Test">
+      <created>1540365935848</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1540365935849</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Test">
+      <created>1540449819498</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1540449819498</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Test">
+      <created>1540598421062</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1540598421062</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Test">
+      <created>1540650988915</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1540650988915</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Test">
+      <created>1540668327446</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1540668327446</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Test">
+      <created>1540819403744</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1540819403744</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Test">
+      <created>1540835600840</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1540835600840</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Test">
+      <created>1540844050499</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1540844050499</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Test">
+      <created>1540919802065</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1540919802065</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Test">
+      <created>1540976585487</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1540976585487</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Test">
+      <created>1541619211159</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1541619211159</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Test">
+      <created>1541942848302</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1541942848302</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Test">
+      <created>1541970408821</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1541970408821</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Test">
+      <created>1542055024120</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1542055024122</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Test">
+      <created>1542055035662</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1542055035662</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Test">
+      <created>1542122363135</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1542122363136</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Test">
+      <created>1542147389442</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1542147389442</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Test">
+      <created>1542218392531</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1542218392531</updated>
+    </task>
+    <task id="LOCAL-00025" summary="Test">
+      <created>1542229802315</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1542229802315</updated>
+    </task>
+    <task id="LOCAL-00026" summary="Test">
+      <created>1542270385135</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1542270385135</updated>
+    </task>
+    <task id="LOCAL-00027" summary="Test">
+      <created>1542301633891</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1542301633891</updated>
+    </task>
+    <task id="LOCAL-00028" summary="Test">
+      <created>1542410201229</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1542410201229</updated>
+    </task>
+    <task id="LOCAL-00029" summary="Test">
+      <created>1542410293705</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1542410293705</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Test">
+      <created>1542635239573</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1542635239573</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Test">
+      <created>1542829081218</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1542829081218</updated>
+    </task>
+    <task id="LOCAL-00032" summary="Test">
+      <created>1542829867327</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1542829867327</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Test">
+      <created>1542831312956</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1542831312956</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Test">
+      <created>1542924232767</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1542924232767</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Test">
+      <created>1543046960458</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1543046960458</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Test">
+      <created>1543599841824</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1543599841824</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Test">
+      <created>1543600117726</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1543600117726</updated>
+    </task>
+    <task id="LOCAL-00038" summary="Test">
+      <created>1543600149275</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1543600149275</updated>
+    </task>
+    <task id="LOCAL-00039" summary="Test">
+      <created>1543614908319</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1543614908320</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Test">
+      <created>1543652458790</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1543652458790</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
+    <servers />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="46" y="23" width="1394" height="877" extended-state="0" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4955414" visible="true" weight="0.29215977" />
+      <window_info id="Structure" order="1" sideWeight="0.5044586" side_tool="true" weight="0.16863905" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32866243" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49499285" weight="0.32356688" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32866243" />
+      <window_info anchor="bottom" id="Inspection Results" order="8" sideWeight="0.49785408" weight="0.32916668" />
+      <window_info anchor="bottom" id="Terminal" order="9" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50500715" side_tool="true" weight="0.32587412" />
+      <window_info anchor="bottom" id="Python Console" order="11" />
+      <window_info anchor="bottom" id="Messages" order="12" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="R Graphics" order="3" />
+      <window_info anchor="right" id="R Packages" order="4" weight="0.32890856" />
+    </layout>
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ORDER">
+      <list>
+        <option value="0" />
+        <option value="2" />
+        <option value="3" />
+        <option value="1" />
+      </list>
+    </option>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Initial commit" />
+    <MESSAGE value="Second commit" />
+    <MESSAGE value="Test" />
+    <option name="LAST_COMMIT_MESSAGE" value="Test" />
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>row[10052]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>row[16935]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>row[9811]</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$USER_HOME$/Downloads/RecSys_Course_2018-master/run_all_algorithms.py" />
+    <entry file="file://$USER_HOME$/Downloads/RecSys_Course_2018-master/SLIM_BPR/Cython/SLIM_BPR_Cython.py" />
+    <entry file="file://$PROJECT_DIR$/Progetto/recommenders/MatrixFactorization/MatrixFactorization_Cython_Epoch.c" />
+    <entry file="file://$PROJECT_DIR$/Progetto/recommenders/MatrixFactorization/Recommender_utils.py" />
+    <entry file="file://$PROJECT_DIR$/Progetto/recommenders/SlimBPR/SLIM_BPR_Cython_Epoch.html" />
+    <entry file="file://$PROJECT_DIR$/Progetto/recommenders/SlimBPR/SLIM_BPR.py" />
+    <entry file="file://$PROJECT_DIR$/Progetto/recommenders/SlimBPR/SimilarityMatrixRecommender.py" />
+    <entry file="file://$PROJECT_DIR$/Progetto/recommenders/SlimBPR/Recommender.py" />
+    <entry file="file://$PROJECT_DIR$/Progetto/recommenders/SlimBPR/Recommender_utils.py" />
+    <entry file="file://$USER_HOME$/Downloads/RecSys_Course_2018-master/MatrixFactorization/PureSVD.py" />
+    <entry file="file://$PROJECT_DIR$/Progetto/recommenders/SlimBPR/Incremental_Training_Early_Stopping.py" />
+    <entry file="file:///Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/numpy/core/fromnumeric.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="141">
+          <caret line="49" selection-start-line="49" selection-end-line="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Progetto/recommenders/MatrixFactorization/Recommender.py" />
+    <entry file="file://$PROJECT_DIR$/Progetto/predictions/ensemble_post.csv" />
+    <entry file="file://$PROJECT_DIR$/Progetto/recommenders/MatrixFactorization/Incremental_Training_Early_Stopping.py" />
+    <entry file="file://$PROJECT_DIR$/Progetto/recommenders/SlimBPR/SLIM_BPR_Cython_Epoch.c" />
+    <entry file="file://$PROJECT_DIR$/Progetto/recommenders/Ensemble_list.py" />
+    <entry file="file://$PROJECT_DIR$/Progetto/recommenders/SlimBPR/SLIM_BPR_Cython_Epoch.pyx" />
+    <entry file="file://$PROJECT_DIR$/Progetto/recommenders/MatrixFactorization/MatrixFactorization_Cython_Epoch.pyx" />
+    <entry file="file:///Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/scipy/sparse/base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7005">
+          <caret line="477" selection-start-line="477" selection-end-line="477" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/scipy/sparse/csr.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="243" selection-start-line="243" selection-end-line="243" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Progetto/recommenders/Basic/Pure_SVD.py" />
+    <entry file="file:///Library/Frameworks/Python.framework/Versions/3.7/lib/python3.7/site-packages/pandas/io/parsers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="24960">
+          <caret line="1707" selection-start-line="1707" selection-end-line="1707" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Progetto/recommenders/Basic/Item_CFR.py" />
+    <entry file="file://$PROJECT_DIR$/Progetto/data/target_playlists.csv" />
+    <entry file="file://$PROJECT_DIR$/Progetto/data/sample_submission.csv" />
+    <entry file="file://$PROJECT_DIR$/Progetto/recommenders/Basic/User_CFR.py" />
+    <entry file="file://$PROJECT_DIR$/Progetto/data/split.csv" />
+    <entry file="file://$PROJECT_DIR$/Progetto/recommenders/Basic/MF.py" />
+    <entry file="file://$PROJECT_DIR$/Progetto/recommenders/SlimBPR/SLIM_BPR_Cython.py" />
+    <entry file="file://$PROJECT_DIR$/Progetto/utils/cython/Compute_Similarity_Cython.pyx" />
+    <entry file="file://$PROJECT_DIR$/Progetto/recommenders/Basic/P3Alfa_R.py" />
+    <entry file="file://$PROJECT_DIR$/Progetto/recommenders/Basic/Item_CBR.py" />
+    <entry file="file://$PROJECT_DIR$/Progetto/recommenders/GraphBased/P3Alpha.py" />
+    <entry file="file://$PROJECT_DIR$/Progetto/recommenders/Tuner.py" />
+    <entry file="file://$PROJECT_DIR$/Progetto/data/split2.csv" />
+    <entry file="file://$PROJECT_DIR$/Progetto/recommenders/Ensemble_post.py" />
+    <entry file="file://$PROJECT_DIR$/Progetto/recommenders/MatrixFactorization/MatrixFactorization_Cython.py" />
+    <entry file="file://$PROJECT_DIR$/Progetto/recommenders/Basic/Slim_BPR_U.py" />
+    <entry file="file://$PROJECT_DIR$/Progetto/utils/MatrixBuilder.py" />
+    <entry file="file://$PROJECT_DIR$/Progetto/repo_maurizio/RecSys_Course_2018-master-3/run_all_algorithms.py" />
+    <entry file="file://$PROJECT_DIR$/Progetto/repo_maurizio/RecSys_Course_2018-master-3/data/DataSplitter_k_fold_test.py" />
+    <entry file="file://$PROJECT_DIR$/Progetto/repo_maurizio/RecSys_Course_2018-master-3/data/DataSplitter_k_fold.py" />
+    <entry file="file://$PROJECT_DIR$/Progetto/repo_maurizio/RecSys_Course_2018-master-3/Base/Recommender.py" />
+    <entry file="file://$PROJECT_DIR$/Progetto/repo_maurizio/RecSys_Course_2018-master-3/Base/Recommender_utils.py" />
+    <entry file="file://$PROJECT_DIR$/Progetto/repo_maurizio/RecSys_Course_2018-master-3/Base/Evaluation/Evaluator.py" />
+    <entry file="file://$PROJECT_DIR$/Progetto/repo_maurizio/RecSys_Course_2018-master-3/Practice 2 - How to build a recommender.ipynb" />
+    <entry file="file://$PROJECT_DIR$/Progetto/Run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="146">
+          <caret line="39" column="80" selection-start-line="39" selection-start-column="16" selection-end-line="39" selection-end-column="80" />
+          <folding>
+            <element signature="e#0#46#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Progetto/utils/Evaluation.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Progetto/recommenders/SlimBPR/MyEvaluator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="32" column="78" selection-start-line="32" selection-start-column="78" selection-end-line="32" selection-end-column="78" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Progetto/recommenders/Basic/Slim_BPR.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="21" selection-start-line="21" selection-end-line="21" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

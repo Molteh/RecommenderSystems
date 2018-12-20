@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.7" project-jdk-type="Python SDK" />
-  <component name="TerminalProjectOptionsProvider">
-    <option name="myStartingDirectory" value="$USER_HOME$/OneDrive/Francesco/Istruzione/Università/4 Anno/Recommender Systems/Progetto/recsys2018/2018" />
-  </component>
 </project>

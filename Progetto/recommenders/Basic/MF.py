@@ -1,4 +1,4 @@
-from Progetto.recommenders.MatrixFactorization.MatrixFactorization_Cython import MatrixFactorization_Cython
+from Progetto.recommenders.MF.MatrixFactorization_Cython import MatrixFactorization_Cython
 
 
 class MF_BPR(object):

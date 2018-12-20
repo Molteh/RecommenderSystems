@@ -10,9 +10,15 @@ class PureSVD(object):
         self.URM = None
         self.u = u
 
-    def fit(self, URM, k, n_iter, random_state):
+    def fit(self, URM, k, n_iter, random_state, bm25=True, K1=2, B=0.9):
         self.URM = URM
-        self.U, Sigma, VT = randomized_svd(URM, n_components=k, n_iter=n_iter, random_state=random_state)
+
+        if bm25:
+            UCM = self.u.okapi_BM_25(URM, K1, B)
+        else:
+            UCM = URM
+
+        self.U, Sigma, VT = randomized_svd(UCM, n_components=k, n_iter=n_iter, random_state=random_state)
         self.s_Vt = sp.diags(Sigma) * VT
 
     def recommend(self, target_playlist):
