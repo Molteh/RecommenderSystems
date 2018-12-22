@@ -16,7 +16,7 @@ class Eval(object):
         self.URM_valid = None
         self.test_playlists = None
         self.validation_playlists = None
-        self.build_URM_train2()
+        self.build_URM_train()
 
 
     def build_URM_train(self):

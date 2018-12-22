@@ -2,6 +2,8 @@ import numpy as np
 import scipy.sparse as sp
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.preprocessing import MultiLabelBinarizer
+from scipy.sparse.linalg import svds
+from tqdm import tqdm
 
 
 from Progetto.utils.cython.Compute_Similarity_Cython import Compute_Similarity_Cython as Cython_Cosine_Similarity
@@ -68,7 +70,7 @@ class Utils(object):
             ICM_albums = TfidfTransformer().fit_transform(ICM_albums.T).T
 
         ICM = sp.hstack((ICM_artists, ICM_albums))
-        return ICM
+        return ICM.tocsr()
 
     def get_itemsim_CB(self, knn, shrink, normalize=True, similarity='cosine', tfidf=True):
         ICM = self.get_ICM(tfidf)
@@ -101,4 +103,27 @@ class Utils(object):
             dataMatrix.col]
 
         return dataMatrix.tocsr()
+
+    def get_itemsim_SVD(self, k, knn, tfidf):
+        print('Computing S_ICM_SVD...')
+
+        S_matrix_list = []
+
+        u, s, vt = svds(self.get_ICM(tfidf).asfptype(), k=k, which='LM')
+
+        ut = u.T
+
+        s_2_flatten = np.power(s, 2)
+        s_2 = np.diagflat(s_2_flatten)
+        s_2_csr = sp.csr_matrix(s_2)
+
+        for i in tqdm(range(u.shape[0])):
+            S_row = u[i].dot(s_2_csr.dot(ut))
+            r = S_row.argsort()[:-knn]
+            S_row[r] = 0
+            S_matrix_list.append(sp.csr_matrix(S_row))
+
+        S = sp.vstack(S_matrix_list)
+
+        return S.tocsr()
 
