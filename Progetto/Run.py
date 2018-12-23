@@ -60,10 +60,10 @@ class Recommender(object):
         rec.fit(self.URM_train, knn, shrink, normalize, similarity, tfidf)
         return self.generate_result(rec, None)
 
-    def recommend_SlimBPR(self, knn=250, epochs=15, sgd_mode='adagrad', lr=0.1, lower=5, n_iter=1):
+    def recommend_SlimBPR(self, knn=250, epochs=15, sgd_mode='adagrad', lr=0.1, lower=5, n_iter=10):
         rec = Slim_BPR(self.u)
-        rec.fit(self.URM_train, knn, epochs, sgd_mode, lr, lower, n_iter)
-        return self.generate_result(rec, None)
+        rec.fit(self.URM_full, knn, epochs, sgd_mode, lr, lower, n_iter)
+        return self.generate_result(rec, "./predictions/slim_bpr", is_test=False)
 
     def recommend_SlimElastic(self, knn=250, l1=1, po=True):
         rec = Slim_Elastic(self.u)
@@ -102,9 +102,7 @@ class Recommender(object):
 
 if __name__ == '__main__':
     run = Recommender()
-    run.recommend_ItemSVD(tfidf=False)
-    run.recommend_ItemSVD(tfidf=False, k=500)
-    run.recommend_ItemSVD(tfidf=True)
+    run.recommend_SlimBPR()
 
 
 
