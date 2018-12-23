@@ -17,11 +17,12 @@ class Ensemble_post(object):
         self.s_Vt = 0
         self.S_Slim = 0
         self.S_Elastic = 0
+        self.S_itemsvd = 0
         self.S_P3 = 0
         self.URM = 0
         self.weights = 0
 
-    def fit(self, URM, knn, shrink, weights, epochs, tfidf, n_iter):
+    def fit(self, URM, knn, shrink, weights, epochs, tfidf, n_iter, evaluate=True):
         self.URM = URM
         self.weights = weights
 
@@ -39,14 +40,17 @@ class Ensemble_post(object):
             self.s_Vt = sp.diags(Sigma) * VT
 
         if weights[4] != 0:
-            slim_BPR_Cython = SLIM_BPR_Cython(self.URM)
-            total = []
-            for i in range(n_iter):
-                slim_BPR_Cython.fit(epochs=epochs, sgd_mode='adagrad', stop_on_validation=True, learning_rate=0.1,
-                                    topK=knn[4],
-                                    evaluator_object=None, lower_validatons_allowed=5)
-                total.append(slim_BPR_Cython.W_sparse)
-            self.S_Slim = reduce(lambda a, b: a + b, total) / n_iter
+            if evaluate:
+                slim_BPR_Cython = SLIM_BPR_Cython(self.URM)
+                total = []
+                for i in range(n_iter):
+                    slim_BPR_Cython.fit(epochs=epochs, sgd_mode='adagrad', stop_on_validation=True, learning_rate=0.1,
+                                        topK=knn[4],
+                                        evaluator_object=None, lower_validatons_allowed=5)
+                    total.append(slim_BPR_Cython.W_sparse)
+                self.S_Slim = reduce(lambda a, b: a + b, total) / n_iter
+            else:
+                self.S_Slim = self.S_Slim = sp.load_npz("./s_slim_current.npz")
 
         if weights[5] != 0:
             p3 = RP3betaRecommender(self.URM)
@@ -58,6 +62,9 @@ class Ensemble_post(object):
             slim_Elastic.fit(topK=knn[6], l1_ratio=0.00001, positive_only=True)
             self.S_Elastic = slim_Elastic.W_sparse
 
+        if weights[7] != 0:
+            self.S_itemsvd = sp.load_npz("../input/itemsvd/s_itemsvd.npz")
+
     def recommend(self, target_playlist):
         row_cb = 0
         row_cf_i = 0
@@ -66,6 +73,7 @@ class Ensemble_post(object):
         row_slim = 0
         row_elastic = 0
         row_p3 = 0
+        row_itemsvd = 0
 
         if self.weights[0] != 0:
             row_cf_i = (self.URM[target_playlist].dot(self.S_CF_I))*self.weights[0]
@@ -88,5 +96,8 @@ class Ensemble_post(object):
         if self.weights[6] != 0:
             row_elastic = self.URM[target_playlist].dot(self.S_Elastic)*self.weights[6]
 
-        row = (row_cf_i + row_cf_u + row_cb + row_svd + row_slim + row_p3 + row_elastic).toarray().ravel()
+        if self.weights[7] != 0:
+            row_itemsvd = self.URM[target_playlist].dot(self.S_itemsvd) * self.weights[7]
+
+        row = (row_cf_i + row_cf_u + row_cb + row_svd + row_slim + row_p3 + row_elastic + row_itemsvd).toarray().ravel()
         return self.u.get_top_10(self.URM, target_playlist, row)

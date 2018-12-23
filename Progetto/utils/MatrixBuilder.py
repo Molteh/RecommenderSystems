@@ -104,12 +104,13 @@ class Utils(object):
 
         return dataMatrix.tocsr()
 
-    def get_itemsim_SVD(self, k, knn, tfidf):
+    def get_itemsim_SVD(self, k, knn):
         print('Computing S_ICM_SVD...')
 
         S_matrix_list = []
 
-        u, s, vt = svds(self.get_ICM(tfidf).asfptype(), k=k, which='LM')
+        ICM = self.get_ICM(tfidf=False).astype(np.float64)
+        u, s, vt = svds(ICM, k=2000, which='LM')
 
         ut = u.T
 

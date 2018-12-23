@@ -13,6 +13,7 @@ from Progetto.recommenders.Ensemble_post import Ensemble_post
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
+import scipy.sparse as sp
 
 
 class Recommender(object):
@@ -75,9 +76,9 @@ class Recommender(object):
         rec.fit(self.URM_train, k, n_iter, random_state, bm25, K1, B)
         return self.generate_result(rec, None)
 
-    def recommend_ItemSVD(self, k=300, knn=150, tfidf=True):
+    def recommend_ItemSVD(self, k=300, knn=150, evaluate=False):
         rec = ItemSVD(self.u)
-        rec.fit(self.URM_train, k, knn, tfidf)
+        rec.fit(self.URM_train, k, knn, evaluate)
         return self.generate_result(rec, None)
 
     def recommend_P3A(self, knn=60, alfa=0.7):
@@ -94,16 +95,16 @@ class Recommender(object):
                                 weights=(1.65, 0.55, 1, 0.15, 0.05, 0), epochs=15, tfidf=True, n_iter=1):
         rec = Ensemble_post(self.u)
         if is_test:
-            rec.fit(self.URM_train, knn, shrink, weights, epochs, tfidf, n_iter)
+            rec.fit(self.URM_train, knn, shrink, weights, epochs, tfidf, n_iter, True)
         else:
-            rec.fit(self.URM_full, knn, shrink, weights, epochs, tfidf, n_iter)
+            #the last False means that the matrix for Slim will be loaded from disk, not calculated from scratch!
+            rec.fit(self.URM_full, knn, shrink, weights, epochs, tfidf, n_iter, False)
         return self.generate_result(rec, "./predictions/ensemble_post", is_test)
 
 
 if __name__ == '__main__':
     run = Recommender()
-    run.recommend_SlimBPR()
-
+    run.recommend_ItemSVD(k=2500, knn=150)
 
 
 

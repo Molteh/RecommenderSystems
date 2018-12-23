@@ -10,20 +10,22 @@ class Slim_BPR(object):
         self.URM = 0
         self.S_Slim = 0
 
-    def fit(self, URM, knn, epochs, sgd_mode, lr, lower, n_iter):
+    def fit(self, URM, knn, epochs, sgd_mode, lr, lower, n_iter, evaluate=True):
         self.URM = URM
 
-        '''slim_BPR_Cython = SLIM_BPR_Cython(self.URM)
-        total = []
+        if evaluate:
+            slim_BPR_Cython = SLIM_BPR_Cython(self.URM)
+            total = []
 
-        for i in range(n_iter):
-            slim_BPR_Cython.fit(epochs=epochs, sgd_mode=sgd_mode, stop_on_validation=True, learning_rate=lr, topK=knn,
-                                evaluator_object=None, lower_validatons_allowed=lower)
-            total.append(slim_BPR_Cython.W_sparse)
+            for i in range(n_iter):
+                slim_BPR_Cython.fit(epochs=epochs, sgd_mode=sgd_mode, stop_on_validation=True, learning_rate=lr, topK=knn,
+                                    evaluator_object=None, lower_validatons_allowed=lower)
+                total.append(slim_BPR_Cython.W_sparse)
 
-        self.S_Slim = reduce(lambda a, b: a + b, total) / n_iter
-        sp.save_npz("./s_slim.npz", self.S_Slim)'''
-        self.S_Slim = sp.load_npz("./s_slim.npz")
+            self.S_Slim = reduce(lambda a, b: a + b, total) / n_iter
+            sp.save_npz("./s_slim_new.npz", self.S_Slim)
+        else:
+            self.S_Slim = sp.load_npz("./s_slim_current.npz")
 
 
     def recommend(self, target_playlist):
