@@ -27,7 +27,7 @@ class Ensemble_post(object):
         self.weights = weights
 
         if weights[0] != 0:
-            self.S_CF_I = self.u.get_itemsim_CF(self.URM, knn[0], shrink[0], True, tfidf=tfidf)
+            self.S_CF_I = self.u.get_itemsim_CF(self.URM, knn[0], shrink[0], False, tfidf=tfidf)
 
         if weights[1] != 0:
             self.S_CF_U = self.u.get_usersim_CF(self.URM, knn[1], shrink[1], True, tfidf=tfidf)
@@ -45,21 +45,21 @@ class Ensemble_post(object):
                 total = []
                 for i in range(n_iter):
                     slim_BPR_Cython.fit(epochs=epochs, sgd_mode='adagrad', stop_on_validation=True, learning_rate=0.1,
-                                        topK=knn[4],
+                                        topK=knn[3],
                                         evaluator_object=None, lower_validatons_allowed=5)
                     total.append(slim_BPR_Cython.W_sparse)
                 self.S_Slim = reduce(lambda a, b: a + b, total) / n_iter
             else:
-                self.S_Slim = self.S_Slim = sp.load_npz("./s_slim_current.npz")
+                self.S_Slim = self.S_Slim = sp.load_npz("./similarities/s_slim_current.npz")
 
         if weights[5] != 0:
             p3 = RP3betaRecommender(self.URM)
-            p3.fit(topK=knn[5], alpha=0.7, beta=0.3, normalize_similarity=True, implicit=True, min_rating=0)
+            p3.fit(topK=knn[4], alpha=0.7, beta=0.3, normalize_similarity=True, implicit=True, min_rating=0)
             self.S_P3 = p3.W_sparse
 
         if weights[6] != 0:
             slim_Elastic = SLIMElasticNetRecommender(self.URM)
-            slim_Elastic.fit(topK=knn[6], l1_ratio=0.00001, positive_only=True)
+            slim_Elastic.fit(topK=knn[5], l1_ratio=0.00001, positive_only=True)
             self.S_Elastic = slim_Elastic.W_sparse
 
         if weights[7] != 0:

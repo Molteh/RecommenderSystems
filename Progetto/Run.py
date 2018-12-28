@@ -10,6 +10,7 @@ from Progetto.recommenders.Basic.P3Beta import P3Beta_R
 from Progetto.recommenders.Basic.Slim_BPR import Slim_BPR
 from Progetto.recommenders.Basic.Slim_Elastic import Slim_Elastic
 from Progetto.recommenders.Ensemble_post import Ensemble_post
+from Progetto.recommenders.Basic.MF_pytorch import MF_BPR
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
@@ -91,6 +92,11 @@ class Recommender(object):
         rec.fit(self.URM_train, knn, alfa, beta)
         return self.generate_result(rec, None)
 
+    def recommend_MF(self, k=100, epochs=5, lr=0.001):
+        rec = MF_BPR(self.u)
+        rec.fit(self.URM_train, k, epochs, lr)
+        return self.generate_result(rec, None)
+
     def recommend_ensemble_post(self, is_test=True, knn=(150, 150, 150, 250, 250, 80), shrink=(10, 10, 5),
                                 weights=(1.65, 0.55, 1, 0.15, 0.05, 0), epochs=15, tfidf=True, n_iter=1):
         rec = Ensemble_post(self.u)
@@ -104,7 +110,7 @@ class Recommender(object):
 
 if __name__ == '__main__':
     run = Recommender()
-    run.recommend_ItemSVD(k=2500, knn=150)
+    run.recommend_ensemble_post(is_test=False, weights=(0,0,0.25,0,0.0125,1,0,0))
 
 
 

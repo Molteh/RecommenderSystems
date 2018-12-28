@@ -19,4 +19,3 @@ class ItemSVD(object):
     def recommend(self, target_playlist):
         row = self.URM[target_playlist].dot(self.S)
         return self.u.get_top_10(self.URM, target_playlist, row.toarray().ravel())
-
