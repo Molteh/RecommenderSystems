@@ -5,16 +5,13 @@ from Progetto.recommenders.Basic.ICM_SVD import ItemSVD
 from Progetto.recommenders.Basic.Item_CFR import Item_CFR
 from Progetto.recommenders.Basic.Item_CBR import Item_CBR
 from Progetto.recommenders.Basic.User_CFR import User_CFR
-from Progetto.recommenders.Basic.P3Alfa import P3Alfa_R
 from Progetto.recommenders.Basic.P3Beta import P3Beta_R
 from Progetto.recommenders.Basic.Slim_BPR import Slim_BPR
 from Progetto.recommenders.Basic.Slim_Elastic import Slim_Elastic
 from Progetto.recommenders.Ensemble_post import Ensemble_post
-from Progetto.recommenders.Basic.MF_pytorch import MF_BPR
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
-import scipy.sparse as sp
 
 
 class Recommender(object):
@@ -82,19 +79,9 @@ class Recommender(object):
         rec.fit(self.URM_train, k, knn, evaluate)
         return self.generate_result(rec, None)
 
-    def recommend_P3A(self, knn=60, alfa=0.7):
-        rec = P3Alfa_R(self.u)
-        rec.fit(self.URM_train, knn, alfa)
-        return self.generate_result(rec, None)
-
     def recommend_P3B(self, knn=100, alfa=0.7, beta=0.3):
         rec = P3Beta_R(self.u)
         rec.fit(self.URM_train, knn, alfa, beta)
-        return self.generate_result(rec, None)
-
-    def recommend_MF(self, k=100, epochs=5, lr=0.001):
-        rec = MF_BPR(self.u)
-        rec.fit(self.URM_train, k, epochs, lr)
         return self.generate_result(rec, None)
 
     def recommend_ensemble_post(self, is_test=True, knn=(150, 150, 150, 250, 250, 80), shrink=(10, 10, 5),
