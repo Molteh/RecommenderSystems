@@ -90,7 +90,6 @@ class Recommender(object):
         if is_test:
             rec.fit(self.URM_train, knn, shrink, weights, epochs, tfidf, n_iter, True)
         else:
-            #the last False means that the matrix for Slim will be loaded from disk, not calculated from scratch!
             rec.fit(self.URM_full, knn, shrink, weights, epochs, tfidf, n_iter, False)
         return self.generate_result(rec, "./predictions/ensemble_post", is_test)
 
