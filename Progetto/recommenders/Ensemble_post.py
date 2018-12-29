@@ -27,10 +27,10 @@ class Ensemble_post(object):
         self.weights = weights
 
         if weights[0] != 0:
-            self.S_CF_I = self.u.get_itemsim_CF(self.URM, knn[0], shrink[0], False, tfidf=tfidf)
+            self.S_CF_I = self.u.get_itemsim_CF(self.URM, knn[0], shrink[0], normalize=True, tfidf=tfidf)
 
         if weights[1] != 0:
-            self.S_CF_U = self.u.get_usersim_CF(self.URM, knn[1], shrink[1], True, tfidf=tfidf)
+            self.S_CF_U = self.u.get_usersim_CF(self.URM, knn[1], shrink[1], normalize=True, tfidf=tfidf)
 
         if weights[2] != 0:
             self.S_CB = self.u.get_itemsim_CB(knn[2], shrink[2])

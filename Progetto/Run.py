@@ -9,40 +9,33 @@ from Progetto.recommenders.Basic.P3Beta import P3Beta_R
 from Progetto.recommenders.Basic.Slim_BPR import Slim_BPR
 from Progetto.recommenders.Basic.Slim_Elastic import Slim_Elastic
 from Progetto.recommenders.Ensemble_post import Ensemble_post
+from Progetto.recommenders.Ensemble_longshort import Ensemble_longshort
 import pandas as pd
-import numpy as np
-from tqdm import tqdm
 
 
 class Recommender(object):
 
-    def __init__(self):
+    def __init__(self, holdout="standard"):
         self.train = pd.read_csv("data/train.csv")
         self.tracks = pd.read_csv("data/tracks.csv")
         self.target_playlists = pd.read_csv("data/target_playlists.csv")
         self.train_sequential = pd.read_csv("data/train_sequential.csv")
         self.u = Utils(self.train, self.tracks, self.target_playlists, self.train_sequential)
-        self.e = Eval(self.u, (np.random.choice(np.arange(10000), 5000, replace=False)).tolist())
+        self.e = Eval(self.u, holdout)
         self.URM_full = self.u.get_URM()
         self.URM_train = self.e.get_URM_train()
 
-    def generate_result(self, recommender, path, is_test = True):
+    def generate_result(self, recommender, path, is_test=True, longshort=False):
         if is_test:
-            return self.e.evaluate_algorithm(recommender)
+            if longshort:
+                return self.e.evaluate_algorithm_longshort(recommender)
+            else:
+                return self.e.evaluate_algorithm(recommender)
         else:
-            return self.generate_predictions(recommender, path)
-
-    def generate_predictions(self, recommender, path):
-        target_playlists = self.target_playlists
-        final_result = pd.DataFrame(index=range(target_playlists.shape[0]), columns=('playlist_id', 'track_ids'))
-
-        for i, target_playlist in tqdm(enumerate(np.array(target_playlists))):
-            result_tracks = recommender.recommend(int(target_playlist))
-            final_result['playlist_id'][i] = int(target_playlist)
-            string_rec = ' '.join(map(str, result_tracks.reshape(1, 10)[0]))
-            final_result['track_ids'][i] = string_rec
-
-        final_result.to_csv(path, index=False)
+            if longshort:
+                return self.e.generate_predictions_longshort(recommender, path)
+            else:
+                return self.e.generate_predictions(recommender, path)
 
     def recommend_itemCBR(self, knn=150, shrink=5, normalize=True, similarity='cosine', tfidf=True):
         rec = Item_CBR(self.u)
@@ -93,14 +86,18 @@ class Recommender(object):
             rec.fit(self.URM_full, knn, shrink, weights, epochs, tfidf, n_iter, False)
         return self.generate_result(rec, "./predictions/ensemble_post", is_test)
 
+    def recommend_ensemble_longshort(self, is_test=True, knn=(150, 100, 5), shrink=(10, 0, 5),
+                                weights=(0.79, 0.99, 1)):
+        rec = Ensemble_longshort(self.u)
+        if is_test:
+            rec.fit(self.URM_train, knn, shrink, weights)
+        else:
+            rec.fit(self.URM_full, knn, shrink, weights)
+        return self.generate_result(rec, "./predictions/ensemble_longshort", is_test, longshort=True)
+
 
 if __name__ == '__main__':
-    run = Recommender()
-    run.recommend_ensemble_post(is_test=False, weights=(0,0,0.25,0,0.0125,1,0,0))
-
-
-
-
+    run = Recommender("l10")
 
 
 
