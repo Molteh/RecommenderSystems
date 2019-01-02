@@ -11,7 +11,6 @@ class Slim_Elastic(object):
 
     def fit(self, URM, knn, l1, po):
         self.URM = URM
-
         slim_Elastic = SLIMElasticNetRecommender(self.URM)
         slim_Elastic.fit(topK=knn, l1_ratio=l1, positive_only=po)
         self.S_Slim = slim_Elastic.W_sparse

@@ -11,9 +11,9 @@ class Eval(object):
         self.l30 = pd.read_csv("./data/longshort/l30.csv")
         self.l60 = pd.read_csv("./data/longshort/l60.csv")
         self.g60 = pd.read_csv("./data/longshort/g60.csv")
-        self.URM = u.get_URM()
-        self.train_sequential = u.get_train_sequential()
-        self.target_playlists = u.get_target_playlists()
+        self.URM = u.URM
+        self.train_sequential = u.train_sequential
+        self.target_playlists = u.target_playlists
         self.URM_train = None
         self.URM_test = None
         self.test_playlists = None
@@ -61,10 +61,6 @@ class Eval(object):
             return self.g60['playlist_id']
 
 
-    def get_URM_train(self):
-        return self.URM_train
-
-
     @staticmethod
     def AP(recommended_items, relevant_items):
         relevant = np.in1d(recommended_items, relevant_items, assume_unique=True)
@@ -110,11 +106,11 @@ class Eval(object):
                 if user_id in l10:
                     recommended_items = recommender.recommend_l10(user_id)
                 elif user_id in l30:
-                    recommended_items = recommender.recommend(user_id)
+                    recommended_items = recommender.recommend_l30(user_id)
                 elif user_id in l60:
-                    recommended_items = recommender.recommend(user_id)
+                    recommended_items = recommender.recommend_l60(user_id)
                 elif user_id in g60:
-                    recommended_items = recommender.recommend(user_id)
+                    recommended_items = recommender.recommend_g60(user_id)
                 else:
                     print(user_id)
                     print("Playlist not in the split")
@@ -133,6 +129,43 @@ class Eval(object):
 
         for i, user_id in tqdm(enumerate(np.array(target_playlists))):
             recommended_items = recommender.recommend(int(user_id))
+
+            if len(recommended_items) != 10:
+                print(len(recommended_items))
+
+            final_result['playlist_id'][i] = int(user_id)
+            string_rec = ' '.join(map(str, recommended_items.reshape(1, 10)[0]))
+            final_result['track_ids'][i] = string_rec
+
+        final_result.to_csv(path, index=False)
+
+
+    def generate_predictions_longshort(self, recommender, path):
+        target_playlists = self.target_playlists
+        final_result = pd.DataFrame(index=range(target_playlists.shape[0]), columns=('playlist_id', 'track_ids'))
+        l10 = self.l10['playlist_id'].unique()
+        l30 = self.l30['playlist_id'].unique()
+        l60 = self.l60['playlist_id'].unique()
+        g60 = self.g60['playlist_id'].unique()
+
+        for i, user_id in tqdm(enumerate(np.array(target_playlists))):
+            recommended_items = 0
+
+            if user_id in l10:
+                recommended_items = recommender.recommend_l10(int(user_id))
+            elif user_id in l30:
+                recommended_items = recommender.recommend_l30(int(user_id))
+            elif user_id in l60:
+                recommended_items = recommender.recommend_l60(int(user_id))
+            elif user_id in g60:
+                recommended_items = recommender.recommend_g60(int(user_id))
+            else:
+                print(user_id)
+                print("Playlist not in the split")
+
+            if len(recommended_items) != 10:
+                print(len(recommended_items))
+
             final_result['playlist_id'][i] = int(user_id)
             string_rec = ' '.join(map(str, recommended_items.reshape(1, 10)[0]))
             final_result['track_ids'][i] = string_rec

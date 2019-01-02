@@ -18,12 +18,6 @@ class Utils(object):
         self.train_sequential = train_sequential
         self.URM = self.build_URM()
 
-    def get_target_playlists(self):
-        return self.target_playlists
-
-    def get_train_sequential(self):
-        return self.train_sequential
-
     @staticmethod
     def get_top_10(URM, target_playlist, row):
         my_songs = URM.indices[URM.indptr[target_playlist]:URM.indptr[target_playlist + 1]]
@@ -51,9 +45,6 @@ class Utils(object):
         grouped = self.train.groupby('playlist_id', as_index=True).apply((lambda playlist: list(playlist['track_id'])))
         URM = MultiLabelBinarizer(classes=self.tracks['track_id'].unique(), sparse_output=True).fit_transform(grouped)
         return URM.tocsr()
-
-    def get_URM(self):
-        return self.URM
 
     def get_ICM(self, tfidf):  # returns Item Content Matrix
         grouped = self.tracks.groupby('track_id', as_index=True).apply((lambda track: list(track['artist_id'])))
@@ -110,7 +101,7 @@ class Utils(object):
         S_matrix_list = []
 
         ICM = self.get_ICM(tfidf=False).astype(np.float64)
-        u, s, vt = svds(ICM, k=2000, which='LM')
+        u, s, vt = svds(ICM, k=k, which='LM')
 
         ut = u.T
 
