@@ -37,7 +37,7 @@ class Recommender(object):
             else:
                 return self.e.generate_predictions(recommender, path)
 
-    def recommend_itemCBR(self, knn=150, shrink=5, normalize=True, similarity='cosine', tfidf=True):
+    def recommend_itemCBR(self, knn=50, shrink=10, normalize=True, similarity='cosine', tfidf=True):
         rec = Item_CBR(self.u)
         rec.fit(self.URM_train, knn, shrink, normalize, similarity, tfidf)
         return self.generate_result(rec, None)
@@ -57,7 +57,7 @@ class Recommender(object):
         rec.fit(self.URM_full, knn, epochs, sgd_mode, lr, lower, n_iter)
         return self.generate_result(rec, "./predictions/slim_bpr", is_test=False)
 
-    def recommend_SlimElastic(self, knn=250, l1=1, po=True):
+    def recommend_SlimElastic(self, knn=250, l1=0.00001, po=True):
         rec = Slim_Elastic(self.u)
         rec.fit(self.URM_train, knn, l1, po)
         return self.generate_result(rec, None)
@@ -74,8 +74,8 @@ class Recommender(object):
 
     def recommend_P3B(self, knn=100, alfa=0.7, beta=0.3):
         rec = P3Beta_R(self.u)
-        rec.fit(self.URM_full, knn, alfa, beta)
-        return self.generate_result(rec, path="./predictions/p3b.csv", is_test=False)
+        rec.fit(self.URM_train, knn, alfa, beta)
+        return self.generate_result(rec, None)
 
     def recommend_ensemble_post(self, is_test=True, knn=(150, 150, 150, 250, 250, 80), shrink=(10, 10, 5),
                                 weights=(1.65, 0.55, 1, 0.15, 0.05, 0, 0, 0), epochs=15, tfidf=True, n_iter=1):
@@ -87,7 +87,7 @@ class Recommender(object):
         return self.generate_result(rec, "./predictions/ensemble_post.csv", is_test)
 
     def recommend_ensemble_longshort(self, is_test=True, knn=(150,150,50,100,100,250), shrink=(10, 10, 10),
-                                     weights=(1, 1, 1, 0, 1, 1, 0, 0)):
+                                     weights=(1, 1, 1, 1, 1, 1, 0, 0)):
         rec = Ensemble_longshort(self.u)
         if is_test:
             rec.fit(self.URM_train, knn, shrink, weights)
@@ -97,11 +97,8 @@ class Recommender(object):
 
 
 if __name__ == '__main__':
-    run = Recommender()
-    run.recommend_ensemble_longshort(is_test=False)
-
-
-
+    run = Recommender("60-100")
+    run.recommend_itemCFR()
 
 
 

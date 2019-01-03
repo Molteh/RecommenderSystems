@@ -20,13 +20,12 @@ class Tuner(object):
         self.e = Eval(self.u, holdout)
         self.URM = self.e.URM_train
 
-
-    def fit(self, knn=(150, 150, 150, 100, 100), shrink=(10, 10, 5), weights=(1, 1, 1, 1, 1, 1, 0, 1), n_iter=1,
-            epochs=5, evaluate=True):
+    def fit(self, knn=(150, 150, 50, 100, 100, 250), shrink=(10, 10, 10), weights=(1, 1, 1, 1, 1, 1, 0, 1), n_iter=5,
+            epochs=15, evaluate=True):
         self.weights = weights
 
         if weights[0] != 0:
-            self.S_CF_I = self.u.get_itemsim_CF(self.URM, knn[0], shrink[0], normalize=True, tfidf=False)
+            self.S_CF_I = self.u.get_itemsim_CF(self.URM, knn[0], shrink[0], normalize=True, tfidf=True)
 
         if weights[1] != 0:
             self.S_CF_U = self.u.get_usersim_CF(self.URM, knn[1], shrink[1], normalize=True, tfidf=True)
@@ -65,7 +64,6 @@ class Tuner(object):
         if weights[7] != 0:
             self.S_itemsvd = sp.load_npz("../input/itemsvd/s_itemsvd.npz")
 
-
     def recommend(self, target_playlist):
         row_cb = 0
         row_cf_i = 0
@@ -102,7 +100,6 @@ class Tuner(object):
 
         row = (row_cf_i + row_cf_u + row_cb + row_svd + row_slim + row_p3 + row_elastic + row_itemsvd).toarray().ravel()
         return self.u.get_top_10(self.URM, target_playlist, row)
-
 
     def tune(self, weights):
         self.weights = weights

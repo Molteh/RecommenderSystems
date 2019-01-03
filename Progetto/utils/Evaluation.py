@@ -7,10 +7,12 @@ from tqdm import tqdm
 class Eval(object):
 
     def __init__(self, u, holdout):
-        self.l10 = pd.read_csv("./data/longshort/l10.csv")
-        self.l30 = pd.read_csv("./data/longshort/l30.csv")
-        self.l60 = pd.read_csv("./data/longshort/l60.csv")
-        self.g60 = pd.read_csv("./data/longshort/g60.csv")
+        self.c1 = pd.read_csv("./data/longshort/0-10.csv")
+        self.c2 = pd.read_csv("./data/longshort/10-15.csv")
+        self.c3 = pd.read_csv("./data/longshort/15-25.csv")
+        self.c4 = pd.read_csv("./data/longshort/25-40.csv")
+        self.c5 = pd.read_csv("./data/longshort/40-60.csv")
+        self.c6 = pd.read_csv("./data/longshort/60-100.csv")
         self.URM = u.URM
         self.train_sequential = u.train_sequential
         self.target_playlists = u.target_playlists
@@ -47,18 +49,26 @@ class Eval(object):
         if holdout== "standard":
             print("Generated standard hold-out")
             return np.random.choice(self.target_playlists['playlist_id'], 5000, replace=False)
-        elif holdout== "l10":
-            print("Generated l10 hold-out")
-            return self.l10['playlist_id']
-        elif holdout== "l30":
-            print("Generated l30 hold-out")
-            return self.l30['playlist_id']
-        elif holdout== "l60":
-            print("Generated l60 hold-out")
-            return self.l60['playlist_id']
+        elif holdout== "0-10":
+            print("Generated 0-10 hold-out")
+            return self.c1['playlist_id']
+        elif holdout== "10-15":
+            print("Generated 10-15 hold-out")
+            return self.c2['playlist_id']
+        elif holdout== "15-25":
+            print("Generated 15-25 hold-out")
+            return self.c3['playlist_id']
+        elif holdout== "25-40":
+            print("Generated 25-40 hold-out")
+            return self.c4['playlist_id']
+        elif holdout== "40-60":
+            print("Generated 40-60 hold-out")
+            return self.c5['playlist_id']
+        elif holdout== "60-100":
+            print("Generated 60-100 hold-out")
+            return self.c6['playlist_id']
         else:
-            print("Generated g60 hold-out")
-            return self.g60['playlist_id']
+            print("Wrong holdout")
 
 
     @staticmethod
@@ -91,10 +101,12 @@ class Eval(object):
     def evaluate_algorithm_longshort(self, recommender):
         cumulative_MAP = 0.0
         num_eval = 0
-        l10 = self.l10['playlist_id'].unique()
-        l30 = self.l30['playlist_id'].unique()
-        l60 = self.l60['playlist_id'].unique()
-        g60 = self.g60['playlist_id'].unique()
+        c1 = self.c1['playlist_id'].unique()
+        c2 = self.c2['playlist_id'].unique()
+        c3 = self.c3['playlist_id'].unique()
+        c4 = self.c4['playlist_id'].unique()
+        c5 = self.c5['playlist_id'].unique()
+        c6 = self.c6['playlist_id'].unique()
 
         for user_id in self.test_playlists:
 
@@ -103,14 +115,18 @@ class Eval(object):
             if len(relevant_items) > 0:
                 recommended_items = 0
 
-                if user_id in l10:
-                    recommended_items = recommender.recommend_l10(user_id)
-                elif user_id in l30:
-                    recommended_items = recommender.recommend_l30(user_id)
-                elif user_id in l60:
-                    recommended_items = recommender.recommend_l60(user_id)
-                elif user_id in g60:
-                    recommended_items = recommender.recommend_g60(user_id)
+                if user_id in c1:
+                    recommended_items = recommender.recommend_c1(int(user_id))
+                elif user_id in c2:
+                    recommended_items = recommender.recommend_c2(int(user_id))
+                elif user_id in c3:
+                    recommended_items = recommender.recommend_c3(int(user_id))
+                elif user_id in c4:
+                    recommended_items = recommender.recommend_c4(int(user_id))
+                elif user_id in c5:
+                    recommended_items = recommender.recommend_c5(int(user_id))
+                elif user_id in c6:
+                    recommended_items = recommender.recommend_c6(int(user_id))
                 else:
                     print(user_id)
                     print("Playlist not in the split")
@@ -143,22 +159,28 @@ class Eval(object):
     def generate_predictions_longshort(self, recommender, path):
         target_playlists = self.target_playlists
         final_result = pd.DataFrame(index=range(target_playlists.shape[0]), columns=('playlist_id', 'track_ids'))
-        l10 = self.l10['playlist_id'].unique()
-        l30 = self.l30['playlist_id'].unique()
-        l60 = self.l60['playlist_id'].unique()
-        g60 = self.g60['playlist_id'].unique()
+        c1 = self.c1['playlist_id'].unique()
+        c2 = self.c2['playlist_id'].unique()
+        c3 = self.c3['playlist_id'].unique()
+        c4 = self.c4['playlist_id'].unique()
+        c5 = self.c5['playlist_id'].unique()
+        c6 = self.c6['playlist_id'].unique()
 
         for i, user_id in tqdm(enumerate(np.array(target_playlists))):
             recommended_items = 0
 
-            if user_id in l10:
-                recommended_items = recommender.recommend_l10(int(user_id))
-            elif user_id in l30:
-                recommended_items = recommender.recommend_l30(int(user_id))
-            elif user_id in l60:
-                recommended_items = recommender.recommend_l60(int(user_id))
-            elif user_id in g60:
-                recommended_items = recommender.recommend_g60(int(user_id))
+            if user_id in c1:
+                recommended_items = recommender.recommend_c1(int(user_id))
+            elif user_id in c2:
+                recommended_items = recommender.recommend_c2(int(user_id))
+            elif user_id in c3:
+                recommended_items = recommender.recommend_c3(int(user_id))
+            elif user_id in c4:
+                recommended_items = recommender.recommend_c4(int(user_id))
+            elif user_id in c5:
+                recommended_items = recommender.recommend_c5(int(user_id))
+            elif user_id in c6:
+                recommended_items = recommender.recommend_c6(int(user_id))
             else:
                 print(user_id)
                 print("Playlist not in the split")
