@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import scipy.sparse as sp
 from tqdm import tqdm
+from Progetto.recommenders.Ensemble_post import Ensemble_post
 
 
 class Eval(object):
@@ -152,6 +153,33 @@ class Eval(object):
             final_result['playlist_id'][i] = int(user_id)
             string_rec = ' '.join(map(str, recommended_items.reshape(1, 10)[0]))
             final_result['track_ids'][i] = string_rec
+
+        final_result.to_csv(path, index=False)
+
+    def generate_predictions_clustered(self, path):
+        target_playlists = self.target_playlists
+        final_result = pd.DataFrame(index=range(target_playlists.shape[0]), columns=('playlist_id', 'track_ids'))
+
+        c1 = self.c1['playlist_id'].unique()
+        c2 = self.c2['playlist_id'].unique()
+        c3 = self.c3['playlist_id'].unique()
+        c4 = self.c4['playlist_id'].unique()
+        c5 = self.c5['playlist_id'].unique()
+        c6 = self.c6['playlist_id'].unique()
+
+        clusters = [c1, c2, c3, c4, c5, c6]
+        i = 0
+
+        for c in clusters:
+
+            rec = Ensemble_post()
+            rec.fit() #pass params
+            for user_id in c:
+                final_result['playlist_id'][i] = int(user_id)
+                recommended_items = rec.recommend(user_id)
+                string_rec = ' '.join(map(str, recommended_items.reshape(1, 10)[0]))
+                final_result['track_ids'][i] = string_rec
+                i += 1
 
         final_result.to_csv(path, index=False)
 
