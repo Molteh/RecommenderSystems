@@ -173,10 +173,38 @@ class Ensemble_longshort(object):
 
 
     def recommend_g60(self, target_playlist):
+        row_cb = 0
+        row_cf_i = 0
+        row_cf_u = 0
+        row_svd = 0
+        row_slim = 0
+        row_elastic = 0
         row_p3 = 0
+        row_itemsvd = 0
+
+        if self.weights[0] != 0:
+            row_cf_i = (self.URM[target_playlist].dot(self.S_CF_I)) * 0.7
+
+        if self.weights[1] != 0:
+            row_cf_u = (self.S_CF_U[target_playlist].dot(self.URM)) * 0.3
+
+        if self.weights[2] != 0:
+            row_cb = (self.URM[target_playlist].dot(self.S_CB)) * 1.2
+
+        # if self.weights[3] != 0:
+        # row_svd = sp.csr_matrix(self.U[target_playlist].dot(self.s_Vt)*self.weights[3])
+
+        if self.weights[4] != 0:
+            row_slim = self.URM[target_playlist].dot(self.S_Slim) * 0.05
 
         if self.weights[5] != 0:
-            row_p3 = self.URM[target_playlist].dot(self.S_P3) * 1
+            row_p3 = self.URM[target_playlist].dot(self.S_P3) * 1.3
 
-        row = (row_p3).toarray().ravel()
+        # if self.weights[6] != 0:
+        # row_elastic = self.URM[target_playlist].dot(self.S_Elastic)*self.weights[6]
+
+        # if self.weights[7] != 0:
+        # row_itemsvd = self.URM[target_playlist].dot(self.S_itemsvd) * self.weights[7]
+
+        row = (row_cf_i + row_cf_u + row_cb + row_slim + row_p3).toarray().ravel()
         return self.u.get_top_10(self.URM, target_playlist, row)
