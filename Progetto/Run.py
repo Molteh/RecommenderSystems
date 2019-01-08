@@ -80,7 +80,7 @@ class Recommender(object):
     def recommend_P3B(self, knn=100, alfa=0.7, beta=0.3):
         rec = P3Beta_R(self.u)
         rec.fit(self.URM_full, knn, alfa, beta)
-        return self.generate_result(rec, path="./predictions/p3b.csv", is_test=False)
+        return self.generate_result(rec, path=None)
 
     def recommend_ensemble_longshort(self, is_test=True, knn=(150,150,50,100,100,250), shrink=(10, 10, 10),
                                      weights=(1, 1, 1, 0, 1, 1, 0, 0)):
