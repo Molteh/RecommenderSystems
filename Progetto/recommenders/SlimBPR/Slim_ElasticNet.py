@@ -18,7 +18,7 @@ class SLIMElasticNetRecommender(SimilarityMatrixRecommender, Recommender):
 
         self.URM_train = URM_train
 
-    def fit(self, l1_ratio=0.1, positive_only=True, topK=100):
+    def fit(self, l1_ratio=0.1, positive_only=True, topK=100, alpha=1):
 
         assert l1_ratio >= 0 and l1_ratio <= 1, "SLIM_ElasticNet: l1_ratio must be between 0 and 1, provided value was {}".format(
             l1_ratio)
@@ -28,7 +28,7 @@ class SLIMElasticNetRecommender(SimilarityMatrixRecommender, Recommender):
         self.topK = topK
 
         # initialize the ElasticNet model
-        self.model = ElasticNet(alpha=1.0,
+        self.model = ElasticNet(alpha=alpha,
                                 l1_ratio=self.l1_ratio,
                                 positive=self.positive_only,
                                 fit_intercept=False,
