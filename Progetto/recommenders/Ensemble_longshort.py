@@ -2,6 +2,7 @@ from Progetto.recommenders.SlimBPR.SLIM_BPR_Cython import SLIM_BPR_Cython
 from Progetto.recommenders.GraphBased.RP3Beta import RP3betaRecommender
 from Progetto.recommenders.SlimBPR.Slim_ElasticNet import SLIMElasticNetRecommender
 from sklearn.utils.extmath import randomized_svd
+from Progetto.recommenders.MF.ALS import IALS_numpy
 from functools import reduce
 import scipy.sparse as sp
 
@@ -13,7 +14,7 @@ class Ensemble_longshort(object):
         self.URM = 0
         self.weights = 0
 
-    def fit(self, URM, knn, shrink, weights, n_iter=3, epochs=15, evaluate=False):
+    def fit(self, URM, knn, shrink, weights, n_iter=1, epochs=15, evaluate=True):
         self.URM = URM
         self.weights = weights
 
@@ -41,8 +42,8 @@ class Ensemble_longshort(object):
                 slim_BPR_Cython = SLIM_BPR_Cython(self.URM)
                 total = []
                 for i in range(n_iter):
-                    slim_BPR_Cython.fit(epochs=epochs, sgd_mode='adagrad', stop_on_validation=True, learning_rate=0.1,
-                                        topK=250,
+                    slim_BPR_Cython.fit(epochs=epochs, sgd_mode='adagrad', stop_on_validation=True, learning_rate=0.05,
+                                        topK=150,
                                         evaluator_object=None, lower_validatons_allowed=5)
                     total.append(slim_BPR_Cython.W_sparse)
                 self.S_Slim = reduce(lambda a, b: a + b, total) / n_iter
@@ -68,6 +69,54 @@ class Ensemble_longshort(object):
         if weights[7] != 0:
             self.S_itemsvd = sp.load_npz("../input/itemsvd/s_itemsvd.npz")
 
+        if weights[8] != 0:
+            als = IALS_numpy(num_factors=300, reg=0.015, iters=20, scaling='log')
+            als.fit(self.URM.astype('float64'))
+            self.S_user = sp.csr_matrix(als.X)
+            self.S_item = sp.csr_matrix(als.Y).T
+
+
+    def recommend(self, target_playlist):
+        row_cb = 0
+        row_cf_i = 0
+        row_cf_u = 0
+        row_svd = 0
+        row_slim = 0
+        row_elastic = 0
+        row_p3 = 0
+        row_itemsvd = 0
+        row_als = 0
+
+        if self.weights[0] != 0:
+            row_cf_i = (self.URM[target_playlist].dot(self.S_CF_I_1)) * 0
+
+        if self.weights[1] != 0:
+            row_cf_u = (self.S_CF_U_1[target_playlist].dot(self.URM)) * 0.1
+
+        if self.weights[2] != 0:
+            row_cb = (self.URM[target_playlist].dot(self.S_CB_1)) * 0.3
+
+        # if self.weights[3] != 0:
+        # row_svd = sp.csr_matrix(self.U[target_playlist].dot(self.s_Vt)*self.weights[3])
+
+        if self.weights[4] != 0:
+            row_slim = (self.URM[target_playlist].dot(self.S_Slim)) * 0
+
+        if self.weights[5] != 0:
+            row_p3 = (self.URM[target_playlist].dot(self.S_P3_1)) * 0.1
+
+        if self.weights[6] != 0:
+          row_elastic = (self.URM[target_playlist].dot(self.S_Elastic)) * 0
+
+        # if self.weights[7] != 0:
+        # row_itemsvd = self.URM[target_playlist].dot(self.S_itemsvd) * self.weights[7]
+
+        if self.weights[8] != 0:
+            row_als = self.S_user[target_playlist].dot(self.S_item) * 0.1
+
+        row = (row_cf_i + row_cf_u + row_cb + row_slim + row_p3 + row_als).toarray().ravel()
+        return self.u.get_top_10(self.URM, target_playlist, row)
+
 
     def recommend_l10(self, target_playlist):
         row_cb = 0
@@ -80,13 +129,13 @@ class Ensemble_longshort(object):
         row_itemsvd = 0
 
         if self.weights[0] != 0:
-            row_cf_i = (self.URM[target_playlist].dot(self.S_CF_I_1)) * 0
+            row_cf_i = (self.URM[target_playlist].dot(self.S_CF_I_1)) * 0.2
 
         if self.weights[1] != 0:
-            row_cf_u = (self.S_CF_U_1[target_playlist].dot(self.URM)) * 0.1
+            row_cf_u = (self.S_CF_U_1[target_playlist].dot(self.URM)) * 0.08
 
         if self.weights[2] != 0:
-            row_cb = (self.URM[target_playlist].dot(self.S_CB_1)) * 1.1
+            row_cb = (self.URM[target_playlist].dot(self.S_CB_1)) * 1.3
 
         # if self.weights[3] != 0:
         # row_svd = sp.csr_matrix(self.U[target_playlist].dot(self.s_Vt)*self.weights[3])
@@ -95,7 +144,7 @@ class Ensemble_longshort(object):
             row_slim = (self.URM[target_playlist].dot(self.S_Slim)) * 0.1
 
         if self.weights[5] != 0:
-            row_p3 = (self.URM[target_playlist].dot(self.S_P3_1)) * 0.8
+            row_p3 = (self.URM[target_playlist].dot(self.S_P3_1)) * 1.3
 
         if self.weights[6] != 0:
           row_elastic = (self.URM[target_playlist].dot(self.S_Elastic)) * 0.3
@@ -159,10 +208,10 @@ class Ensemble_longshort(object):
             row_cf_i = (self.URM[target_playlist].dot(self.S_CF_I_1)) * 0
 
         if self.weights[1] != 0:
-            row_cf_u = (self.S_CF_U_1[target_playlist].dot(self.URM)) * 0.3
+            row_cf_u = (self.S_CF_U_1[target_playlist].dot(self.URM)) * 0.08
 
         if self.weights[2] != 0:
-            row_cb = (self.URM[target_playlist].dot(self.S_CB_1)) * 1
+            row_cb = (self.URM[target_playlist].dot(self.S_CB_1)) * 0.5
 
         # if self.weights[3] != 0:
         # row_svd = sp.csr_matrix(self.U[target_playlist].dot(self.s_Vt)*self.weights[3])
@@ -174,7 +223,7 @@ class Ensemble_longshort(object):
             row_p3 = self.URM[target_playlist].dot(self.S_P3_1) * 1.3
 
         if self.weights[6] != 0:
-            row_elastic = (self.URM[target_playlist].dot(self.S_Elastic) * 1.5)
+            row_elastic = (self.URM[target_playlist].dot(self.S_Elastic) * 0.5)
 
         # if self.weights[7] != 0:
         # row_itemsvd = self.URM[target_playlist].dot(self.S_itemsvd) * self.weights[7]

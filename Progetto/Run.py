@@ -82,14 +82,14 @@ class Recommender(object):
         rec.fit(self.URM_full, knn, alfa, beta)
         return self.generate_result(rec, path=None)
 
-    def recommend_ensemble_longshort(self, is_test=True, knn=(150,150,50,250,100,50), shrink=(10, 10, 10),
-                                     weights=(1, 1, 1, 0, 1, 1, 1, 0)):
+    def recommend_ensemble_longshort(self, is_test=True, knn=(150,150,50,350,100,50), shrink=(10, 10, 10),
+                                     weights=(0, 1, 1, 0, 0, 1, 0, 0, 1)):
         rec = Ensemble_longshort(self.u)
         if is_test:
             rec.fit(self.URM_train, knn, shrink, weights)
         else:
             rec.fit(self.URM_full, knn, shrink, weights)
-        return self.generate_result(rec, "./predictions/ensemble_longshort.csv", is_test, longshort=True)
+        return self.generate_result(rec, "./predictions/ensemble_longshort.csv", is_test, longshort=False)
 
 
 if __name__ == '__main__':
